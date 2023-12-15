@@ -54,7 +54,23 @@ make all
 4. Add libDaisy and DaisySP to your enviornment
 
 ```bash
-export LIBDAISY_DIR=${HOME}/Builds/libDaisy/build/
-export DAISYSP_DIR=${HOME}/Builds/DaisySP/build/
+export LIBDAISY_DIR=${HOME}/Builds/libDaisy/
+export DAISYSP_DIR=${HOME}/Builds/DaisySP/
+```
+
+5. Test Blink example
+
+```bash
+cd  seed_examples/Blink
+make clean ; make ; make program-dfu
+```
+
+>  **_NOTE:_**   You may get an `Error during download get_status` but it doesn;t seem to
+> be a problem
+
+6. Create your own module
+
+```bash
+./create_module name location
 ```
 

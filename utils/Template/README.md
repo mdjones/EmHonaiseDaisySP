@@ -7,3 +7,9 @@
 ## Description
 
 <!-- Describe your example here -->
+
+## Build
+
+```bash
+make clean ; make ; make program-dfu
+```

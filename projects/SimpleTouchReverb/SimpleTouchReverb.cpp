@@ -12,37 +12,36 @@ void AudioCallback(AudioHandle::InputBuffer in,
 					AudioHandle::OutputBuffer out, 
 					size_t size)
 {
-	float dry, send, wetl, wetr; // Effects Vars
+	float dry, send, wetl, wetr, intensity, wet_ratio; // Effects Vars
 
-       for (size_t i = 0; i < size; i++)
-       {
-               // Create Reverb Send
-        dry  = in[0][i];
-        send = dry * 0.8f;
-        verb.Process(send, send, &wetl, &wetr);
+	intensity = 0.7f;
+	wet_ratio = 0.9999f;
 
+	for (size_t i = 0; i < size; i++)
+	{
+		// Create Reverb Send
+		dry  = in[0][i];
+		send = dry * intensity;
+		verb.Process(send, send, &wetl, &wetr);
 		// Output
-		out[0][i] = dry + wetl;
-		out[1][i] = dry + wetr;
-       }
+		out[0][i] = dry*(1-wet_ratio) + wetl*wet_ratio;
+		out[1][i] = dry*(1-wet_ratio) + wetr*wet_ratio;
+	}
 }
 
 int main(void)
 {
     /** Initialize the hardware */
-	float samplerate;
     hw.Init();
 
     /** Start Processing the audio */
     hw.StartAudio(AudioCallback);
 
-	samplerate = hw.AudioSampleRate();
-    verb.Init(samplerate);
-    verb.SetFeedback(0.99f);
-    verb.SetLpFreq(2000.0f);
+    verb.Init(hw.AudioSampleRate());
+
+	verb.SetFeedback(.8f);
+	verb.SetLpFreq(10000.0f);
 	
 	hw.SetLed(true);
-
-
 	while(1) {}
 }

@@ -71,6 +71,6 @@ make clean ; make ; make program-dfu
 6. Create your own module
 
 ```bash
-./create_module name location
+./helper.py create ~/Builds/seed/MySeedProj --board seed
 ```
 

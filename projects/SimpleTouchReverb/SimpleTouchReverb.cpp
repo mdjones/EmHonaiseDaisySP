@@ -14,6 +14,8 @@ void AudioCallback(AudioHandle::InputBuffer in,
 {
 	float dry, send, wetl, wetr, intensity, wet_ratio; // Effects Vars
 
+	//28 should be 36 on the SimpleTouch
+
 	intensity = 0.7f;
 	wet_ratio = 0.9999f;
 

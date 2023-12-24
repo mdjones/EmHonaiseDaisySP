@@ -30,7 +30,7 @@ int main(void) {
     bool switch_state = my_switch.Read();
     hw.SetLed(switch_state);
 	if (init_switch_state != switch_state){
-		hw.PrintLine("Switch S10 state: %d\n", static_cast<int>(switch_state));
+		hw.PrintLine("Switch S10 (D9) state: %d\n", static_cast<int>(switch_state));
 		init_switch_state = switch_state;
 	}
   }

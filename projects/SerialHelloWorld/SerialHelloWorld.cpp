@@ -1,21 +1,42 @@
 #include "daisy_seed.h"
+#include "daisysp.h"
 
 using namespace daisy;
 
 DaisySeed hw;
+daisysp::Oscillator osc;
 
 #define S10 daisy::seed::D9 // SWITCH : ORDERED / AS PLAYED
+
+void AudioCallback(AudioHandle::InputBuffer in, 
+                AudioHandle::OutputBuffer out, 
+                size_t size) 
+{
+    for (size_t i = 0; i < size; i++)
+    {
+        // The oscillator's Process function synthesizes, and
+        // returns the next sample.
+        float sine_signal = osc.Process();
+        out[0][i] = sine_signal;
+        out[1][i] = sine_signal;
+    }
+}
 
 int main(void) {
 
   // Initialize the Daisy Seed Hardware
   hw.Init();
 
+    // We initialize the oscillator with the sample rate of the hardware
+    // this ensures that the frequency of the Oscillator will be accurate.
+    osc.Init(hw.AudioSampleRate());
+    hw.StartAudio(AudioCallback);
+
   // Create a GPIO object
   GPIO my_switch;
 
   // Initialize the GPIO object
-  my_switch.Init(S10, GPIO::Mode::INPUT, GPIO::Pull::PULLUP);
+  my_switch.Init(S10, GPIO::Mode::INPUT, GPIO::Pull::NOPULL);
 
   // Enable Logging, and set up the USB connection.
   hw.StartLog(true);

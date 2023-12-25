@@ -3,6 +3,7 @@
 
 using namespace daisy;
 using namespace daisysp;
+using namespace seed;
 
 DaisySeed hw;
 Oscillator sineOsc;
@@ -29,10 +30,12 @@ void AudioCallback(AudioHandle::InputBuffer in,
         // returns the next sample.
         float sine_signal = sineOsc.Process();
 		float tri_signal = triOsc.Process();
+		float nobFade = hw.adc.GetFloat(0);
 
 		if (my_switch.Read()){
-			out[0][i] = sine_signal * tri_signal;
-    		out[1][i] = sine_signal * tri_signal;
+			float signal = sine_signal*(1.0f/nobFade) + (sine_signal * tri_signal)*nobFade;
+			out[0][i] = signal;
+    		out[1][i] = signal;
 		}else{
         	out[0][i] = sine_signal;
         	out[1][i] = sine_signal;
@@ -58,7 +61,9 @@ int main(void) {
   my_switch.Init(S10, GPIO::Mode::INPUT, GPIO::Pull::NOPULL);
 
   AdcChannelConfig adcConfig;
-  adcConfig.InitSingle(hw.GetPin(S31));
+  //Figure out how to map this to the touch IDs
+  //Look at the pin diagram
+  adcConfig.InitSingle(A0);
 
   //Initialize the adc with the config we just made
   hw.adc.Init(&adcConfig, 1); 
@@ -81,7 +86,8 @@ int main(void) {
 	if (init_switch_state != switch_state){
 		hw.PrintLine("Switch S10 (D9) state: %d\n", static_cast<int>(switch_state));
 		init_switch_state = switch_state;
-		hw.PrintLine("Fader1 state: [%.3f]\n", hw.adc.GetFloat(0));
+		hw.PrintLine("Fader1 state: [%d]\n", hw.adc.Get(0));
+		hw.PrintLine("Fader1 state: [%0.2f]\n", hw.adc.GetFloat(0));
 	}
   }
 }

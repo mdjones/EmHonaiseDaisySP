@@ -34,7 +34,7 @@ Electrosmith also provides utilities to install them for you.
 ./helper.py create ~/Builds/seed/MySeedProj --board seed
 ```
 
-* Build and deploy your module
+## Build
 
 For each example directory do the following after 
 [Flashing](https://github.com/electro-smith/DaisyWiki/wiki/1.-Setting-Up-Your-Development-Environment#4-Run-the-Blink-Example)

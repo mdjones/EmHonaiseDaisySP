@@ -33,7 +33,7 @@ Electrosmith also provides utilities to install them for you.
 Boards: patch_sm,seed
 
 ```bash
-./helper.py create ~/Builds/seed/MySeedProj --board seed
+./helper.py create ./projects/MyDSPProj --board patch_sm
 ```
 
 ## Build

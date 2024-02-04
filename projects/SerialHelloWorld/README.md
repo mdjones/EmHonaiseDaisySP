@@ -2,11 +2,11 @@
 
 ## Author
 
-<!-- Insert Your Name Here -->
+Michael D. Jones
 
 ## Description
 
-<!-- Describe your example here -->
+Example usage of serial logging. (https://electro-smith.github.io/libDaisy/md_doc_2md_2__a2___getting-_started-_serial-_printing.html)
 
 ## Build
 

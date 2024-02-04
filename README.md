@@ -2,7 +2,10 @@
 
 ## Purpose
 
-A place to support DaisySP development
+A place to support DaisySP development.
+
+This is an excellent intro to the platform: GPIO, serial printing, ADC
+[libDaisy ref docs](https://electro-smith.github.io/libDaisy/index.html)
 
 ## Setup
 

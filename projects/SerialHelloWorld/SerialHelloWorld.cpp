@@ -69,7 +69,7 @@ int main(void) {
   hw.StartLog(true);
 
   // And Print Hello World!
-  hw.PrintLine("Hello World. You all bitches!!!!!!!");
+  hw.PrintLine("Hello World!!!!!!!");
 
   bool init_switch_state = my_switch.Read();
   while (1) {

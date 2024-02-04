@@ -2,13 +2,12 @@
 TARGET = Blink
 
 # Sources
-CPP_SOURCES = Blink.cpp 
+CPP_SOURCES = Blink.cpp
 
 # Library Locations
-LIBDAISY_DIR ?= ../../libDaisy
-DAISYSP_DIR ?= ../../DaisySP
+LIBDAISY_DIR ?= ../../lib/libDaisy/
+DAISYSP_DIR ?= ../../lib/DaisySP/
 
-# Core location, and generic makefile.
+# Core location, and generic Makefile.
 SYSTEM_FILES_DIR = $(LIBDAISY_DIR)/core
 include $(SYSTEM_FILES_DIR)/Makefile
-

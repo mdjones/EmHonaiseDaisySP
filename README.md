@@ -30,6 +30,8 @@ Electrosmith also provides utilities to install them for you.
 
 * Create your module
 
+Boards: patch_sm,seed
+
 ```bash
 ./helper.py create ~/Builds/seed/MySeedProj --board seed
 ```

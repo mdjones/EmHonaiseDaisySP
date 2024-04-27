@@ -46,6 +46,6 @@ int main(void)
 		int octaveShift = hw.adc.GetFloat(octaveKnob); //This is here so I can add CV control later
 
 		float volts = QuantizeUtils::closestVoltageInScale(hw.adc.GetFloat(voltageInput), rootNote, scale);
-		//hw.adc.setVoltage(volts + octaveShift);
+		hw.WriteCvOut(CV_OUT_1, volts + octaveShift);
 	}
 }

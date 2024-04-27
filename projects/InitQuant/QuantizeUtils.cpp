@@ -119,6 +119,7 @@ namespace QuantizeUtils {
 		return voltsOut;
 	}
 
+/**
 	std::string noteName(int note) {
 		switch(note){
 			case NOTE_C:       return "C";
@@ -160,4 +161,5 @@ namespace QuantizeUtils {
 			default: return "";
 		}
 	}
+	**/
 };

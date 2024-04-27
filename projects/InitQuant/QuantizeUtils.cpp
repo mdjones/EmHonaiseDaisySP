@@ -67,23 +67,23 @@ struct QuantizeUtils {
 		int *curScaleArr;
 		int notesInScale = 0;
 		switch(currScale){
-			case AEOLIAN:        curScaleArr = SCALE_AEOLIAN;       notesInScale=LENGTHOF(SCALE_AEOLIAN); break;
-			case BLUES:          curScaleArr = SCALE_BLUES;         notesInScale=LENGTHOF(SCALE_BLUES); break;
-			case CHROMATIC:      curScaleArr = SCALE_CHROMATIC;     notesInScale=LENGTHOF(SCALE_CHROMATIC); break;
-			case DIATONIC_MINOR: curScaleArr = SCALE_DIATONIC_MINOR;notesInScale=LENGTHOF(SCALE_DIATONIC_MINOR); break;
-			case DORIAN:         curScaleArr = SCALE_DORIAN;        notesInScale=LENGTHOF(SCALE_DORIAN); break;
-			case HARMONIC_MINOR: curScaleArr = SCALE_HARMONIC_MINOR;notesInScale=LENGTHOF(SCALE_HARMONIC_MINOR); break;
-			case INDIAN:         curScaleArr = SCALE_INDIAN;        notesInScale=LENGTHOF(SCALE_INDIAN); break;
-			case LOCRIAN:        curScaleArr = SCALE_LOCRIAN;       notesInScale=LENGTHOF(SCALE_LOCRIAN); break;
-			case LYDIAN:         curScaleArr = SCALE_LYDIAN;        notesInScale=LENGTHOF(SCALE_LYDIAN); break;
-			case MAJOR:          curScaleArr = SCALE_MAJOR;         notesInScale=LENGTHOF(SCALE_MAJOR); break;
-			case MELODIC_MINOR:  curScaleArr = SCALE_MELODIC_MINOR; notesInScale=LENGTHOF(SCALE_MELODIC_MINOR); break;
-			case MINOR:          curScaleArr = SCALE_MINOR;         notesInScale=LENGTHOF(SCALE_MINOR); break;
-			case MIXOLYDIAN:     curScaleArr = SCALE_MIXOLYDIAN;    notesInScale=LENGTHOF(SCALE_MIXOLYDIAN); break;
-			case NATURAL_MINOR:  curScaleArr = SCALE_NATURAL_MINOR; notesInScale=LENGTHOF(SCALE_NATURAL_MINOR); break;
-			case PENTATONIC:     curScaleArr = SCALE_PENTATONIC;    notesInScale=LENGTHOF(SCALE_PENTATONIC); break;
-			case PHRYGIAN:       curScaleArr = SCALE_PHRYGIAN;      notesInScale=LENGTHOF(SCALE_PHRYGIAN); break;
-			case TURKISH:        curScaleArr = SCALE_TURKISH;       notesInScale=LENGTHOF(SCALE_TURKISH); break;
+			case AEOLIAN:        curScaleArr = SCALE_AEOLIAN;       notesInScale=sizeof(SCALE_AEOLIAN); break;
+			case BLUES:          curScaleArr = SCALE_BLUES;         notesInScale=sizeof(SCALE_BLUES); break;
+			case CHROMATIC:      curScaleArr = SCALE_CHROMATIC;     notesInScale=sizeof(SCALE_CHROMATIC); break;
+			case DIATONIC_MINOR: curScaleArr = SCALE_DIATONIC_MINOR;notesInScale=sizeof(SCALE_DIATONIC_MINOR); break;
+			case DORIAN:         curScaleArr = SCALE_DORIAN;        notesInScale=sizeof(SCALE_DORIAN); break;
+			case HARMONIC_MINOR: curScaleArr = SCALE_HARMONIC_MINOR;notesInScale=sizeof(SCALE_HARMONIC_MINOR); break;
+			case INDIAN:         curScaleArr = SCALE_INDIAN;        notesInScale=sizeof(SCALE_INDIAN); break;
+			case LOCRIAN:        curScaleArr = SCALE_LOCRIAN;       notesInScale=sizeof(SCALE_LOCRIAN); break;
+			case LYDIAN:         curScaleArr = SCALE_LYDIAN;        notesInScale=sizeof(SCALE_LYDIAN); break;
+			case MAJOR:          curScaleArr = SCALE_MAJOR;         notesInScale=sizeof(SCALE_MAJOR); break;
+			case MELODIC_MINOR:  curScaleArr = SCALE_MELODIC_MINOR; notesInScale=sizeof(SCALE_MELODIC_MINOR); break;
+			case MINOR:          curScaleArr = SCALE_MINOR;         notesInScale=sizeof(SCALE_MINOR); break;
+			case MIXOLYDIAN:     curScaleArr = SCALE_MIXOLYDIAN;    notesInScale=sizeof(SCALE_MIXOLYDIAN); break;
+			case NATURAL_MINOR:  curScaleArr = SCALE_NATURAL_MINOR; notesInScale=sizeof(SCALE_NATURAL_MINOR); break;
+			case PENTATONIC:     curScaleArr = SCALE_PENTATONIC;    notesInScale=sizeof(SCALE_PENTATONIC); break;
+			case PHRYGIAN:       curScaleArr = SCALE_PHRYGIAN;      notesInScale=sizeof(SCALE_PHRYGIAN); break;
+			case TURKISH:        curScaleArr = SCALE_TURKISH;       notesInScale=sizeof(SCALE_TURKISH); break;
 			case NONE:           return voltsIn;
 		}
 

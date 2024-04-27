@@ -18,7 +18,7 @@ enviornment.
 
 ```bash
 git submodule update --init --recursive
-cd libdaisy/lib/DaisySP/
+cd lib/DaisySP/
 make
 cd ../libDaisy/
 make

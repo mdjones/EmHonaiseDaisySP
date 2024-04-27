@@ -6,7 +6,12 @@ Michael D. Jones
 
 ## Description
 
-General modulation source
+General modulation source.
+
+Variety of wave forms
+nHz->nHz
+Reset
+adjust delta speed between oscilators or randomize
 
 ## Build
 

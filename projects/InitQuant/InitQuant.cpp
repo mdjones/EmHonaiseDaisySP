@@ -8,9 +8,19 @@ using namespace daisysp;
 
 DaisyPatchSM hw;
 
+enum AdcChannel {
+   rootKnob = 0,
+   scaleKnob,
+   octaveKnob,
+   voltageInput,
+   voltageOutput,
+   NUM_ADC_CHANNELS
+};
+
+
 void AudioCallback(AudioHandle::InputBuffer in, AudioHandle::OutputBuffer out, size_t size)
 {
-	hw.ProcessAllControls();
+	//hw.ProcessAllControls();
 	for (size_t i = 0; i < size; i++)
 	{
 		OUT_L[i] = IN_L[i];
@@ -24,5 +34,18 @@ int main(void)
 	hw.SetAudioBlockSize(4); // number of samples handled per callback
 	hw.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
 	hw.StartAudio(AudioCallback);
-	while(1) {}
+
+	AdcChannelConfig adc_config[NUM_ADC_CHANNELS];
+	hw.adc.Init(adc_config, NUM_ADC_CHANNELS);
+
+	while(1) {
+		// To Add CV control as well see: https://github.com/jeremywen/JW-Modules/blob/master/src/Quantizer.cpp#L50
+
+		int rootNote = hw.adc.GetFloat(rootKnob); //This is here so I can add CV control later
+		int scale = hw.adc.GetFloat(scaleKnob); //This is here so I can add CV control later
+		int octaveShift = hw.adc.GetFloat(octaveKnob); //This is here so I can add CV control later
+
+		float volts = QuantizeUtils::closestVoltageInScale(hw.adc.GetFloat(voltageInput), rootNote, scale);
+		//hw.adc.setVoltage(volts + octaveShift);
+	}
 }

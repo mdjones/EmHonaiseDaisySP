@@ -2,7 +2,7 @@
 
 // Copied from JW-Modules. See ./JW_LICENSE
 
-struct QuantizeUtils {
+namespace QuantizeUtils {
 
 	//copied & fixed these scales http://www.grantmuller.com/MidiReference/doc/midiReference/ScaleReference.html
 	//more scales http://lawriecape.co.uk/theblog/index.php/archives/881

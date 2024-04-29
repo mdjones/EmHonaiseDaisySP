@@ -45,5 +45,6 @@ int main(void)
 		hw.PrintLine("out_cv: " FLT_FMT3, FLT_VAR3(volts));
 		hw.PrintLine("#######################");
 		hw.Delay(2000);
+		hw.WriteCvOut(CV_OUT_BOTH, volts);
 	}
 }

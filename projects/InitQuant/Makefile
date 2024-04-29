@@ -1,6 +1,9 @@
 # Project Name
 TARGET = InitQuant
 
+# For debugging float in hw.Print
+LDFLAGS += -u _printf_float
+
 # Sources
 CPP_SOURCES = InitQuant.cpp
 

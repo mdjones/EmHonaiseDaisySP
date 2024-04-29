@@ -8,17 +8,11 @@ using namespace daisysp;
 
 DaisyPatchSM hw;
 
-enum AdcChannel {
-   rootKnob = 0,
-   scaleKnob,
-   octaveKnob,
-   NUM_ADC_CHANNELS
-};
-
 
 void AudioCallback(AudioHandle::InputBuffer in, AudioHandle::OutputBuffer out, size_t size)
 {
-	//hw.ProcessAllControls();
+	hw.ProcessAllControls();
+
 	for (size_t i = 0; i < size; i++)
 	{
 		OUT_L[i] = IN_L[i];
@@ -29,28 +23,27 @@ void AudioCallback(AudioHandle::InputBuffer in, AudioHandle::OutputBuffer out, s
 int main(void)
 {
 	hw.Init();
-	hw.SetAudioBlockSize(4); // number of samples handled per callback
-	hw.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
-	hw.StartAudio(AudioCallback);
-
-	AdcChannelConfig adc_config[NUM_ADC_CHANNELS];
-	hw.adc.Init(adc_config, NUM_ADC_CHANNELS);
 
 	hw.StartLog(true);
-  	hw.PrintLine("Config complete !!!");
+  	hw.PrintLine("Start logging");
+	hw.StartAudio(AudioCallback);
 
 	while(1) {
-		// To Add CV control as well see: https://github.com/jeremywen/JW-Modules/blob/master/src/Quantizer.cpp#L50
+		float root_knob = hw.GetAdcValue(CV_1);
+		float scale_knob = hw.GetAdcValue(CV_2);
+		float octave_knob = hw.GetAdcValue(CV_3);
+		float voct_cv = hw.GetAdcValue(CV_5);
 
-		int rootNote = hw.adc.GetFloat(CV_1); //This is here so I can add CV control later
-		int scale = hw.adc.GetFloat(CV_2); //This is here so I can add CV control later
-		int octaveShift = hw.adc.GetFloat(CV_3); //This is here so I can add CV control later
+		float volts = QuantizeUtils::closestVoltageInScale(
+			hw.adc.GetFloat(CV_5), root_knob+0.67, scale_knob);
 
-		float in_volts = hw.adc.GetFloat(CV_4);
-		hw.PrintLine("in_volts: %f", in_volts);
-		float volts = QuantizeUtils::closestVoltageInScale(hw.adc.GetFloat(CV_4), rootNote+0.67, scale);
-		float out_volts = volts + octaveShift;
-		hw.WriteCvOut(CV_OUT_1, out_volts);
-		hw.PrintLine("out_volts: %f", out_volts);
+		hw.PrintLine("#######################");	
+		hw.PrintLine("root_knob: " FLT_FMT3, FLT_VAR3(root_knob));
+		hw.PrintLine("scale_knob: " FLT_FMT3, FLT_VAR3(scale_knob));
+		hw.PrintLine("octave_knob: " FLT_FMT3, FLT_VAR3(octave_knob));
+		hw.PrintLine("voct_cv: " FLT_FMT3, FLT_VAR3(voct_cv));
+		hw.PrintLine("out_cv: " FLT_FMT3, FLT_VAR3(volts));
+		hw.PrintLine("#######################");
+		hw.Delay(2000);
 	}
 }

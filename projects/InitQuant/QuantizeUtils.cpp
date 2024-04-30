@@ -63,7 +63,9 @@ namespace QuantizeUtils {
 	};
 
 	// long printIter = 0;
-	float closestVoltageInScale(float voltsIn, int rootNote, int currScale){
+	float closestVoltageInScale(float voltsIn, 
+								int rootNote, 
+								int currScale){
 		int *curScaleArr;
 		int notesInScale = 0;
 		switch(currScale){
@@ -119,7 +121,7 @@ namespace QuantizeUtils {
 		return voltsOut;
 	}
 
-/**
+
 	std::string noteName(int note) {
 		switch(note){
 			case NOTE_C:       return "C";
@@ -161,5 +163,4 @@ namespace QuantizeUtils {
 			default: return "";
 		}
 	}
-	**/
 };

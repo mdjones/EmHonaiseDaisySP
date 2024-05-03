@@ -20,6 +20,18 @@ inline float rescalefjw(float x, float xMin, float xMax, float yMin, float yMax)
 	return yMin + (x - xMin) / (xMax - xMin) * (yMax - yMin);
 }
 
+void trig(){
+		/** Set the gate high */
+        dsy_gpio_write(&hw.gate_out_1, true);
+
+        /** Wait 250 ms */
+        hw.Delay(20);
+
+        /** Set the gate low */
+        dsy_gpio_write(&hw.gate_out_1, false);
+
+}
+
 void AudioCallback(AudioHandle::InputBuffer in, AudioHandle::OutputBuffer out, size_t size)
 {
 	hw.ProcessAllControls();
@@ -35,6 +47,8 @@ int main(void)
 {
 	hw.Init();
 
+	float current_volts = 0.0;
+
 	if(debug){
 		hw.StartLog(true);
   		hw.PrintLine("Start logging");
@@ -49,12 +63,18 @@ int main(void)
 
 		int rootNote = rescalefjw(root_knob, 0,1,0, QuantizeUtils::NUM_NOTES);
 		int scale = rescalefjw(scale_knob, 0,1,0, QuantizeUtils::NUM_SCALES);
+		float in_volts = rescalefjw(voct_cv, 0,1,0, 5);
 		//int octaveShift = params[OCTAVE_PARAM].getValue() + clampfjw(inputs[OCTAVE_INPUT].getVoltage(), -5, 5);
 
 		float volts = QuantizeUtils::closestVoltageInScale(
-			voct_cv, rootNote, scale);
+			in_volts, rootNote, scale);
 
 		hw.WriteCvOut(CV_OUT_BOTH, volts);
+
+		if (volts != current_volts){
+			trig();
+			current_volts = volts;
+		}
 
 		if(debug){
 			hw.PrintLine("#######################");	

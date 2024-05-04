@@ -21,8 +21,7 @@ inline float rescalefjw(float x, float xMin, float xMax, float yMin, float yMax)
 }
 
 bool AlmostEqualRelative(float A, float B,
-                         float maxRelDiff = 1.0/12)
-{
+                         float maxRelDiff = 1.0/12) {
     // Calculate the difference.
     float diff = fabs(A - B);
     A = fabs(A);
@@ -34,17 +33,26 @@ bool AlmostEqualRelative(float A, float B,
         return true;
     return false;
 }
-void trig(){
-		/** Set the gate high */
-        dsy_gpio_write(&hw.gate_out_1, true);
 
-        /** Wait 250 ms */
-        hw.Delay(20);
-
-        /** Set the gate low */
-        dsy_gpio_write(&hw.gate_out_1, false);
-
+void blink(){
+	hw.WriteCvOut(CV_OUT_2, 0);
+	hw.WriteCvOut(CV_OUT_2, 5);
+	hw.Delay(20);
+	hw.WriteCvOut(CV_OUT_2, 0);
 }
+
+void trig() {
+	/** Set the gate high */
+	dsy_gpio_write(&hw.gate_out_1, true);
+
+	/** Wait 250 ms */
+	hw.Delay(20);
+
+	/** Set the gate low */
+	dsy_gpio_write(&hw.gate_out_1, false);
+}
+
+
 
 void AudioCallback(AudioHandle::InputBuffer in, AudioHandle::OutputBuffer out, size_t size)
 {
@@ -57,6 +65,10 @@ void AudioCallback(AudioHandle::InputBuffer in, AudioHandle::OutputBuffer out, s
 	}
 }
 
+int currentRootNote=0;
+int currentScale=0;
+int currentOctaveShift=0;
+
 int main(void)
 {
 	hw.Init();
@@ -68,6 +80,8 @@ int main(void)
   		hw.PrintLine("Start logging");
 	}
 	hw.StartAudio(AudioCallback);
+
+	
 
 	while(1) {
 		float root_knob = hw.GetAdcValue(CV_1);
@@ -85,11 +99,22 @@ int main(void)
 			in_volts, rootNote, scale);
 		volts += octaveShift;
 
-		hw.WriteCvOut(CV_OUT_BOTH, volts);
+		hw.WriteCvOut(CV_OUT_1, volts);
 
 		if ((!AlmostEqualRelative(volts,current_volts)) & (scale != QuantizeUtils::ScaleEnum::NONE)){
 			trig();
 			current_volts = volts;
+		}
+
+		if (rootNote != currentRootNote){
+			blink();
+			currentRootNote = rootNote;
+		}else if (scale != currentScale){
+			blink();
+			currentScale = scale;
+		}else if (octaveShift != currentOctaveShift){
+			blink();
+			currentOctaveShift = octaveShift;
 		}
 
 		if(debug){

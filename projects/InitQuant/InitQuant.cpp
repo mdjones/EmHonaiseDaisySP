@@ -91,7 +91,7 @@ int main(void)
 
 		int rootNote = rescalefjw(root_knob, 0,1,0, QuantizeUtils::NUM_NOTES);
 		int scale = rescalefjw(scale_knob, 0,1,0, QuantizeUtils::NUM_SCALES);
-		int octaveShift = rescalefjw(octave_knob, 0,1,0,6);
+		int octaveShift = rescalefjw(octave_knob, 0,1,0,5);
 		float in_volts = rescalefjw(voct_cv, 0,1,0, 5);
 		//int octaveShift = params[OCTAVE_PARAM].getValue() + clampfjw(inputs[OCTAVE_INPUT].getVoltage(), -5, 5);
 

@@ -20,6 +20,20 @@ inline float rescalefjw(float x, float xMin, float xMax, float yMin, float yMax)
 	return yMin + (x - xMin) / (xMax - xMin) * (yMax - yMin);
 }
 
+bool AlmostEqualRelative(float A, float B,
+                         float maxRelDiff = 1.0/12)
+{
+    // Calculate the difference.
+    float diff = fabs(A - B);
+    A = fabs(A);
+    B = fabs(B);
+    // Find the largest
+    float largest = (B > A) ? B : A;
+
+    if (diff <= largest * maxRelDiff)
+        return true;
+    return false;
+}
 void trig(){
 		/** Set the gate high */
         dsy_gpio_write(&hw.gate_out_1, true);
@@ -63,15 +77,17 @@ int main(void)
 
 		int rootNote = rescalefjw(root_knob, 0,1,0, QuantizeUtils::NUM_NOTES);
 		int scale = rescalefjw(scale_knob, 0,1,0, QuantizeUtils::NUM_SCALES);
+		int octaveShift = rescalefjw(octave_knob, 0,1,0,6);
 		float in_volts = rescalefjw(voct_cv, 0,1,0, 5);
 		//int octaveShift = params[OCTAVE_PARAM].getValue() + clampfjw(inputs[OCTAVE_INPUT].getVoltage(), -5, 5);
 
 		float volts = QuantizeUtils::closestVoltageInScale(
 			in_volts, rootNote, scale);
+		volts += octaveShift;
 
 		hw.WriteCvOut(CV_OUT_BOTH, volts);
 
-		if (volts != current_volts){
+		if ((!AlmostEqualRelative(volts,current_volts)) & (scale != QuantizeUtils::ScaleEnum::NONE)){
 			trig();
 			current_volts = volts;
 		}
@@ -83,10 +99,12 @@ int main(void)
 			hw.PrintLine("scale_knob: " FLT_FMT3, FLT_VAR3(scale_knob));
 			hw.PrintLine("scale:  %d", scale);
 			hw.PrintLine("octave_knob: " FLT_FMT3, FLT_VAR3(octave_knob));
+			hw.PrintLine("octaveShift: %d", octaveShift);
 			hw.PrintLine("voct_cv: " FLT_FMT3, FLT_VAR3(voct_cv));
 			hw.PrintLine("out_cv: " FLT_FMT3, FLT_VAR3(volts));
 			hw.PrintLine("Note name: %s", QuantizeUtils::noteName(rootNote).c_str());
 			hw.PrintLine("Scale name: %s", QuantizeUtils::scaleName(scale).c_str());
+
 
 			hw.PrintLine("#######################");
 			hw.Delay(200);

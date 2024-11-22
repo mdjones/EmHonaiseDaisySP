@@ -9,7 +9,7 @@ Michael D. Jones
 Implementation of JW-Modules <https://github.com/jeremywen/JW-Modules/>
 Quantizer for the [patch.Init()](https://electro-smith.com/products/patch-init).
 
-All knobws are scaled counter clockwise to clockwise
+All knobs are scaled counter clockwise to clockwise
 
 * CV_1: Root note knob. Select root note chromatically from C to B
 * CV_2: Scale kbob: See: QuantizerUtils.ScaleEnum

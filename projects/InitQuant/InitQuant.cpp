@@ -45,7 +45,7 @@ void trig() {
 	/** Set the gate high */
 	dsy_gpio_write(&hw.gate_out_1, true);
 
-	/** Wait 250 ms */
+	/** Wait 20 ms */
 	hw.Delay(20);
 
 	/** Set the gate low */

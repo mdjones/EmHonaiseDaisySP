@@ -22,6 +22,18 @@ scale, or octave
 
 ## Build
 
+If you have already used projects in this repo before just do.
+
 ```bash
+make clean ; make ; make program-dfu
+```
+
+To start fresh do
+
+```bash
+git clone git@github.com:mdjones/EmHonaiseDaisySP.git
+cd EmHonaiseDaisySP/
+make
+cd ./projects/InitQuant/
 make clean ; make ; make program-dfu
 ```

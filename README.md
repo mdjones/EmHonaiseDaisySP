@@ -17,10 +17,6 @@ enviornment.
 * Build the DaisySP submodules
 
 ```bash
-git submodule update --init --recursive
-cd lib/DaisySP/
-make
-cd ../libDaisy/
 make
 ```
 

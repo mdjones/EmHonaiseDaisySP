@@ -1,4 +1,4 @@
-#include "core_cm7.h"
+//#include "core_cm7.h" -- this doesn't seem to be doing anything
 #include "daisy_patch_sm.h"
 #include "daisysp.h"
 

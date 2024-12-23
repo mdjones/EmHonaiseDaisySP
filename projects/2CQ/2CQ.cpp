@@ -7,6 +7,9 @@ using namespace daisysp;
 
 DaisyPatchSM patch;
 
+Switch gate1PatchedSwitch;
+Switch gate2PatchedSwitch;
+
 void AudioCallback(AudioHandle::InputBuffer in,
 				   AudioHandle::OutputBuffer out,
 				   size_t size)
@@ -24,22 +27,21 @@ int main(void)
 	patch.Init();
 
 	// Create a GPIO object
-  	Switch button;
-	button.Init(patch.B7);
+	gate1PatchedSwitch.Init(patch.B7);
+	gate2PatchedSwitch.Init(patch.B8);
 
-
-	patch.SetAudioBlockSize(4); // number of samples handled per callback
-	patch.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
-	patch.StartAudio(AudioCallback);
+	/**
+	 * patch.SetAudioBlockSize(4); // number of samples handled per callback
+	 * patch.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
+	 * patch.StartAudio(AudioCallback);
+	 **/
 	while (1)
 	{
 		/** Debounce the switch */
-        button.Debounce();
+		gate1PatchedSwitch.Debounce();
+		patch.SetLed(!gate1PatchedSwitch.Pressed());
 
-        /** Get the current button state */
-        bool state = !button.Pressed();
-
-        /** Set the onboard led to the current state */
-        patch.SetLed(state);
+		gate2PatchedSwitch.Debounce();
+		patch.SetLed(!gate2PatchedSwitch.Pressed());
 	}
 }

@@ -8,7 +8,7 @@ using namespace daisysp;
 
 DaisyPatchSM hw;
 
-bool debug = false;
+bool debug = true;
 
 //inline int clampijw(int x, int minimum, int maximum) {
 //	return std::clamp(x, minimum, maximum);
@@ -133,6 +133,12 @@ int main(void)
 
 			hw.PrintLine("#######################");
 			hw.Delay(200);
+
+			//Jus to let us know we are in debug mode.
+			hw.SetLed(false);
+			hw.SetLed(true);
+			hw.Delay(20);
+			hw.SetLed(false);
 		}
 	}
 }

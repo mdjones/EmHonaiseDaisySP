@@ -30,11 +30,6 @@ int main(void)
 	gate1PatchedSwitch.Init(patch.B7);
 	gate2PatchedSwitch.Init(patch.B8);
 
-	/**
-	 * patch.SetAudioBlockSize(4); // number of samples handled per callback
-	 * patch.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
-	 * patch.StartAudio(AudioCallback);
-	 **/
 	while (1)
 	{
 		/** Debounce the switch */

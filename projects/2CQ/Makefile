@@ -1,8 +1,8 @@
 # Project Name
-TARGET = 2CQSandBox
+TARGET = 2CQ
 
 # Sources
-CPP_SOURCES = 2CQSandBox.cpp
+CPP_SOURCES = 2CQ.cpp
 
 # Library Locations
 LIBDAISY_DIR ?= ../../lib/libDaisy/

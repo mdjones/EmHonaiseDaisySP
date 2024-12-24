@@ -80,7 +80,8 @@ int main(void)
 
 	if (debug)
 	{
-		hw.StartLog(true);
+		bool wait_for_pc = true;
+		hw.StartLog(wait_for_pc);
 		hw.PrintLine("Start logging");
 	}
 	hw.StartAudio(AudioCallback);

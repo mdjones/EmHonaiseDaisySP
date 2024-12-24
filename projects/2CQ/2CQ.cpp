@@ -26,8 +26,8 @@ struct Channel
 	int rootNote;
 	int scale;
 	int octaveShift;
-	float in_volts;
-	float out_volts;
+	float in_voct;
+	float out_voct;
 	bool in_gate;
 	bool gate_patched;
 };
@@ -70,16 +70,15 @@ int main(void)
 
 	while (1)
 	{
+		// Set unique channel inputs
 		gate1PatchedSwitch.Debounce();
-
 		gate2PatchedSwitch.Debounce();
 
-		float voct_1 = patch.GetAdcValue(CV_5);
-		float voct_2 = patch.GetAdcValue(CV_6);
+		float in_voct_1 = patch.GetAdcValue(CV_5);
+		float in_voct_2 = patch.GetAdcValue(CV_6);
 
-		// Set unique values
-		channels[ChannelNum::CH_1].in_volts = QuantizeUtils::rescalefjw(voct_1, 0, 1, 0, 5);
-		channels[ChannelNum::CH_2].in_volts = QuantizeUtils::rescalefjw(voct_2, 0, 1, 0, 5);
+		channels[ChannelNum::CH_1].in_voct = QuantizeUtils::rescalefjw(in_voct_1, 0, 1, 0, 5);
+		channels[ChannelNum::CH_2].in_voct = QuantizeUtils::rescalefjw(in_voct_2, 0, 1, 0, 5);
 
 		channels[ChannelNum::CH_1].in_gate = false; // These should come from B10 and B9
 		channels[ChannelNum::CH_2].in_gate = false;
@@ -87,7 +86,7 @@ int main(void)
 		channels[ChannelNum::CH_1].gate_patched = !gate1PatchedSwitch.Pressed();
 		channels[ChannelNum::CH_2].gate_patched = !gate2PatchedSwitch.Pressed();
 
-		// Set curent edit values
+		// Set curent edit inputs
 		ch_toggle.Debounce();
 		bool ch_toggle_pressed = ch_toggle.Pressed();
 		ChannelNum editChannel = ch_toggle_pressed ? ChannelNum::CH_1 : ChannelNum::CH_2;
@@ -102,12 +101,25 @@ int main(void)
 		channels[editChannel].scale = scale;
 		channels[editChannel].octaveShift = octaveShift;
 
+		//Set quantized voct and send to out
+		//For now HW voct out will always track whatever out_voct is set to
+		//May want to consider only changing hardware out with a trigger
+		for (size_t i = 0; i < NUM_CHANNELS; i++)
+		{
+			float out_voct = QuantizeUtils::closestVoltageInScale(
+								channels[i].in_voct, channels[i].rootNote, channels[i].scale);
+			out_voct += channels[i].octaveShift;
+			channels[i].out_voct = out_voct;
+		}
+
 		if (debug)
 		{
 			std::string ecStr = (editChannel == ChannelNum::CH_1) ? "CH_1" : "CH_2";
-			patch.PrintLine("channels[%s] get_patched: %s\n", ecStr.c_str(),
-							channels[editChannel].gate_patched ? "True" : "False");
-			patch.PrintLine("channels[%s] rootNote: %d\n", ecStr.c_str(), rootNote);
+			//patch.PrintLine("channels[%s] get_patched: %s\n", ecStr.c_str(),
+			//				channels[editChannel].gate_patched ? "True" : "False");
+			//patch.PrintLine("channels[%s] rootNote: %d\n", ecStr.c_str(), rootNote);
+			//patch.PrintLine("channels[%s] in_voct: %i\n", ecStr.c_str(), (int)channels[editChannel].in_voct*1000);
+			//patch.PrintLine("channels[%s] out_voct: %i\n", ecStr.c_str(), (int)channels[editChannel].out_voct*1000);
 		}
 	}
 }

@@ -33,8 +33,6 @@ struct Channel
 	int out_channel;
 };
 
-
-
 void AudioCallback(AudioHandle::InputBuffer in,
 				   AudioHandle::OutputBuffer out,
 				   size_t size)
@@ -50,7 +48,7 @@ void AudioCallback(AudioHandle::InputBuffer in,
 int main(void)
 {
 	patch.Init();
-                	patch.StartAudio(AudioCallback);
+	patch.StartAudio(AudioCallback);
 
 	Channel channels[NUM_CHANNELS] = {};
 	channels[CH_1].out_channel = CV_OUT_1;
@@ -67,11 +65,6 @@ int main(void)
 
 	gate1PatchedSwitch.Init(patch.B7);
 	gate2PatchedSwitch.Init(patch.B8);
-
-	for (size_t i = 0; i < NUM_CHANNELS; i++)
-	{
-		channels[i] = {};
-	}
 
 	while (1)
 	{
@@ -106,27 +99,36 @@ int main(void)
 		channels[editChannel].scale = scale;
 		channels[editChannel].octaveShift = octaveShift;
 
-		//Set quantized voct and send to out
-		//For now HW voct out will always track whatever out_voct is set to
-		//May want to consider only changing hardware out with a trigger
-		for (size_t i = 0; i < NUM_CHANNELS; i++)
+		// Set quantized voct and send to out
+		// For now HW voct out will always track whatever out_voct is set to
+		// May want to consider only changing hardware out with a trigger
+		for (size_t i = 0; i < NUM_CHANNELS - 1; i++)
 		{
-			float in_voct  = QuantizeUtils::rescalefjw(channels[i].in_voct, 0, 1, 0, 5);
-			channels[i].out_voct = QuantizeUtils::closestVoltageInScale(
-								in_voct, channels[i].rootNote, channels[i].scale);
-			channels[i].out_voct += channels[i].octaveShift;
+			float in_voct = QuantizeUtils::rescalefjw(channels[i].in_voct, 0, 1, 0, 5);
+			float out_voct = QuantizeUtils::closestVoltageInScale(
+				in_voct, channels[i].rootNote, channels[i].scale);
+			out_voct += octaveShift;
 
-			patch.WriteCvOut(channels[i].out_channel, channels[i].out_voct);
+			patch.WriteCvOut(channels[i].out_channel, out_voct);
 		}
 
 		if (debug)
 		{
 			std::string ecStr = (editChannel == ChannelNum::CH_1) ? "CH_1" : "CH_2";
-			//patch.PrintLine("channels[%s] get_patched: %s\n", ecStr.c_str(),
+			// patch.PrintLine("channels[%s] get_patched: %s\n", ecStr.c_str(),
 			//				channels[editChannel].gate_patched ? "True" : "False");
-			//patch.PrintLine("channels[%s] rootNote: %d\n", ecStr.c_str(), rootNote);
-			//patch.PrintLine("channels[%s] in_voct: %i\n", ecStr.c_str(), (int)channels[editChannel].in_voct*1000);
-			//patch.PrintLine("channels[%s] out_voct: %i\n", ecStr.c_str(), (int)channels[editChannel].out_voct*1000);
+			// patch.PrintLine("channels[%s] rootNote: %d\n", ecStr.c_str(), rootNote);
+			// patch.PrintLine("channels[%s] in_voct: %i\n", ecStr.c_str(), (int)channels[editChannel].in_voct*1000);
+			// patch.PrintLine("channels[%s] out_voct: %i\n", ecStr.c_str(), (int)channels[editChannel].out_voct*1000);
+			// patch.PrintLine("channels[%s] editChannel: %i, CH_1: %i", ecStr.c_str(), editChannel, CH_1);
+			// patch.PrintLine("editChannel, == CH_1: %s", editChannel == CH_1 ? "true" : "false");
+			// patch.PrintLine("channels[%s] eq? %s", ecStr.c_str(), channels[CH_1].in_voct == channels[0].in_voct ? "true" : "false");
+			patch.PrintLine("#######################");
+
+			patch.PrintLine("channels[%s] scale: %s", ecStr.c_str(), QuantizeUtils::scaleName(channels[CH_1].scale).c_str());
+
+			patch.PrintLine("#######################");
+			patch.Delay(200);
 		}
 	}
 }

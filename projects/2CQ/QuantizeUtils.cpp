@@ -163,4 +163,9 @@ namespace QuantizeUtils {
 			default: return "";
 		}
 	}
+
+	inline float rescalefjw(float x, float xMin, float xMax, float yMin, float yMax)
+	{
+		return yMin + (x - xMin) / (xMax - xMin) * (yMax - yMin);
+	}
 };

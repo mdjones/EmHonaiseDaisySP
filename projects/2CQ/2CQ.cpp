@@ -30,9 +30,10 @@ struct Channel
 	float out_voct;
 	bool in_gate;
 	bool gate_patched;
+	int out_channel;
 };
 
-Channel channels[NUM_CHANNELS] = {};
+
 
 void AudioCallback(AudioHandle::InputBuffer in,
 				   AudioHandle::OutputBuffer out,
@@ -50,6 +51,10 @@ int main(void)
 {
 	patch.Init();
 	patch.StartAudio(AudioCallback);
+
+	Channel channels[NUM_CHANNELS] = {};
+	channels[CH_1].out_channel = CV_OUT_1;
+	channels[CH_2].out_channel = CV_OUT_2;
 
 	ch_toggle.Init(patch.B8);
 
@@ -110,6 +115,8 @@ int main(void)
 								channels[i].in_voct, channels[i].rootNote, channels[i].scale);
 			out_voct += channels[i].octaveShift;
 			channels[i].out_voct = out_voct;
+
+			patch.WriteCvOut(channels[i].out_channel, channels[i].out_voct);
 		}
 
 		if (debug)

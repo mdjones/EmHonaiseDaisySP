@@ -12,7 +12,7 @@ Switch gate1PatchedSwitch;
 Switch gate2PatchedSwitch;
 Switch button, ch_toggle;
 
-bool debug = true;
+bool debug = false;
 
 enum ChannelNum
 {
@@ -50,7 +50,7 @@ void AudioCallback(AudioHandle::InputBuffer in,
 int main(void)
 {
 	patch.Init();
-	patch.StartAudio(AudioCallback);
+                	patch.StartAudio(AudioCallback);
 
 	Channel channels[NUM_CHANNELS] = {};
 	channels[CH_1].out_channel = CV_OUT_1;
@@ -82,8 +82,8 @@ int main(void)
 		float in_voct_1 = patch.GetAdcValue(CV_5);
 		float in_voct_2 = patch.GetAdcValue(CV_6);
 
-		channels[ChannelNum::CH_1].in_voct = QuantizeUtils::rescalefjw(in_voct_1, 0, 1, 0, 5);
-		channels[ChannelNum::CH_2].in_voct = QuantizeUtils::rescalefjw(in_voct_2, 0, 1, 0, 5);
+		channels[ChannelNum::CH_1].in_voct = in_voct_1;
+		channels[ChannelNum::CH_2].in_voct = in_voct_2;
 
 		channels[ChannelNum::CH_1].in_gate = false; // These should come from B10 and B9
 		channels[ChannelNum::CH_2].in_gate = false;
@@ -111,10 +111,10 @@ int main(void)
 		//May want to consider only changing hardware out with a trigger
 		for (size_t i = 0; i < NUM_CHANNELS; i++)
 		{
+			float in_voct  = QuantizeUtils::rescalefjw(channels[i].in_voct, 0, 1, 0, 5);
 			float out_voct = QuantizeUtils::closestVoltageInScale(
-								channels[i].in_voct, channels[i].rootNote, channels[i].scale);
+								in_voct, channels[i].rootNote, channels[i].scale);
 			out_voct += channels[i].octaveShift;
-			channels[i].out_voct = out_voct;
 
 			patch.WriteCvOut(channels[i].out_channel, channels[i].out_voct);
 		}

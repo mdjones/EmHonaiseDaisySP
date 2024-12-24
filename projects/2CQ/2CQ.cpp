@@ -112,9 +112,9 @@ int main(void)
 		for (size_t i = 0; i < NUM_CHANNELS; i++)
 		{
 			float in_voct  = QuantizeUtils::rescalefjw(channels[i].in_voct, 0, 1, 0, 5);
-			float out_voct = QuantizeUtils::closestVoltageInScale(
+			channels[i].out_voct = QuantizeUtils::closestVoltageInScale(
 								in_voct, channels[i].rootNote, channels[i].scale);
-			out_voct += channels[i].octaveShift;
+			channels[i].out_voct += channels[i].octaveShift;
 
 			patch.WriteCvOut(channels[i].out_channel, channels[i].out_voct);
 		}

@@ -14,13 +14,15 @@ Switch button, ch_toggle;
 
 bool debug = true;
 
-enum ChannelNum {
+enum ChannelNum
+{
 	CH_1,
 	CH_2,
 	NUM_CHANNELS
 };
 
-struct Channel {
+struct Channel
+{
 	int rootNote;
 	int scale;
 	int octaveShift;
@@ -31,7 +33,6 @@ struct Channel {
 };
 
 Channel channels[NUM_CHANNELS] = {};
-
 
 void AudioCallback(AudioHandle::InputBuffer in,
 				   AudioHandle::OutputBuffer out,
@@ -62,7 +63,8 @@ int main(void)
 	gate1PatchedSwitch.Init(patch.B7);
 	gate2PatchedSwitch.Init(patch.B8);
 
-	for (size_t i = 0; i < NUM_CHANNELS; i++) {
+	for (size_t i = 0; i < NUM_CHANNELS; i++)
+	{
 		channels[i] = {};
 	}
 
@@ -75,7 +77,7 @@ int main(void)
 		float voct_1 = patch.GetAdcValue(CV_5);
 		float voct_2 = patch.GetAdcValue(CV_6);
 
-		//Set unique values
+		// Set unique values
 		channels[ChannelNum::CH_1].in_volts = QuantizeUtils::rescalefjw(voct_1, 0, 1, 0, 5);
 		channels[ChannelNum::CH_2].in_volts = QuantizeUtils::rescalefjw(voct_2, 0, 1, 0, 5);
 
@@ -85,7 +87,7 @@ int main(void)
 		channels[ChannelNum::CH_1].gate_patched = !gate1PatchedSwitch.Pressed();
 		channels[ChannelNum::CH_2].gate_patched = !gate2PatchedSwitch.Pressed();
 
-		//Set curent edit values
+		// Set curent edit values
 		ch_toggle.Debounce();
 		bool ch_toggle_pressed = ch_toggle.Pressed();
 		ChannelNum editChannel = ch_toggle_pressed ? ChannelNum::CH_1 : ChannelNum::CH_2;
@@ -100,11 +102,12 @@ int main(void)
 		channels[editChannel].scale = scale;
 		channels[editChannel].octaveShift = octaveShift;
 
-		if(debug){
+		if (debug)
+		{
 			std::string ecStr = (editChannel == ChannelNum::CH_1) ? "CH_1" : "CH_2";
 			patch.PrintLine("channels[%s] get_patched: %s\n", ecStr.c_str(),
-                         channels[editChannel].gate_patched ? "True" : "False");
-			patch.PrintLine("channels[%s] rootNote: %d\n", ecStr.c_str(),rootNote);
+							channels[editChannel].gate_patched ? "True" : "False");
+			patch.PrintLine("channels[%s] rootNote: %d\n", ecStr.c_str(), rootNote);
 		}
 	}
 }

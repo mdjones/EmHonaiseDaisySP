@@ -1,4 +1,4 @@
-# 2CQSandBox
+# 2CQ
 
 ## Author
 
@@ -6,9 +6,10 @@ Michael D. Jones
 
 ## Description
 
-Sanbox for what will eventually become the 2CQ (2 Channel Quant) quantizer. A 
-quantizer takes a V/OCT. input and quantizes it to the nearest note in a
-selected scale.
+The 2CQ (2 Channel Quant) quantizer produces a new quantized V/OCT source per 
+channel whenever a trigger is emitted. A trigger is emitted when either a trig
+in is patched and a trigger or gate is sent or the trig in is not patched and
+the calculated quantized voltage changes.
 
 This quantizer has two channels who's settings can be adjusted by toggeling the
 channel switch. 

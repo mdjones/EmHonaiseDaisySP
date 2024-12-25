@@ -27,11 +27,40 @@ struct Channel
 	int scale;
 	int octaveShift;
 	float in_voct;
+	float quant_voct;
 	float out_voct;
-	bool in_gate;
 	bool gate_patched;
 	int out_channel;
+	GateIn gate_in;
+	dsy_gpio gate_out;
 };
+
+void trig(dsy_gpio gate_put)
+{
+	/** Set the gate high */
+	dsy_gpio_write(&gate_put, true);
+
+	/** Wait 20 ms */
+	patch.Delay(20);
+
+	/** Set the gate low */
+	dsy_gpio_write(&gate_put, false);
+}
+
+bool AlmostEqualRelative(float A, float B,
+						 float maxRelDiff = 1.0 / 12)
+{
+	// Calculate the difference.
+	float diff = fabs(A - B);
+	A = fabs(A);
+	B = fabs(B);
+	// Find the largest
+	float largest = (B > A) ? B : A;
+
+	if (diff <= largest * maxRelDiff)
+		return true;
+	return false;
+}
 
 void AudioCallback(AudioHandle::InputBuffer in,
 				   AudioHandle::OutputBuffer out,
@@ -53,6 +82,12 @@ int main(void)
 	Channel channels[NUM_CHANNELS] = {};
 	channels[CH_1].out_channel = CV_OUT_1;
 	channels[CH_2].out_channel = CV_OUT_2;
+
+	channels[CH_1].gate_out = patch.gate_out_1;
+	channels[CH_2].gate_out = patch.gate_out_2;
+
+	channels[CH_1].gate_in = patch.gate_in_1;
+	channels[CH_2].gate_in = patch.gate_in_2;
 
 	ch_toggle.Init(patch.B8);
 
@@ -78,9 +113,6 @@ int main(void)
 		channels[ChannelNum::CH_1].in_voct = in_voct_1;
 		channels[ChannelNum::CH_2].in_voct = in_voct_2;
 
-		channels[ChannelNum::CH_1].in_gate = false; // These should come from B10 and B9
-		channels[ChannelNum::CH_2].in_gate = false;
-
 		channels[ChannelNum::CH_1].gate_patched = !gate1PatchedSwitch.Pressed();
 		channels[ChannelNum::CH_2].gate_patched = !gate2PatchedSwitch.Pressed();
 
@@ -102,14 +134,41 @@ int main(void)
 		// Set quantized voct and send to out
 		// For now HW voct out will always track whatever out_voct is set to
 		// May want to consider only changing hardware out with a trigger
+
 		for (size_t i = 0; i < NUM_CHANNELS - 1; i++)
 		{
-			float in_voct = QuantizeUtils::rescalefjw(channels[i].in_voct, 0, 1, 0, 5);
-			float out_voct = QuantizeUtils::closestVoltageInScale(
+			// Set quant_voct
+			float in_voct = QuantizeUtils::rescalefjw(channels[i].in_voct,
+													  0, 1, 0, 5);
+			float quant_voct = QuantizeUtils::closestVoltageInScale(
 				in_voct, channels[i].rootNote, channels[i].scale);
-			out_voct += octaveShift;
+			quant_voct += octaveShift;
+			channels[i].quant_voct = quant_voct;
 
-			patch.WriteCvOut(channels[i].out_channel, out_voct);
+			// Check if a trigger should be created and quantized value sent.
+			bool quantize = false;
+			bool voct_changed = !AlmostEqualRelative(channels[i].out_voct,
+													 channels[i].quant_voct);
+			if (scale == QuantizeUtils::ScaleEnum::NONE)
+			{
+				quantize = true;
+			}
+			else if (channels[i].gate_patched && channels[i].gate_in.State())
+			{
+				quantize = true;
+			}
+			else if (!channels[i].gate_patched && voct_changed)
+			{
+				quantize = true;
+			}
+
+			if (quantize)
+			{
+				channels[i].out_voct = channels[i].quant_voct;
+				patch.WriteCvOut(channels[i].out_channel,
+								 channels[i].out_voct);
+				trig(channels[i].gate_out);
+			}
 		}
 
 		if (debug)

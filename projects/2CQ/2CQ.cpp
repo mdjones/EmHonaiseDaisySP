@@ -12,7 +12,7 @@ DaisyPatchSM patch;
 // Switch gate2PatchedSwitch;
 Switch button, ch_toggle;
 
-bool debug = true;
+bool debug = false;
 
 enum ChannelNum
 {

@@ -106,20 +106,12 @@ bool Channel::gate_patched()
 void Channel::quantize()
 {
     float in_voct = patch.GetAdcValue(in_voct_accessor_);
-    patch.Print("quantize in_voct: %f\n", in_voct);
-    float scaled_voct = QuantizeUtils::rescalefjw(in_voct,
-                                              0, 1, 0, 5);
-    patch.Print("quantize scaled_voct: %f\n", scaled_voct);
-    patch.Print("quantize rootNote: %i\n", rootNote);
-    patch.Print("quantize scale: %i\n", scale);
-
-    quant_voct_ = QuantizeUtils::closestVoltageInScale(
-        scaled_voct,
-        0,
+     quant_voct_ = QuantizeUtils::closestVoltageInScale(
+        in_voct,
+        rootNote,
         scale);
 
     quant_voct_ += octaveShift;
-    //quant_voct_ = in_voct;
 }
 
 bool Channel::quant_voct_changed()

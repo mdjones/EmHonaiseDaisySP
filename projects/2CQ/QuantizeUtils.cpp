@@ -1,5 +1,3 @@
-//#include "rack.hpp"
-
 // Copied from JW-Modules. See ./JW_LICENSE
 
 namespace QuantizeUtils {

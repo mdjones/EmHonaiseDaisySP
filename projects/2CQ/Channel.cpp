@@ -21,7 +21,7 @@ private:
     dsy_gpio gate_out_;
 
 public:
-    Channel(DaisyPatchSM& patch): patch(patch){};
+    Channel(DaisyPatchSM &patch) : patch(patch) {};
     ~Channel() {}
 
     void Init(int channelNum,
@@ -43,7 +43,6 @@ public:
     int rootNote;
     int scale;
     int octaveShift;
-
 };
 
 void Channel::Init(
@@ -67,7 +66,7 @@ void Channel::Init(
 
     quantize();
     set_quant2voct();
-    //out_voct_ = quant_voct_;
+    // out_voct_ = quant_voct_;
 }
 
 int Channel::GetChannelNum()
@@ -77,36 +76,38 @@ int Channel::GetChannelNum()
 
 void Channel::trig()
 {
-	/** Set the gate high */
-	dsy_gpio_write(&gate_out_, true);
+    /** Set the gate high */
+    dsy_gpio_write(&gate_out_, true);
 
-	/** Wait 20 ms */
-	patch.Delay(20);
+    /** Wait 20 ms */
+    patch.Delay(20);
 
-	/** Set the gate low */
-	dsy_gpio_write(&gate_out_, false);
+    /** Set the gate low */
+    dsy_gpio_write(&gate_out_, false);
 }
 
-GateIn Channel::GetGateIn(){
+GateIn Channel::GetGateIn()
+{
     return gate_in_;
 }
 
-float Channel::GetVoctOut(){
+float Channel::GetVoctOut()
+{
     return out_voct_;
 }
 
 bool Channel::gate_patched()
 {
     gatePatchedSwitch_.Debounce();
-    //TODO: Revert to !gatePatchedSwitch_.Pressed() when I have the thonk wired
-    //up
+    // TODO: Revert to !gatePatchedSwitch_.Pressed() when I have the thonk wired
+    // up
     return gatePatchedSwitch_.Pressed();
 }
 
 void Channel::quantize()
 {
     float in_voct = patch.GetAdcValue(in_voct_accessor_);
-     quant_voct_ = QuantizeUtils::closestVoltageInScale(
+    quant_voct_ = QuantizeUtils::closestVoltageInScale(
         in_voct,
         rootNote,
         scale);
@@ -124,5 +125,4 @@ void Channel::set_quant2voct()
 {
     out_voct_ = quant_voct_;
     patch.WriteCvOut(out_voct_accessor_, out_voct_);
-
 }

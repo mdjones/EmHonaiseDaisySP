@@ -36,8 +36,6 @@ enum ChannelNum
 };
 */
 
-
-
 bool AlmostEqualRelative(float A, float B,
 						 float maxRelDiff = 1.0 / 12)
 {
@@ -53,7 +51,6 @@ bool AlmostEqualRelative(float A, float B,
 	return false;
 }
 
-
 void SetCurrentChannelEdits(Channel &channel)
 {
 	float root_knob = patch.GetAdcValue(CV_1);
@@ -64,15 +61,10 @@ void SetCurrentChannelEdits(Channel &channel)
 	int scale = rescalefjw(scale_knob, 0, 1, 0, QuantizeUtils::NUM_SCALES);
 	int octaveShift = QuantizeUtils::rescalefjw(octave_knob, 0, 1, 0, 5);
 
-
 	channel.rootNote = rootNote;
 	channel.scale = scale;
 	channel.octaveShift = octaveShift;
-
-	
-
 }
-
 
 void AudioCallback(AudioHandle::InputBuffer in,
 				   AudioHandle::OutputBuffer out,
@@ -116,11 +108,10 @@ int main(void)
 		CV_OUT_2);
 
 	ch_toggle.Init(patch.B8);
-	
-	
+
 	int cnt = 0;
 	while (1)
-	{	
+	{
 		cnt += 1;
 		// Set unique channel inputs
 		ch_toggle.Debounce();
@@ -128,9 +119,7 @@ int main(void)
 		ChannelNum edit_ch_num = ch_toggle_pressed ? ChannelNum::CH_1 : ChannelNum::CH_2;
 		SetCurrentChannelEdits(channels[edit_ch_num]);
 
-
-		
-		for (size_t i = 0; i < NUM_CHANNELS-1; i++)
+		for (size_t i = 0; i < NUM_CHANNELS - 1; i++)
 		{
 			channels[i].quantize();
 			if (channels[i].scale == QuantizeUtils::ScaleEnum::NONE)
@@ -139,8 +128,8 @@ int main(void)
 			}
 			else if (channels[i].gate_patched() && channels[i].GetGateIn().State())
 			{
-				//requant incase it has changed very recently
-				channels[i].quantize(); 
+				// requant incase it has changed very recently
+				channels[i].quantize();
 				channels[i].set_quant2voct();
 				channels[i].trig();
 			}
@@ -151,25 +140,27 @@ int main(void)
 			}
 			patch.WriteCvOut(channels[i].GetVoctOut(), channels[i].GetVoctOut());
 		}
-		
+
 		if (debug)
 		{
 			std::string ecStr = (channels[edit_ch_num].GetChannelNum() == ChannelNum::CH_1) ? "CH_1" : "CH_2";
-			
-			//patch.PrintLine("channels[%s] get_patched: %s\n", ecStr.c_str(),
-			//				edit_channel.gate_patched ? "True" : "False");
-			//patch.PrintLine("channels[%s] channelNum: %i\n", ecStr.c_str(), edit_channel.GetChannelNum());
-			//patch.PrintLine("channels[%s] rootNote: %i\n", ecStr.c_str(), edit_channel.rootNote);
-			//patch.PrintLine("channels[%s] in_voct: %i\n", ecStr.c_str(), (int)edit_channel.in_voct*1000);
-			//patch.PrintLine("channels[%s] out_voct: %i\n", ecStr.c_str(), (int)edit_channel.out_voct*1000);
-			//  patch.PrintLine("channels[%s] editChannel: %i, CH_1: %i", ecStr.c_str(), editChannel, CH_1);
-			//  patch.PrintLine("editChannel, == CH_1: %s", editChannel == CH_1 ? "true" : "false");
-			//  patch.PrintLine("channels[%s] eq? %s", ecStr.c_str(), channels[CH_1].in_voct == channels[0].in_voct ? "true" : "false");
-		//	patch.PrintLine("#######################");
 
-		//	patch.PrintLine("channels[%s] scale: %s", ecStr.c_str(), QuantizeUtils::scaleName(edit_channel.scale).c_str());
+			// patch.PrintLine("channels[%s] get_patched: %s\n", ecStr.c_str(),
+			//				edit_channel.gate_patched ? "True" : "False");
+			// patch.PrintLine("channels[%s] channelNum: %i\n", ecStr.c_str(), edit_channel.GetChannelNum());
+			// patch.PrintLine("channels[%s] rootNote: %i\n", ecStr.c_str(), edit_channel.rootNote);
+			// patch.PrintLine("channels[%s] in_voct: %i\n", ecStr.c_str(), (int)edit_channel.in_voct*1000);
+			// patch.PrintLine("channels[%s] out_voct: %i\n", ecStr.c_str(), (int)edit_channel.out_voct*1000);
+			//   patch.PrintLine("channels[%s] editChannel: %i, CH_1: %i", ecStr.c_str(), editChannel, CH_1);
+			//   patch.PrintLine("editChannel, == CH_1: %s", editChannel == CH_1 ? "true" : "false");
+			//   patch.PrintLine("channels[%s] eq? %s", ecStr.c_str(), channels[CH_1].in_voct == channels[0].in_voct ? "true" : "false");
+			//	patch.PrintLine("#######################");
+
+			//	patch.PrintLine("channels[%s] scale: %s", ecStr.c_str(), QuantizeUtils::scaleName(edit_channel.scale).c_str());
 
 			patch.PrintLine("########## %d #############", cnt);
+			patch.PrintLine("channels[%s] gatein state? %s", ecStr.c_str(),
+							channels[edit_ch_num].GetGateIn().State() ? "true" : "false");
 
 			patch.Delay(200);
 		}

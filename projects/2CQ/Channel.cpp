@@ -10,7 +10,7 @@ class Channel
 {
 
 private:
-    DaisyPatchSM patch_;
+    DaisyPatchSM &patch;
     Switch gatePatchedSwitch_;
     int in_voct_accessor_;
     int out_voct_accessor_;
@@ -21,11 +21,10 @@ private:
     dsy_gpio gate_out_;
 
 public:
-    Channel() {}
+    Channel(DaisyPatchSM& patch): patch(patch){};
     ~Channel() {}
 
     void Init(int channelNum,
-              DaisyPatchSM patch,
               GateIn gate_in,
               dsy_gpio gate_out,
               Pin gate_patched_pin,
@@ -39,6 +38,7 @@ public:
     bool quant_voct_changed();
     void set_quant2voct();
     int GetChannelNum();
+    float GetVoctOut();
 
     int rootNote;
     int scale;
@@ -48,7 +48,6 @@ public:
 
 void Channel::Init(
     int channelNum,
-    DaisyPatchSM patch,
     GateIn gate_in,
     dsy_gpio gate_out,
     Pin gate_patched_pin,
@@ -56,15 +55,19 @@ void Channel::Init(
     int out_voct_accessor)
 {
     channelNum_ = channelNum;
-    patch_ = patch;
     gate_in_ = gate_in;
     gate_out_ = gate_out;
     gatePatchedSwitch_.Init(gate_patched_pin);
     in_voct_accessor_ = in_voct_accessor;
     out_voct_accessor_ = out_voct_accessor;
 
+    rootNote = 0;
+    scale = 0;
+    octaveShift = 0;
+
     quantize();
-    out_voct_ = quant_voct_;
+    set_quant2voct();
+    //out_voct_ = quant_voct_;
 }
 
 int Channel::GetChannelNum()
@@ -78,7 +81,7 @@ void Channel::trig()
 	dsy_gpio_write(&gate_out_, true);
 
 	/** Wait 20 ms */
-	patch_.Delay(20);
+	patch.Delay(20);
 
 	/** Set the gate low */
 	dsy_gpio_write(&gate_out_, false);
@@ -88,24 +91,35 @@ GateIn Channel::GetGateIn(){
     return gate_in_;
 }
 
+float Channel::GetVoctOut(){
+    return out_voct_;
+}
+
 bool Channel::gate_patched()
 {
     gatePatchedSwitch_.Debounce();
-    return !gatePatchedSwitch_.Pressed();
+    //TODO: Revert to !gatePatchedSwitch_.Pressed() when I have the thonk wired
+    //up
+    return gatePatchedSwitch_.Pressed();
 }
 
 void Channel::quantize()
 {
-    float in_voct = QuantizeUtils::rescalefjw(in_voct_accessor_,
+    float in_voct = patch.GetAdcValue(in_voct_accessor_);
+    patch.Print("quantize in_voct: %f\n", in_voct);
+    float scaled_voct = QuantizeUtils::rescalefjw(in_voct,
                                               0, 1, 0, 5);
-    float quant_voct = QuantizeUtils::closestVoltageInScale(
-        in_voct,
-        rootNote,
+    patch.Print("quantize scaled_voct: %f\n", scaled_voct);
+    patch.Print("quantize rootNote: %i\n", rootNote);
+    patch.Print("quantize scale: %i\n", scale);
+
+    quant_voct_ = QuantizeUtils::closestVoltageInScale(
+        scaled_voct,
+        0,
         scale);
 
-    quant_voct += octaveShift;
-    patch_.PrintLine("channelNum: %i\n", channelNum_);
-    patch_.PrintLine("channelNum: %s\n", channelNum_ == 0 ? "true" : "false");
+    quant_voct_ += octaveShift;
+    //quant_voct_ = in_voct;
 }
 
 bool Channel::quant_voct_changed()
@@ -117,5 +131,6 @@ bool Channel::quant_voct_changed()
 void Channel::set_quant2voct()
 {
     out_voct_ = quant_voct_;
-    patch_.WriteCvOut(out_voct_accessor_, out_voct_);
+    patch.WriteCvOut(out_voct_accessor_, out_voct_);
+
 }

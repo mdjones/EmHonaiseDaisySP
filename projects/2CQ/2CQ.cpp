@@ -64,13 +64,12 @@ void SetCurrentChannelEdits(Channel &channel)
 	int scale = rescalefjw(scale_knob, 0, 1, 0, QuantizeUtils::NUM_SCALES);
 	int octaveShift = QuantizeUtils::rescalefjw(octave_knob, 0, 1, 0, 5);
 
-	patch.PrintLine("rootNote: %i", rootNote);
 
 	channel.rootNote = rootNote;
 	channel.scale = scale;
 	channel.octaveShift = octaveShift;
 
-	patch.PrintLine("channel[%i].rootNote: %i", channel.GetChannelNum(), channel.rootNote);
+	
 
 }
 
@@ -98,11 +97,10 @@ int main(void)
 		patch.PrintLine("Start logging");
 	}
 
-	Channel channels[NUM_CHANNELS] = {};
+	Channel channels[NUM_CHANNELS] = {Channel(patch), Channel(patch)};
 
 	channels[CH_1].Init(
 		CV_1,
-		patch,
 		patch.gate_in_1,
 		patch.gate_out_1,
 		patch.B7,
@@ -111,7 +109,6 @@ int main(void)
 
 	channels[CH_2].Init(
 		CV_2,
-		patch,
 		patch.gate_in_2,
 		patch.gate_out_2,
 		patch.B8,
@@ -128,18 +125,17 @@ int main(void)
 		// Set unique channel inputs
 		ch_toggle.Debounce();
 		bool ch_toggle_pressed = ch_toggle.Pressed();
-		ChannelNum ch_num = ch_toggle_pressed ? ChannelNum::CH_1 : ChannelNum::CH_2;
-		Channel edit_channel = channels[ch_num];
-		SetCurrentChannelEdits(edit_channel);
+		ChannelNum edit_ch_num = ch_toggle_pressed ? ChannelNum::CH_1 : ChannelNum::CH_2;
+		SetCurrentChannelEdits(channels[edit_ch_num]);
+
 
 		
-		for (size_t i = 0; i < NUM_CHANNELS - 1; i++)
+		for (size_t i = 0; i < NUM_CHANNELS-1; i++)
 		{
 			channels[i].quantize();
 			if (channels[i].scale == QuantizeUtils::ScaleEnum::NONE)
 			{
 				channels[i].set_quant2voct();
-				patch.PrintLine("HERE1LNONE");
 			}
 			else if (channels[i].gate_patched() && channels[i].GetGateIn().State())
 			{
@@ -152,19 +148,18 @@ int main(void)
 			{
 				channels[i].set_quant2voct();
 				channels[i].trig();
-				patch.PrintLine("HERE1");
 			}
-			patch.PrintLine("HERE2");
+			patch.WriteCvOut(channels[i].GetVoctOut(), channels[i].GetVoctOut());
 		}
 		
 		if (debug)
 		{
-			std::string ecStr = (edit_channel.GetChannelNum() == ChannelNum::CH_1) ? "CH_1" : "CH_2";
+			std::string ecStr = (channels[edit_ch_num].GetChannelNum() == ChannelNum::CH_1) ? "CH_1" : "CH_2";
 			
 			//patch.PrintLine("channels[%s] get_patched: %s\n", ecStr.c_str(),
 			//				edit_channel.gate_patched ? "True" : "False");
-			patch.PrintLine("channels[%s] channelNum: %i\n", ecStr.c_str(), edit_channel.GetChannelNum());
-			patch.PrintLine("channels[%s] rootNote: %i\n", ecStr.c_str(), edit_channel.rootNote);
+			//patch.PrintLine("channels[%s] channelNum: %i\n", ecStr.c_str(), edit_channel.GetChannelNum());
+			//patch.PrintLine("channels[%s] rootNote: %i\n", ecStr.c_str(), edit_channel.rootNote);
 			//patch.PrintLine("channels[%s] in_voct: %i\n", ecStr.c_str(), (int)edit_channel.in_voct*1000);
 			//patch.PrintLine("channels[%s] out_voct: %i\n", ecStr.c_str(), (int)edit_channel.out_voct*1000);
 			//  patch.PrintLine("channels[%s] editChannel: %i, CH_1: %i", ecStr.c_str(), editChannel, CH_1);

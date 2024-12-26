@@ -1,6 +1,9 @@
 # Project Name
 TARGET = 2CQ
 
+## Comment out for debugging
+LDFLAGS += -u _printf_float
+
 # Sources
 CPP_SOURCES = 2CQ.cpp
 

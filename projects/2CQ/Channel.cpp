@@ -10,9 +10,10 @@ class Channel
 {
 
 private:
-    static DaisyPatchSM patch;
+    DaisyPatchSM patch;
     Switch gatePatchedSwitch;
     int in_voct_accessor;
+    int out_voct_accessor;
     float quant_voct;
 
 public:
@@ -24,20 +25,21 @@ public:
               GateIn gate_in,
               dsy_gpio gate_out,
               Pin gate_patched_pin,
-              int in_voct_accessor);
+              int in_voct_accessor,
+              int out_voct_accessor);
 
     void quantize();
     bool gate_patched();
     bool quant_voct_changed();
     void set_quant2voct();
 
+    int channelNum;
     int rootNote;
     int scale;
     int octaveShift;
     float out_voct;
     GateIn gate_in;
     dsy_gpio gate_out;
-    int channelNum;
 };
 
 void Channel::Init(
@@ -46,7 +48,8 @@ void Channel::Init(
     GateIn gate_in,
     dsy_gpio gate_out,
     Pin gate_patched_pin,
-    int in_voct_accessor)
+    int in_voct_accessor,
+    int out_voct_accessor)
 {
     channelNum = channelNum;
     patch = patch;
@@ -55,6 +58,7 @@ void Channel::Init(
     gate_patched_pin = gate_patched_pin;
     gatePatchedSwitch.Init(gate_patched_pin);
     in_voct_accessor = in_voct_accessor;
+    out_voct_accessor = out_voct_accessor;
 
     quantize();
     out_voct = quant_voct;
@@ -87,4 +91,5 @@ bool Channel::quant_voct_changed()
 void Channel::set_quant2voct()
 {
     out_voct = quant_voct;
+    patch.WriteCvOut(out_voct_accessor, out_voct);
 }

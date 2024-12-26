@@ -102,6 +102,7 @@ int main(void)
 		patch.gate_in_1,
 		patch.gate_out_1,
 		patch.B7,
+		CV_5,
 		CV_OUT_1);
 
 	channels[CH_2].Init(
@@ -110,6 +111,7 @@ int main(void)
 		patch.gate_in_2,
 		patch.gate_out_2,
 		patch.B8,
+		CV_6,
 		CV_OUT_2);
 
 	ch_toggle.Init(patch.B8);
@@ -146,6 +148,8 @@ int main(void)
 			}
 			else if (channels[i].gate_patched() && channels[i].gate_in.State())
 			{
+				//requant incase it has changed very recently
+				channels[i].quantize(); 
 				channels[i].set_quant2voct();
 				trig(channels[i].gate_out);
 			}

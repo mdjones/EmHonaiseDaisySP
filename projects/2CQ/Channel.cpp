@@ -55,9 +55,9 @@ void Channel::Init(
     int in_voct_accessor,
     int out_voct_accessor)
 {
-    channelNum = channelNum;
+    channelNum_ = channelNum;
     patch_ = patch;
-    gate_in = gate_in;
+    gate_in_ = gate_in;
     gate_out_ = gate_out;
     gatePatchedSwitch_.Init(gate_patched_pin);
     in_voct_accessor_ = in_voct_accessor;

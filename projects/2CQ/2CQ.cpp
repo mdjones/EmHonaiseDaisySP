@@ -54,7 +54,7 @@ bool AlmostEqualRelative(float A, float B,
 }
 
 
-void SetCurrentChannelEdits(Channel channel)
+void SetCurrentChannelEdits(Channel &channel)
 {
 	float root_knob = patch.GetAdcValue(CV_1);
 	float scale_knob = patch.GetAdcValue(CV_2);
@@ -63,9 +63,15 @@ void SetCurrentChannelEdits(Channel channel)
 	int rootNote = rescalefjw(root_knob, 0, 1, 0, QuantizeUtils::NUM_NOTES);
 	int scale = rescalefjw(scale_knob, 0, 1, 0, QuantizeUtils::NUM_SCALES);
 	int octaveShift = QuantizeUtils::rescalefjw(octave_knob, 0, 1, 0, 5);
+
+	patch.PrintLine("rootNote: %i", rootNote);
+
 	channel.rootNote = rootNote;
 	channel.scale = scale;
 	channel.octaveShift = octaveShift;
+
+	patch.PrintLine("channel[%i].rootNote: %i", channel.GetChannelNum(), channel.rootNote);
+
 }
 
 
@@ -95,7 +101,7 @@ int main(void)
 	Channel channels[NUM_CHANNELS] = {};
 
 	channels[CH_1].Init(
-		0,
+		CV_1,
 		patch,
 		patch.gate_in_1,
 		patch.gate_out_1,
@@ -104,7 +110,7 @@ int main(void)
 		CV_OUT_1);
 
 	channels[CH_2].Init(
-		1,
+		CV_2,
 		patch,
 		patch.gate_in_2,
 		patch.gate_out_2,
@@ -126,11 +132,7 @@ int main(void)
 		Channel edit_channel = channels[ch_num];
 		SetCurrentChannelEdits(edit_channel);
 
-
-		// Set quantized voct and send to out
-		// For now HW voct out will always track whatever out_voct is set to
-		// May want to consider only changing hardware out with a trigger
-
+		
 		for (size_t i = 0; i < NUM_CHANNELS - 1; i++)
 		{
 			channels[i].quantize();
@@ -154,14 +156,13 @@ int main(void)
 			}
 			patch.PrintLine("HERE2");
 		}
-
+		
 		if (debug)
 		{
 			std::string ecStr = (edit_channel.GetChannelNum() == ChannelNum::CH_1) ? "CH_1" : "CH_2";
 			
 			//patch.PrintLine("channels[%s] get_patched: %s\n", ecStr.c_str(),
 			//				edit_channel.gate_patched ? "True" : "False");
-			patch.PrintLine("CH_1: %i\n", ChannelNum::CH_1);
 			patch.PrintLine("channels[%s] channelNum: %i\n", ecStr.c_str(), edit_channel.GetChannelNum());
 			patch.PrintLine("channels[%s] rootNote: %i\n", ecStr.c_str(), edit_channel.rootNote);
 			//patch.PrintLine("channels[%s] in_voct: %i\n", ecStr.c_str(), (int)edit_channel.in_voct*1000);

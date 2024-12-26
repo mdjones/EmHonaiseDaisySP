@@ -103,7 +103,7 @@ int main(void)
 		ChannelNum edit_ch_num = ch_toggle_pressed ? ChannelNum::CH_1 : ChannelNum::CH_2;
 		SetCurrentChannelEdits(channels[edit_ch_num]);
 
-		for (size_t i = 0; i < NUM_CHANNELS - 1; i++)
+		for (size_t i = 0; i < NUM_CHANNELS; i++)
 		{
 			channels[i].quantize();
 			if (channels[i].scale == QuantizeUtils::ScaleEnum::NONE)
@@ -145,6 +145,10 @@ int main(void)
 			patch.PrintLine("########## %d #############", cnt);
 			patch.PrintLine("channels[%s] gatein state? %s", ecStr.c_str(),
 							channels[edit_ch_num].GetGateIn().State() ? "true" : "false");
+
+			patch.PrintLine("channels[0] cv_out? %f", channels[CH_1].GetVoctOut());
+			patch.PrintLine("channels[1] cv_out? %f", channels[CH_2].GetVoctOut());
+
 
 			patch.Delay(200);
 		}

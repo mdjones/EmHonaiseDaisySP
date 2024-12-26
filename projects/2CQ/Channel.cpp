@@ -12,7 +12,7 @@ class Channel
 private:
     static DaisyPatchSM patch;
     Switch gatePatchedSwitch;
-    static int in_voct_accessor;
+    int in_voct_accessor;
     float quant_voct;
 
 public:
@@ -35,9 +35,9 @@ public:
     int scale;
     int octaveShift;
     float out_voct;
-    static GateIn gate_in;
-    static dsy_gpio gate_out;
-    static int channelNum;
+    GateIn gate_in;
+    dsy_gpio gate_out;
+    int channelNum;
 };
 
 void Channel::Init(

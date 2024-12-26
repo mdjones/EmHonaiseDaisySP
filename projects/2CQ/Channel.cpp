@@ -66,7 +66,6 @@ void Channel::Init(
 
     quantize();
     set_quant2voct();
-    // out_voct_ = quant_voct_;
 }
 
 int Channel::GetChannelNum()

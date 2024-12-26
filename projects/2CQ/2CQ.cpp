@@ -8,9 +8,7 @@ using namespace daisysp;
 
 DaisyPatchSM patch;
 
-// Switch gate1PatchedSwitch;
-// Switch gate2PatchedSwitch;
-Switch button, ch_toggle;
+Switch ch_toggle;
 
 bool debug = false;
 
@@ -21,20 +19,6 @@ enum ChannelNum
 	NUM_CHANNELS
 };
 
-/**struct Channel
-{
-	int rootNote;
-	int scale;
-	int octaveShift;
-	float in_voct;
-	float quant_voct;
-	float out_voct;
-	bool gate_patched;
-	int out_channel;
-	GateIn gate_in;
-	dsy_gpio gate_out;
-};
-*/
 
 bool AlmostEqualRelative(float A, float B,
 						 float maxRelDiff = 1.0 / 12)

@@ -168,4 +168,19 @@ namespace QuantizeUtils {
 	{
 		return yMin + (x - xMin) / (xMax - xMin) * (yMax - yMin);
 	}
+
+	inline bool AlmostEqualRelative(float A, float B,
+						 float maxRelDiff = 1.0 / 12)
+	{
+		// Calculate the difference.
+		float diff = fabs(A - B);
+		A = fabs(A);
+		B = fabs(B);
+		// Find the largest
+		float largest = (B > A) ? B : A;
+
+		if (diff <= largest * maxRelDiff)
+			return true;
+		return false;
+	}
 };

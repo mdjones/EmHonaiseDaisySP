@@ -12,7 +12,7 @@ DaisyPatchSM patch;
 // Switch gate2PatchedSwitch;
 Switch button, ch_toggle;
 
-bool debug = false;
+bool debug = true;
 
 enum ChannelNum
 {
@@ -36,17 +36,7 @@ enum ChannelNum
 };
 */
 
-void trig(dsy_gpio gate_put)
-{
-	/** Set the gate high */
-	dsy_gpio_write(&gate_put, true);
 
-	/** Wait 20 ms */
-	patch.Delay(20);
-
-	/** Set the gate low */
-	dsy_gpio_write(&gate_put, false);
-}
 
 bool AlmostEqualRelative(float A, float B,
 						 float maxRelDiff = 1.0 / 12)
@@ -63,6 +53,7 @@ bool AlmostEqualRelative(float A, float B,
 	return false;
 }
 
+
 void SetCurrentChannelEdits(Channel channel)
 {
 	float root_knob = patch.GetAdcValue(CV_1);
@@ -76,6 +67,7 @@ void SetCurrentChannelEdits(Channel channel)
 	channel.scale = scale;
 	channel.octaveShift = octaveShift;
 }
+
 
 void AudioCallback(AudioHandle::InputBuffer in,
 				   AudioHandle::OutputBuffer out,
@@ -93,11 +85,17 @@ int main(void)
 {
 	patch.Init();
 	patch.StartAudio(AudioCallback);
+	if (debug)
+	{
+		bool wait_for_pc = true;
+		patch.StartLog(wait_for_pc);
+		patch.PrintLine("Start logging");
+	}
 
 	Channel channels[NUM_CHANNELS] = {};
 
 	channels[CH_1].Init(
-		CH_1,
+		0,
 		patch,
 		patch.gate_in_1,
 		patch.gate_out_1,
@@ -106,7 +104,7 @@ int main(void)
 		CV_OUT_1);
 
 	channels[CH_2].Init(
-		CH_2,
+		1,
 		patch,
 		patch.gate_in_2,
 		patch.gate_out_2,
@@ -115,16 +113,12 @@ int main(void)
 		CV_OUT_2);
 
 	ch_toggle.Init(patch.B8);
-
-	if (debug)
-	{
-		bool wait_for_pc = true;
-		patch.StartLog(wait_for_pc);
-		patch.PrintLine("Start logging");
-	}
-
+	
+	
+	int cnt = 0;
 	while (1)
-	{
+	{	
+		cnt += 1;
 		// Set unique channel inputs
 		ch_toggle.Debounce();
 		bool ch_toggle_pressed = ch_toggle.Pressed();
@@ -132,8 +126,6 @@ int main(void)
 		Channel edit_channel = channels[ch_num];
 		SetCurrentChannelEdits(edit_channel);
 
-		// Set edit inputs on current channel
-		// setCurrentChannelEdits();
 
 		// Set quantized voct and send to out
 		// For now HW voct out will always track whatever out_voct is set to
@@ -145,38 +137,44 @@ int main(void)
 			if (channels[i].scale == QuantizeUtils::ScaleEnum::NONE)
 			{
 				channels[i].set_quant2voct();
+				patch.PrintLine("HERE1LNONE");
 			}
-			else if (channels[i].gate_patched() && channels[i].gate_in.State())
+			else if (channels[i].gate_patched() && channels[i].GetGateIn().State())
 			{
 				//requant incase it has changed very recently
 				channels[i].quantize(); 
 				channels[i].set_quant2voct();
-				trig(channels[i].gate_out);
+				channels[i].trig();
 			}
 			else if (!channels[i].gate_patched() && channels[i].quant_voct_changed())
 			{
 				channels[i].set_quant2voct();
-				trig(channels[i].gate_out);
+				channels[i].trig();
+				patch.PrintLine("HERE1");
 			}
+			patch.PrintLine("HERE2");
 		}
 
 		if (debug)
 		{
-			std::string ecStr = (edit_channel.channelNum == ChannelNum::CH_1) ? "CH_1" : "CH_2";
-			// std::string ecStr = (editChannel == ChannelNum::CH_1) ? "CH_1" : "CH_2";
-			//  patch.PrintLine("channels[%s] get_patched: %s\n", ecStr.c_str(),
-			//				channels[editChannel].gate_patched ? "True" : "False");
-			//  patch.PrintLine("channels[%s] rootNote: %d\n", ecStr.c_str(), rootNote);
-			//  patch.PrintLine("channels[%s] in_voct: %i\n", ecStr.c_str(), (int)channels[editChannel].in_voct*1000);
-			//  patch.PrintLine("channels[%s] out_voct: %i\n", ecStr.c_str(), (int)channels[editChannel].out_voct*1000);
+			std::string ecStr = (edit_channel.GetChannelNum() == ChannelNum::CH_1) ? "CH_1" : "CH_2";
+			
+			//patch.PrintLine("channels[%s] get_patched: %s\n", ecStr.c_str(),
+			//				edit_channel.gate_patched ? "True" : "False");
+			patch.PrintLine("CH_1: %i\n", ChannelNum::CH_1);
+			patch.PrintLine("channels[%s] channelNum: %i\n", ecStr.c_str(), edit_channel.GetChannelNum());
+			patch.PrintLine("channels[%s] rootNote: %i\n", ecStr.c_str(), edit_channel.rootNote);
+			//patch.PrintLine("channels[%s] in_voct: %i\n", ecStr.c_str(), (int)edit_channel.in_voct*1000);
+			//patch.PrintLine("channels[%s] out_voct: %i\n", ecStr.c_str(), (int)edit_channel.out_voct*1000);
 			//  patch.PrintLine("channels[%s] editChannel: %i, CH_1: %i", ecStr.c_str(), editChannel, CH_1);
 			//  patch.PrintLine("editChannel, == CH_1: %s", editChannel == CH_1 ? "true" : "false");
 			//  patch.PrintLine("channels[%s] eq? %s", ecStr.c_str(), channels[CH_1].in_voct == channels[0].in_voct ? "true" : "false");
-			patch.PrintLine("#######################");
+		//	patch.PrintLine("#######################");
 
-			patch.PrintLine("channels[%s] scale: %s", ecStr.c_str(), QuantizeUtils::scaleName(edit_channel.scale).c_str());
+		//	patch.PrintLine("channels[%s] scale: %s", ecStr.c_str(), QuantizeUtils::scaleName(edit_channel.scale).c_str());
 
-			patch.PrintLine("#######################");
+			patch.PrintLine("########## %d #############", cnt);
+
 			patch.Delay(200);
 		}
 	}

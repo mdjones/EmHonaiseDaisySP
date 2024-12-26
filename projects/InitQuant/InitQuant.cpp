@@ -8,7 +8,7 @@ using namespace daisysp;
 
 DaisyPatchSM hw;
 
-bool debug = false;
+bool debug = true;
 
 // inline int clampijw(int x, int minimum, int maximum) {
 //	return std::clamp(x, minimum, maximum);

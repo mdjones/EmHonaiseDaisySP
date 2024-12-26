@@ -122,7 +122,6 @@ int main(void)
 				channels[i].set_quant2voct();
 				channels[i].trig();
 			}
-			patch.WriteCvOut(channels[i].GetVoctOut(), channels[i].GetVoctOut());
 		}
 
 		if (debug)

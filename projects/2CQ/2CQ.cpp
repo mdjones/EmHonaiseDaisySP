@@ -10,7 +10,7 @@ DaisyPatchSM patch;
 
 Switch ch_toggle;
 
-bool debug = false;
+bool debug = true;
 
 enum ChannelNum
 {
@@ -19,31 +19,15 @@ enum ChannelNum
 	NUM_CHANNELS
 };
 
-
-bool AlmostEqualRelative(float A, float B,
-						 float maxRelDiff = 1.0 / 12)
-{
-	// Calculate the difference.
-	float diff = fabs(A - B);
-	A = fabs(A);
-	B = fabs(B);
-	// Find the largest
-	float largest = (B > A) ? B : A;
-
-	if (diff <= largest * maxRelDiff)
-		return true;
-	return false;
-}
-
 void SetCurrentChannelEdits(Channel &channel)
 {
-	float root_knob = patch.GetAdcValue(CV_1);
-	float scale_knob = patch.GetAdcValue(CV_2);
-	float octave_knob = patch.GetAdcValue(CV_3);
+	float root_volts = patch.GetAdcValue(CV_1);
+	float scale_volts = patch.GetAdcValue(CV_2);
+	float octave_volts = patch.GetAdcValue(CV_3);
 
-	int rootNote = rescalefjw(root_knob, 0, 1, 0, QuantizeUtils::NUM_NOTES);
-	int scale = rescalefjw(scale_knob, 0, 1, 0, QuantizeUtils::NUM_SCALES);
-	int octaveShift = QuantizeUtils::rescalefjw(octave_knob, 0, 1, 0, 5);
+	int rootNote = QuantizeUtils::rescalefjw(root_volts, 0, 1, 0, QuantizeUtils::NUM_NOTES);
+	int scale = QuantizeUtils::rescalefjw(scale_volts, 0, 1, 0, QuantizeUtils::NUM_SCALES);
+	int octaveShift = QuantizeUtils::rescalefjw(octave_volts, 0, 1, 0, 5);
 
 	channel.rootNote = rootNote;
 	channel.scale = scale;
@@ -142,11 +126,11 @@ int main(void)
 			//	patch.PrintLine("channels[%s] scale: %s", ecStr.c_str(), QuantizeUtils::scaleName(edit_channel.scale).c_str());
 
 			patch.PrintLine("########## %d #############", cnt);
-			patch.PrintLine("channels[%s] gatein state? %s", ecStr.c_str(),
-							channels[edit_ch_num].GetGateIn().State() ? "true" : "false");
+			//patch.PrintLine("channels[%s] gatein state? %s", ecStr.c_str(),
+			//				channels[edit_ch_num].GetGateIn().State() ? "true" : "false");
 
-			patch.PrintLine("channels[0] cv_out? %f", channels[CH_1].GetVoctOut());
-			patch.PrintLine("channels[1] cv_out? %f", channels[CH_2].GetVoctOut());
+			//patch.PrintLine("channels[0] cv_out? %f", channels[CH_1].GetVoctOut());
+			//patch.PrintLine("channels[1] cv_out? %f", channels[CH_2].GetVoctOut());
 
 
 			patch.Delay(200);

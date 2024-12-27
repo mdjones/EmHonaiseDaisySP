@@ -21,13 +21,13 @@ enum ChannelNum
 
 void SetCurrentChannelEdits(Channel &channel)
 {
-	float root_volts = patch.GetAdcValue(CV_1);
-	float scale_volts = patch.GetAdcValue(CV_2);
-	float octave_volts = patch.GetAdcValue(CV_3);
+	float root_adc = patch.GetAdcValue(CV_1);
+	float scale_adc = patch.GetAdcValue(CV_2);
+	float octave_adc = patch.GetAdcValue(CV_3);
 
-	int rootNote = QuantizeUtils::rescalefjw(root_volts, 0, 1, 0, QuantizeUtils::NUM_NOTES);
-	int scale = QuantizeUtils::rescalefjw(scale_volts, 0, 1, 0, QuantizeUtils::NUM_SCALES);
-	int octaveShift = QuantizeUtils::rescalefjw(octave_volts, 0, 1, 0, 5);
+	int rootNote = QuantizeUtils::rescalefjw(root_adc, 0, 1, 0, QuantizeUtils::NUM_NOTES);
+	int scale = QuantizeUtils::rescalefjw(scale_adc, 0, 1, 0, QuantizeUtils::NUM_SCALES);
+	int octaveShift = QuantizeUtils::rescalefjw(octave_adc, 0, 1, 0, 5);
 
 	channel.rootNote = rootNote;
 	channel.scale = scale;

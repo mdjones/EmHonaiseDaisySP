@@ -10,7 +10,7 @@ DaisyPatchSM patch;
 
 Switch ch_toggle;
 
-bool debug = true;
+bool debug = false;
 
 enum ChannelNum
 {

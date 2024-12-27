@@ -103,9 +103,11 @@ bool Channel::gate_patched()
     return gatePatchedSwitch_.Pressed();
 }
 
+/** Quantize any voltage from 0-5 */
 void Channel::quantize()
 {
-    float in_voct = patch.GetAdcValue(in_voct_accessor_);
+    float in_adc = patch.GetAdcValue(in_voct_accessor_);
+    float in_voct = QuantizeUtils::rescalefjw(in_adc, 0, 1, 0, 5);
     quant_voct_ = QuantizeUtils::closestVoltageInScale(
         in_voct,
         rootNote,

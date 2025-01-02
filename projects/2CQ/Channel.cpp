@@ -100,7 +100,8 @@ bool Channel::gate_patched()
     gatePatchedSwitch_.Debounce();
     // TODO: Revert to !gatePatchedSwitch_.Pressed() when I have the thonk wired
     // up
-    return gatePatchedSwitch_.Pressed();
+    //return gatePatchedSwitch_.Pressed();
+    return true;
 }
 
 /** Quantize any voltage from 0-5 */

@@ -2,7 +2,7 @@
 
 ## Chords
 
-```
+```C++
 +//https://github.com/hemmer/pichenettes-eurorack-patch/blob/7738fccd4e2f10d988d0bee883903f55ef5d2132/plaits/dsp/engine/chord_engine.h
 +       const float chords[kChordNumChords][kChordNumNotes] = {
 +               { 0.00f, 0.01f, 11.99f, 12.00f },  // OCT

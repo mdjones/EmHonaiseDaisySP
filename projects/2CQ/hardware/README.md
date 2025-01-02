@@ -11,7 +11,7 @@ This is my OLED: [SSD1306 for 51 STM32 Arduino](https://www.amazon.com/dp/B01N1L
 
 <https://forum.electro-smith.com/t/daisyduino-oled-for-patchsm/2536/2>
 
-```
+```txt
 I initialized the Oled with the following:
 
 // the magic incantation

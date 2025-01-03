@@ -1,7 +1,5 @@
 
 
-    // Connect SM pins / B9 - I2C_SCL / B8 - I2C_SDA / 3.3v
-
     #include <stdio.h>
     #include <string.h>
     #include "daisy_seed.h"

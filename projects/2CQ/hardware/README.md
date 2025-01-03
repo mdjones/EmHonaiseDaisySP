@@ -65,3 +65,13 @@ D1(MOSI) -> D11
 RST (RESET) -> D12
 DC (DATA) -> D9
 ```
+
+
+<https://forum.electro-smith.com/t/oled-and-sd-card-reader/3796/2>
+
+Patch SM pins → OLED pins
+SPI_CS (D1) → CS
+SPI_SCK (D10) → D0
+SPI_MISO (D8) → DC
+SPI_MOSI (D9) → D1
+Any digital GPIO → Res (I used D3)

@@ -10,7 +10,7 @@ DaisyPatchSM patch;
 
 Switch ch_toggle;
 
-bool debug = false;
+bool debug = true;
 
 enum ChannelNum
 {
@@ -125,7 +125,7 @@ int main(void)
 
 			//	patch.PrintLine("channels[%s] scale: %s", ecStr.c_str(), QuantizeUtils::scaleName(edit_channel.scale).c_str());
 
-			patch.PrintLine("########## %d #############", cnt);
+			patch.PrintLine("~########## %d #############", cnt);
 			//patch.PrintLine("channels[%s] gatein state? %s", ecStr.c_str(),
 			//				channels[edit_ch_num].GetGateIn().State() ? "true" : "false");
 

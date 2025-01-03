@@ -36,3 +36,8 @@ the Daisy via USB.
 ```bash
 make clean ; make ; make program-dfu
 ```
+or if you have the ST-link V3 mini hooked up
+
+```bash
+make clean ; make ; make program
+```

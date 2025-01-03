@@ -26,7 +26,6 @@ int main(void)
 	MyOledDisplay::Config disp_cfg;
 
 	disp_cfg.driver_config.transport_config.pin_config.reset = DaisyPatchSM::D3;
-	// OLED PIN DC
 	disp_cfg.driver_config.transport_config.pin_config.dc = DaisyPatchSM::D8;
 
 	/** And Initialize */

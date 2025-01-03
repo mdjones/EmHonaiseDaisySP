@@ -28,34 +28,11 @@
     /** Configure the Display */
     MyOledDisplay::Config disp_cfg;
 
-	// Populate it with the pins you want:
-	/**
-	//OLED PIN D0
-	disp_cfg.driver_config.transport_config.spi_config.pin_config.sclk
-			= DaisyPatchSM::D10;
-	//OLED PIN D1
-	disp_cfg.driver_config.transport_config.spi_config.pin_config.mosi
-			= DaisyPatchSM::D9;
-	//OLED PIN RES
 	disp_cfg.driver_config.transport_config.pin_config.reset
 			= DaisyPatchSM::D3;
 	//OLED PIN DC
 	disp_cfg.driver_config.transport_config.pin_config.dc
 			= DaisyPatchSM::D8;
-	//OLED PIN CS
-	disp_cfg.driver_config.transport_config.spi_config.pin_config.miso
-			= DaisyPatchSM::D1;
-	 */
-	/**
-	 * spi_config.pin_config.sclk = {DSY_GPIOG, 11};
-	spi_config.pin_config.miso = {DSY_GPIOX, 0};
-	spi_config.pin_config.mosi = {DSY_GPIOB, 5};
-	spi_config.pin_config.nss  = {DSY_GPIOG, 10};
-	// SSD130x control pin config
-	pin_config.dc    = {DSY_GPIOB, 4};
-	pin_config.reset = {DSY_GPIOB, 15};
-	 */
-	
 
 
     /** And Initialize */

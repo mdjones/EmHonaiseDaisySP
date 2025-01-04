@@ -1,5 +1,14 @@
-// Configured based on
-// https://github.com/electro-smith/libDaisy/blob/master/examples/OLED_SPI/OledSPI.cpp
+
+/**
+ * Daisy Patch SM based 2 Channel Quantizer
+ * Display is HiLetgo 0.96" inch SPI Serial 128 * 64
+ * 12864 Characters OLED LCD Display 
+ * SSD1306 for 51 STM32 Arduino Font Color White 
+ * 
+ * Configured based on
+ * https://github.com/electro-smith/libDaisy/blob/master/examples/OLED_SPI/OledSPI.cpp
+ *  
+ */
 #pragma once
 
 #include <stdio.h>
@@ -47,22 +56,13 @@ namespace two_cq
 
             display_config.driver_config.transport_config.pin_config.dc = DaisyPatchSM::D2;
             display_config.driver_config.transport_config.pin_config.reset = DaisyPatchSM::D3;
-            _display.Init(display_config);
+            display.Init(display_config);
         }
 
-        void WriteToDisplay(const char *message, int line = 1)
-        {
-            //128 * 64
-            int y = (line-1)*64/8;
-            _display.Fill(false);
-            _display.SetCursor(0, y);
-            _display.WriteString(message, Font_6x8, true);
-            _display.Update();
-        }
+        using Display = OledDisplay<SSD130x4WireSpi128x64Driver>;
+        Display display;
 
     private:
-        using Display = OledDisplay<SSD130x4WireSpi128x64Driver>;
-        Display _display;
     };
 
 } // namespace two_cq_hw

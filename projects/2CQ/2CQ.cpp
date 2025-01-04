@@ -18,6 +18,8 @@ float root_adc;
 float scale_adc;
 float octave_adc;
 
+char strbuff[128];
+uint8_t message_idx;
 
 enum ChannelNum
 {
@@ -26,13 +28,36 @@ enum ChannelNum
 	NUM_CHANNELS
 };
 
+void UpdateOled(Channel &channel)
+{
+	// SPI Serial 128 * 64
+	// 64/18 = 3.5
+
+	twoCQ.display.Fill(true);
+	twoCQ.display.Fill(false);
+
+	twoCQ.display.SetCursor(0, 0);
+	sprintf(strbuff, "CH %s [%i]", channel.GetChannelNum() == ChannelNum::CH_1 ? "CH_1" : "CH_2", message_idx);
+	twoCQ.display.WriteString(strbuff, Font_11x18, true);
+
+	sprintf(strbuff, "N %s", QuantizeUtils::noteName(channel.rootNote).c_str());
+	twoCQ.display.SetCursor(0, 20);
+	twoCQ.display.WriteString(strbuff, Font_11x18, true);
+
+	sprintf(strbuff, "S %s", QuantizeUtils::scaleName(channel.scale).c_str());
+	twoCQ.display.SetCursor(0, 40);
+	twoCQ.display.WriteString(strbuff, Font_11x18, true);
+
+	twoCQ.display.Update();
+}
+
 void SetCurrentChannelEdits(Channel &channel)
 {
 	float cur_root_adc = patch.GetAdcValue(CV_1);
 	float cur_scale_adc = patch.GetAdcValue(CV_2);
 	float cur_octave_adc = patch.GetAdcValue(CV_3);
 
-	if(cur_root_adc != root_adc || cur_scale_adc != scale_adc || cur_octave_adc != octave_adc)
+	if (cur_root_adc != root_adc || cur_scale_adc != scale_adc || cur_octave_adc != octave_adc)
 	{
 		root_adc = cur_root_adc;
 		scale_adc = cur_scale_adc;
@@ -43,10 +68,8 @@ void SetCurrentChannelEdits(Channel &channel)
 		channel.rootNote = rootNote;
 		channel.scale = scale;
 		channel.octaveShift = octaveShift;
-		twoCQ.WriteToDisplay(QuantizeUtils::noteName(channel.rootNote).c_str(), 1);
-		twoCQ.WriteToDisplay(QuantizeUtils::scaleName(channel.scale).c_str(), 2);
-		//std::string octStr = "Octave: %i", octave_adc;
-		//twoCQ.WriteToDisplay(octStr.c_str(), 3);
+
+		UpdateOled(channel);
 	}
 }
 
@@ -64,10 +87,10 @@ void AudioCallback(AudioHandle::InputBuffer in,
 
 int main(void)
 {
-	uint8_t message_idx;
+
 	patch.Init();
 	patch.StartAudio(AudioCallback);
-	
+
 	twoCQ.Init();
 
 	if (debug)
@@ -178,8 +201,7 @@ int main(void)
 			default:
 				break;
 			}
-			message_idx = (message_idx + 1) % 5;
-			twoCQ.WriteToDisplay(strbuff);
 		}
+		message_idx = (message_idx + 1) % 5;
 	}
 }

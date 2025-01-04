@@ -18,7 +18,7 @@ float root_adc;
 float scale_adc;
 float octave_adc;
 
-char strbuff[128];
+
 uint8_t message_idx;
 
 enum ChannelNum
@@ -32,20 +32,22 @@ void UpdateOled(Channel &channel)
 {
 	// SPI Serial 128 * 64
 	// 64/18 = 3.5
-
-	twoCQ.display.Fill(true);
+	char strbuff[128];
 	twoCQ.display.Fill(false);
 
 	twoCQ.display.SetCursor(0, 0);
+	strbuff[0] = '\0';
 	sprintf(strbuff, "CH %s [%i]", channel.GetChannelNum() == ChannelNum::CH_1 ? "CH_1" : "CH_2", message_idx);
 	twoCQ.display.WriteString(strbuff, Font_11x18, true);
 
-	sprintf(strbuff, "N %s", QuantizeUtils::noteName(channel.rootNote).c_str());
 	twoCQ.display.SetCursor(0, 20);
+	strbuff[0] = '\0';
+	sprintf(strbuff, "N %s", QuantizeUtils::noteName(channel.rootNote).c_str());
 	twoCQ.display.WriteString(strbuff, Font_11x18, true);
 
-	sprintf(strbuff, "S %s", QuantizeUtils::scaleName(channel.scale).c_str());
 	twoCQ.display.SetCursor(0, 40);
+	strbuff[0] = '\0';
+	sprintf(strbuff, "S %s", QuantizeUtils::scaleName(channel.scale).c_str());
 	twoCQ.display.WriteString(strbuff, Font_11x18, true);
 
 	twoCQ.display.Update();

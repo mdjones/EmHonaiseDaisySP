@@ -37,17 +37,17 @@ void UpdateOled(Channel &channel)
 
 	twoCQ.display.SetCursor(0, 0);
 	strbuff[0] = '\0';
-	sprintf(strbuff, "CH %s [%i]", channel.GetChannelNum() == ChannelNum::CH_1 ? "CH_1" : "CH_2", message_idx);
+	sprintf(strbuff, "%s    [%i]", channel.GetChannelNum() == ChannelNum::CH_1 ? "CH_1" : "CH_2", message_idx);
 	twoCQ.display.WriteString(strbuff, Font_11x18, true);
 
 	twoCQ.display.SetCursor(0, 20);
 	strbuff[0] = '\0';
-	sprintf(strbuff, "N %s", QuantizeUtils::noteName(channel.rootNote).c_str());
+	sprintf(strbuff, "Rt %s", QuantizeUtils::noteName(channel.rootNote).c_str());
 	twoCQ.display.WriteString(strbuff, Font_11x18, true);
 
 	twoCQ.display.SetCursor(0, 40);
 	strbuff[0] = '\0';
-	sprintf(strbuff, "S %s", QuantizeUtils::scaleName(channel.scale).c_str());
+	sprintf(strbuff, "Sc %s", QuantizeUtils::scaleName(channel.scale).c_str());
 	twoCQ.display.WriteString(strbuff, Font_11x18, true);
 
 	twoCQ.display.Update();

@@ -3,7 +3,6 @@
 
 #include <stdio.h>
 #include <string.h>
-//#include "daisy_seed.h"
 #include "dev/oled_ssd130x.h"
 #include "daisy_patch_sm.h"
 

@@ -1,16 +1,23 @@
 #include "daisy_patch_sm.h"
 #include "daisysp.h"
 #include "Channel.cpp"
+#include "two_cq_hw.cpp"
 
 using namespace daisy;
 using namespace patch_sm;
 using namespace daisysp;
 
 DaisyPatchSM patch;
+two_cq::TwoCQ twoCQ;
 
 Switch ch_toggle;
 
-bool debug = true;
+bool debug = false;
+
+float root_adc;
+float scale_adc;
+float octave_adc;
+
 
 enum ChannelNum
 {
@@ -21,17 +28,26 @@ enum ChannelNum
 
 void SetCurrentChannelEdits(Channel &channel)
 {
-	float root_adc = patch.GetAdcValue(CV_1);
-	float scale_adc = patch.GetAdcValue(CV_2);
-	float octave_adc = patch.GetAdcValue(CV_3);
+	float cur_root_adc = patch.GetAdcValue(CV_1);
+	float cur_scale_adc = patch.GetAdcValue(CV_2);
+	float cur_octave_adc = patch.GetAdcValue(CV_3);
 
-	int rootNote = QuantizeUtils::rescalefjw(root_adc, 0, 1, 0, QuantizeUtils::NUM_NOTES);
-	int scale = QuantizeUtils::rescalefjw(scale_adc, 0, 1, 0, QuantizeUtils::NUM_SCALES);
-	int octaveShift = QuantizeUtils::rescalefjw(octave_adc, 0, 1, 0, 5);
-
-	channel.rootNote = rootNote;
-	channel.scale = scale;
-	channel.octaveShift = octaveShift;
+	if(cur_root_adc != root_adc || cur_scale_adc != scale_adc || cur_octave_adc != octave_adc)
+	{
+		root_adc = cur_root_adc;
+		scale_adc = cur_scale_adc;
+		octave_adc = cur_octave_adc;
+		int rootNote = QuantizeUtils::rescalefjw(root_adc, 0, 1, 0, QuantizeUtils::NUM_NOTES);
+		int scale = QuantizeUtils::rescalefjw(scale_adc, 0, 1, 0, QuantizeUtils::NUM_SCALES);
+		int octaveShift = QuantizeUtils::rescalefjw(octave_adc, 0, 1, 0, 5);
+		channel.rootNote = rootNote;
+		channel.scale = scale;
+		channel.octaveShift = octaveShift;
+		twoCQ.WriteToDisplay(QuantizeUtils::noteName(channel.rootNote).c_str(), 1);
+		twoCQ.WriteToDisplay(QuantizeUtils::scaleName(channel.scale).c_str(), 2);
+		//std::string octStr = "Octave: %i", octave_adc;
+		//twoCQ.WriteToDisplay(octStr.c_str(), 3);
+	}
 }
 
 void AudioCallback(AudioHandle::InputBuffer in,
@@ -48,11 +64,15 @@ void AudioCallback(AudioHandle::InputBuffer in,
 
 int main(void)
 {
+	uint8_t message_idx;
 	patch.Init();
 	patch.StartAudio(AudioCallback);
+	
+	twoCQ.Init();
+
 	if (debug)
 	{
-		bool wait_for_pc = true;
+		bool wait_for_pc = false;
 		patch.StartLog(wait_for_pc);
 		patch.PrintLine("Start logging");
 	}
@@ -78,6 +98,9 @@ int main(void)
 	ch_toggle.Init(patch.B8);
 
 	int cnt = 0;
+	message_idx = 0;
+	char strbuff[128];
+
 	while (1)
 	{
 		cnt += 1;
@@ -126,14 +149,37 @@ int main(void)
 			//	patch.PrintLine("channels[%s] scale: %s", ecStr.c_str(), QuantizeUtils::scaleName(edit_channel.scale).c_str());
 
 			patch.PrintLine("~########## %d #############", cnt);
-			//patch.PrintLine("channels[%s] gatein state? %s", ecStr.c_str(),
+			// patch.PrintLine("channels[%s] gatein state? %s", ecStr.c_str(),
 			//				channels[edit_ch_num].GetGateIn().State() ? "true" : "false");
 
-			//patch.PrintLine("channels[0] cv_out? %f", channels[CH_1].GetVoctOut());
-			//patch.PrintLine("channels[1] cv_out? %f", channels[CH_2].GetVoctOut());
-
+			// patch.PrintLine("channels[0] cv_out? %f", channels[CH_1].GetVoctOut());
+			// patch.PrintLine("channels[1] cv_out? %f", channels[CH_2].GetVoctOut());
 
 			patch.Delay(200);
+
+			patch.PrintLine("message_idx: %i", message_idx);
+			switch (message_idx)
+			{
+			case 0:
+				sprintf(strbuff, "Testing. . .");
+				break;
+			case 1:
+				sprintf(strbuff, "Daisy. . .");
+				break;
+			case 2:
+				sprintf(strbuff, "1. . .");
+				break;
+			case 3:
+				sprintf(strbuff, "2. . .");
+				break;
+			case 4:
+				sprintf(strbuff, "3. . .");
+				break;
+			default:
+				break;
+			}
+			message_idx = (message_idx + 1) % 5;
+			twoCQ.WriteToDisplay(strbuff);
 		}
 	}
 }

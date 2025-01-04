@@ -8,6 +8,12 @@ with [schematic](https://daisy.nyc3.cdn.digitaloceanspaces.com/products/patch/ES
 
 This is my OLED: [SSD1306 for 51 STM32 Arduino](https://www.amazon.com/dp/B01N1LZQA8?th=1)
 
+```txt
+HiLetgo 0.96" inch SPI Serial 128 * 64
+12864 Characters OLED LCD Display 
+SSD1306 for 51 STM32 Arduino Font Color White 
+```
+
 Did a bunch of failing research, Discord, Forum, code reading. Finally decided
 to search for path_sm and `OledDisplay<SSD130x4WireSpi128x64Driver>` on github
 and found <https://github.com/electro-smith/libDaisy/blob/master/examples/OLED_SPI/OledSPI.cpp>

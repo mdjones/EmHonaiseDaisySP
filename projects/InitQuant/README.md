@@ -25,6 +25,7 @@ scale, or octave
 If you have already used projects in this repo before just do.
 
 To load with dfu-util (i.e. manual reset)
+
  ```bash
  make clean ; make ; make program-dfu
  ```

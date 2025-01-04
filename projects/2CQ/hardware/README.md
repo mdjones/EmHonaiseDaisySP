@@ -47,7 +47,7 @@ Hi @BlueNautilus. I have wired up your Adaptor. And seems to work great so far. 
 |D0| CLK/SCK |D10 | SPI_SCK (Serial Clock) |
 | D1| Data/SDA | D9 | ADC_11 / SPI_MOSI |
 | RES |  | D3 | SDMMC_D2 / UART_TX |
-| DC | | D8 | ADC_12 / SPI_MISO |
+| DC | | D2 | ADC_12 / SPI_MISO |
 | CS | | D1   | SPI_CS |
 
 Or this
@@ -66,12 +66,11 @@ RST (RESET) -> D12
 DC (DATA) -> D9
 ```
 
-
 <https://forum.electro-smith.com/t/oled-and-sd-card-reader/3796/2>
 
 Patch SM pins → OLED pins
 SPI_CS (D1) → CS
 SPI_SCK (D10) → D0
-SPI_MISO (D8) → DC
+SPI_MISO (D8) → DC *
 SPI_MOSI (D9) → D1
-Any digital GPIO → Res (I used D3)
+Any digital GPIO → Res (I used A3)

@@ -1,9 +1,8 @@
 # Notes for Hardware
 
-The OLED needs a switching power supply (The Patch-SM already has one). I am using the same OLED as the
-[Electrosmith Patch](https://electro-smith.com/products/patch) with [schematic](https://daisy.nyc3.cdn.digitaloceanspaces.com/products/patch/ES_Daisy_Patch_Rev4.pdf)
-
-![image](./OLED_SwitchingPWRSupply.png)
+The OLED needs a switching power supply (The Patch-SM already has one). I am
+using the same OLED as the [Electrosmith Patch](https://electro-smith.com/products/patch)
+with [schematic](https://daisy.nyc3.cdn.digitaloceanspaces.com/products/patch/ES_Daisy_Patch_Rev4.pdf)
 
 ## OLED Pin Layout
 

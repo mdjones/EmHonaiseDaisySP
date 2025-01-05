@@ -14,9 +14,10 @@ the calculated quantized voltage changes.
 This quantizer has two channels who's settings can be adjusted by toggeling the
 channel switch.
 
-* Channel switch: Select which channel is selected for setting adjustment.
-* Reset button: Resets channel 2 settings to channel 1. This is helpful, for
-example, if you want to make sure both chanels are starting with the same scale.
+* Channel switch: Select which channel is selected for setting adjustment. A 
+setting will be changed only if a knob has been adjusted or the All button
+has been triggered.
+* All button: Change all setting in the current channel to match all the knobs.
 * Scale knob: Select the scale. Position 1 is chromatic.
 * Root knob: Select the scales root note
 * Octave knob: Select the scales octave

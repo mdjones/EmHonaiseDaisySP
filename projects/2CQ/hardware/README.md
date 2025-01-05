@@ -29,3 +29,7 @@ Final Pin set up is:
 | RES           | D3           | RESET    |
 | DC            | D2           | dc       |
 | C5            | Not Wired    |          |
+
+## 3 Way Switch
+
+<https://forum.electro-smith.com/t/adding-a-3-way-switch-to-seed/2418/4>

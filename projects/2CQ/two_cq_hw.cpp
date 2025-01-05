@@ -22,17 +22,23 @@ namespace two_cq
 {
 
     // Hardware Definitions
-    constexpr int ROOT_ADC_IN  = patch_sm::CV_1;
-    constexpr int SCALE_ADC_IN  = patch_sm::CV_2;
-    constexpr int OCATAVE_ADC_IN = patch_sm::CV_3;
+    constexpr int ROOT_ADC_IN  = patch_sm::CV_1; //C5
+    constexpr int SCALE_ADC_IN  = patch_sm::CV_2; //C4
+    constexpr int OCATAVE_ADC_IN = patch_sm::CV_3; //C3
+
+    constexpr static Pin CH_SELECT = DaisyPatchSM::D4;
+    
     constexpr int CH1_IN_VOCT = patch_sm::CV_5;
     constexpr int CH2_IN_VOCT = patch_sm::CV_6;
     constexpr int CH1_OUT_VOCT = patch_sm::CV_OUT_1;
     constexpr int CH2_OUT_VOCT = patch_sm::CV_OUT_2; 
 
-    constexpr static Pin CH_SELECT = DaisyPatchSM::B8;
-    constexpr static Pin CH1_GATE_PATCHED = DaisyPatchSM::B8;
-    constexpr static Pin CH2_GATE_PATCHED = DaisyPatchSM::B9;
+    // GATE_IN_1: B10
+    // GATE_IN_2: B9
+    // GATE_OUT_1: B5
+    // GATE_OUT_2: B6
+    constexpr static Pin CH1_GATE_PATCHED = DaisyPatchSM::B1;
+    constexpr static Pin CH2_GATE_PATCHED = DaisyPatchSM::B2;
 
     constexpr static Pin OLED_DC = DaisyPatchSM::D2;
     constexpr static Pin OLED_RST = DaisyPatchSM::D3;
@@ -40,11 +46,10 @@ namespace two_cq
     constexpr static Pin OLED_MOSI = DaisyPatchSM::D9;
 
 
-
     class TwoCQ
     {
     public:
-        TwoCQ() {}
+        TwoCQ(DaisyPatchSM &patch) : patch(patch) {};
         ~TwoCQ() {}
 
         void Init()
@@ -78,11 +83,37 @@ namespace two_cq
             display.Init(display_config);
         }
 
+        int GetRootNote();
+        int GetScale();
+        int GetOctaveShift();
+
         using Display = OledDisplay<SSD130x4WireSpi128x64Driver>;
         Display display;
 
     private:
+        DaisyPatchSM &patch;
     };
+
+    int TwoCQ::GetRootNote()
+    {
+        float root_adc = patch.GetAdcValue(ROOT_ADC_IN);
+	    int rootNote = QuantizeUtils::rescalefjw(root_adc, 0, 1, 0, QuantizeUtils::NUM_NOTES);
+        return rootNote;
+    }
+
+    int TwoCQ::GetScale()
+    {
+        float scale_adc = patch.GetAdcValue(SCALE_ADC_IN);
+        int scale = QuantizeUtils::rescalefjw(scale_adc, 0, 1, 0, QuantizeUtils::NUM_SCALES);
+        return scale;
+    }
+
+    int TwoCQ::GetOctaveShift()
+    {
+        float octave_adc = patch.GetAdcValue(OCATAVE_ADC_IN);
+        int octaveShift = QuantizeUtils::rescalefjw(octave_adc, 0, 1, 0, 5);
+        return octaveShift;
+    }
 
     class Channel
     {

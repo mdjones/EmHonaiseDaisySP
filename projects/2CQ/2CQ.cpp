@@ -9,14 +9,18 @@ using namespace daisysp;
 using namespace two_cq;
 
 DaisyPatchSM hw;
-two_cq::TwoCQ twoCQ;
+two_cq::TwoCQ twoCQ = two_cq::TwoCQ(hw);
 
 Switch ch_toggle;
 
 bool debug = false;
 
 uint8_t message_idx;
+uint8_t edit_indicator;
 char symbols[5] = {'-', '\\', '|', '/', '-'};
+
+// To detect any knob adjustments
+int cur_rootNote, cur_scale, cur_octaveShift;
 
 enum ChannelNum
 {
@@ -24,6 +28,13 @@ enum ChannelNum
 	CH_2,
 	NUM_CHANNELS
 };
+
+ChannelNum GetCurrentChannel()
+{
+	ch_toggle.Debounce();
+	bool ch_toggle_pressed = ch_toggle.Pressed();
+	return ch_toggle_pressed ? ChannelNum::CH_1 : ChannelNum::CH_2;
+}
 
 void UpdateOled(Channel &channel)
 {
@@ -34,12 +45,12 @@ void UpdateOled(Channel &channel)
 
 	twoCQ.display.SetCursor(0, 0);
 	strbuff[0] = '\0';
-	sprintf(strbuff, "%s    [%c]", channel.GetChannelNum() == ChannelNum::CH_1 ? "CH_1" : "CH_2", symbols[message_idx]);
+	sprintf(strbuff, "CH_%i    [%c]", channel.GetChannelNum(), symbols[edit_indicator]);
 	twoCQ.display.WriteString(strbuff, Font_11x18, true);
 
 	twoCQ.display.SetCursor(0, 20);
 	strbuff[0] = '\0';
-	sprintf(strbuff, "Rt %s", QuantizeUtils::noteName(channel.rootNote).c_str());
+	sprintf(strbuff, "Rt %s, Oct %i", QuantizeUtils::noteName(channel.rootNote).c_str(), channel.octaveShift);
 	twoCQ.display.WriteString(strbuff, Font_11x18, true);
 
 	twoCQ.display.SetCursor(0, 40);
@@ -50,25 +61,37 @@ void UpdateOled(Channel &channel)
 	twoCQ.display.Update();
 }
 
-void SetCurrentChannelEdits(Channel &channel)
+bool SetCurrentChannelEdits(Channel &channel)
 {
-	float root_adc = hw.GetAdcValue(ROOT_ADC_IN);
-	float scale_adc = hw.GetAdcValue(SCALE_ADC_IN);
-	float octave_adc = hw.GetAdcValue(OCATAVE_ADC_IN);
-	int rootNote = QuantizeUtils::rescalefjw(root_adc, 0, 1, 0, QuantizeUtils::NUM_NOTES);
-	int scale = QuantizeUtils::rescalefjw(scale_adc, 0, 1, 0, QuantizeUtils::NUM_SCALES);
-	int octaveShift = QuantizeUtils::rescalefjw(octave_adc, 0, 1, 0, 5);
+	bool changed = false;
 
-	if (channel.rootNote != rootNote || channel.scale != scale || channel.octaveShift != octaveShift)
+	int rootNote = twoCQ.GetRootNote();
+	int scale = twoCQ.GetScale();
+	int octaveShift = twoCQ.GetOctaveShift();
+
+	// Check is a knob has been turned recently and if so update the channel
+	if (cur_rootNote != rootNote)
 	{
+		cur_rootNote = rootNote;
 		channel.rootNote = rootNote;
-		channel.scale = scale;
-		channel.octaveShift = octaveShift;
-
-		UpdateOled(channel);
+		changed = true;
 	}
+	if (cur_scale != scale)
+	{
+		cur_scale = scale;
+		channel.scale = scale;
+		changed = true;
+	}
+	if (cur_octaveShift != octaveShift)
+	{
+		cur_octaveShift = octaveShift;
+		channel.octaveShift = octaveShift;
+		changed = true;
+	}
+	return changed;
 }
 
+// TODO: I can probably remove this function
 void AudioCallback(AudioHandle::InputBuffer in,
 				   AudioHandle::OutputBuffer out,
 				   size_t size)
@@ -88,6 +111,11 @@ int main(void)
 	hw.StartAudio(AudioCallback);
 
 	twoCQ.Init();
+
+	// Save the current values
+	cur_rootNote = twoCQ.GetRootNote();
+	cur_scale = twoCQ.GetScale();
+	cur_octaveShift = twoCQ.GetOctaveShift();
 
 	if (debug)
 	{
@@ -111,23 +139,34 @@ int main(void)
 		hw.gate_in_2,
 		hw.gate_out_2,
 		CH2_GATE_PATCHED,
-		CH1_IN_VOCT,
+		CH2_IN_VOCT,
 		CH2_OUT_VOCT);
 
 	ch_toggle.Init(CH_SELECT);
 
 	int cnt = 0;
 	message_idx = 0;
-	char strbuff[128];
+	edit_indicator = 0;
+
+	ChannelNum init_channel_num = GetCurrentChannel();
 
 	while (1)
 	{
 		cnt += 1;
-		// Set unique channel inputs
-		ch_toggle.Debounce();
-		bool ch_toggle_pressed = ch_toggle.Pressed();
-		ChannelNum edit_ch_num = ch_toggle_pressed ? ChannelNum::CH_1 : ChannelNum::CH_2;
-		SetCurrentChannelEdits(channels[edit_ch_num]);
+
+		// Set channel inputs
+		ChannelNum edit_ch_num = GetCurrentChannel();
+		if (init_channel_num != edit_ch_num)
+		{
+			UpdateOled(channels[edit_ch_num]);
+			init_channel_num = edit_ch_num;
+		}
+
+		if (SetCurrentChannelEdits(channels[edit_ch_num]))
+		{
+			edit_indicator = (edit_indicator + 1) % 5;
+			UpdateOled(channels[edit_ch_num]);
+		}
 
 		for (size_t i = 0; i < NUM_CHANNELS; i++)
 		{
@@ -152,51 +191,8 @@ int main(void)
 
 		if (debug)
 		{
-			std::string ecStr = (channels[edit_ch_num].GetChannelNum() == ChannelNum::CH_1) ? "CH_1" : "CH_2";
-
-			// patch.PrintLine("channels[%s] get_patched: %s\n", ecStr.c_str(),
-			//				edit_channel.gate_patched ? "True" : "False");
-			// patch.PrintLine("channels[%s] channelNum: %i\n", ecStr.c_str(), edit_channel.GetChannelNum());
-			// patch.PrintLine("channels[%s] rootNote: %i\n", ecStr.c_str(), edit_channel.rootNote);
-			// patch.PrintLine("channels[%s] in_voct: %i\n", ecStr.c_str(), (int)edit_channel.in_voct*1000);
-			// patch.PrintLine("channels[%s] out_voct: %i\n", ecStr.c_str(), (int)edit_channel.out_voct*1000);
-			//   patch.PrintLine("channels[%s] editChannel: %i, CH_1: %i", ecStr.c_str(), editChannel, CH_1);
-			//   patch.PrintLine("editChannel, == CH_1: %s", editChannel == CH_1 ? "true" : "false");
-			//   patch.PrintLine("channels[%s] eq? %s", ecStr.c_str(), channels[CH_1].in_voct == channels[0].in_voct ? "true" : "false");
-			//	patch.PrintLine("#######################");
-
-			//	patch.PrintLine("channels[%s] scale: %s", ecStr.c_str(), QuantizeUtils::scaleName(edit_channel.scale).c_str());
-
-			hw.PrintLine("~########## %d #############", cnt);
-			// patch.PrintLine("channels[%s] gatein state? %s", ecStr.c_str(),
-			//				channels[edit_ch_num].GetGateIn().State() ? "true" : "false");
-
-			// patch.PrintLine("channels[0] cv_out? %f", channels[CH_1].GetVoctOut());
-			// patch.PrintLine("channels[1] cv_out? %f", channels[CH_2].GetVoctOut());
-
-			hw.Delay(200);
-
-			hw.PrintLine("message_idx: %i", message_idx);
-			switch (message_idx)
-			{
-			case 0:
-				sprintf(strbuff, "Testing. . .");
-				break;
-			case 1:
-				sprintf(strbuff, "Daisy. . .");
-				break;
-			case 2:
-				sprintf(strbuff, "1. . .");
-				break;
-			case 3:
-				sprintf(strbuff, "2. . .");
-				break;
-			case 4:
-				sprintf(strbuff, "3. . .");
-				break;
-			default:
-				break;
-			}
+			// hw.PrintLine("~########## %d #############", cnt);
+			hw.PrintLine("Channel Num: %i", edit_ch_num);
 		}
 		message_idx = (message_idx + 1) % 5;
 	}

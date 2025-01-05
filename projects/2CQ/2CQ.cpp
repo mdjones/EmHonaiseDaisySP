@@ -1,11 +1,12 @@
 #include "daisy_patch_sm.h"
 #include "daisysp.h"
-#include "Channel.cpp"
+// #include "Channel.cpp"
 #include "two_cq_hw.cpp"
 
 using namespace daisy;
 using namespace patch_sm;
 using namespace daisysp;
+using namespace two_cq;
 
 DaisyPatchSM patch;
 two_cq::TwoCQ twoCQ;

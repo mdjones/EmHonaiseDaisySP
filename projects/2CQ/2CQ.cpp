@@ -14,12 +14,9 @@ Switch ch_toggle;
 
 bool debug = false;
 
-float root_adc;
-float scale_adc;
-float octave_adc;
-
 
 uint8_t message_idx;
+char symbols[5] = {'-', '\\', '|', '/', '-'};
 
 enum ChannelNum
 {
@@ -37,7 +34,7 @@ void UpdateOled(Channel &channel)
 
 	twoCQ.display.SetCursor(0, 0);
 	strbuff[0] = '\0';
-	sprintf(strbuff, "%s    [%i]", channel.GetChannelNum() == ChannelNum::CH_1 ? "CH_1" : "CH_2", message_idx);
+	sprintf(strbuff, "%s    [%c]", channel.GetChannelNum() == ChannelNum::CH_1 ? "CH_1" : "CH_2", symbols[message_idx]);
 	twoCQ.display.WriteString(strbuff, Font_11x18, true);
 
 	twoCQ.display.SetCursor(0, 20);
@@ -55,18 +52,15 @@ void UpdateOled(Channel &channel)
 
 void SetCurrentChannelEdits(Channel &channel)
 {
-	float cur_root_adc = patch.GetAdcValue(CV_1);
-	float cur_scale_adc = patch.GetAdcValue(CV_2);
-	float cur_octave_adc = patch.GetAdcValue(CV_3);
+	float root_adc = patch.GetAdcValue(CV_1);
+	float scale_adc = patch.GetAdcValue(CV_2);
+	float octave_adc = patch.GetAdcValue(CV_3);
+	int rootNote = QuantizeUtils::rescalefjw(root_adc, 0, 1, 0, QuantizeUtils::NUM_NOTES);
+	int scale = QuantizeUtils::rescalefjw(scale_adc, 0, 1, 0, QuantizeUtils::NUM_SCALES);
+	int octaveShift = QuantizeUtils::rescalefjw(octave_adc, 0, 1, 0, 5);
 
-	if (cur_root_adc != root_adc || cur_scale_adc != scale_adc || cur_octave_adc != octave_adc)
+	if(channel.rootNote != rootNote || channel.scale != scale || channel.octaveShift != octaveShift)
 	{
-		root_adc = cur_root_adc;
-		scale_adc = cur_scale_adc;
-		octave_adc = cur_octave_adc;
-		int rootNote = QuantizeUtils::rescalefjw(root_adc, 0, 1, 0, QuantizeUtils::NUM_NOTES);
-		int scale = QuantizeUtils::rescalefjw(scale_adc, 0, 1, 0, QuantizeUtils::NUM_SCALES);
-		int octaveShift = QuantizeUtils::rescalefjw(octave_adc, 0, 1, 0, 5);
 		channel.rootNote = rootNote;
 		channel.scale = scale;
 		channel.octaveShift = octaveShift;

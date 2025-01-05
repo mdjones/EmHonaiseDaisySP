@@ -16,10 +16,30 @@
 #include "QuantizeUtils.cpp"
 
 using namespace daisy;
-using namespace daisy::patch_sm;
+using namespace patch_sm;
 
 namespace two_cq
 {
+
+    // Hardware Definitions
+    constexpr int ROOT_ADC_IN  = patch_sm::CV_1;
+    constexpr int SCALE_ADC_IN  = patch_sm::CV_2;
+    constexpr int OCATAVE_ADC_IN = patch_sm::CV_3;
+    constexpr int CH1_IN_VOCT = patch_sm::CV_5;
+    constexpr int CH2_IN_VOCT = patch_sm::CV_6;
+    constexpr int CH1_OUT_VOCT = patch_sm::CV_OUT_1;
+    constexpr int CH2_OUT_VOCT = patch_sm::CV_OUT_2; 
+
+    constexpr static Pin CH_SELECT = DaisyPatchSM::B8;
+    constexpr static Pin CH1_GATE_PATCHED = DaisyPatchSM::B8;
+    constexpr static Pin CH2_GATE_PATCHED = DaisyPatchSM::B9;
+
+    constexpr static Pin OLED_DC = DaisyPatchSM::D2;
+    constexpr static Pin OLED_RST = DaisyPatchSM::D3;
+    constexpr static Pin OLED_SCLK = DaisyPatchSM::D10;
+    constexpr static Pin OLED_MOSI = DaisyPatchSM::D9;
+
+
 
     class TwoCQ
     {
@@ -44,17 +64,17 @@ namespace two_cq
             spi_conf.baud_prescaler = SpiHandle::Config::BaudPrescaler::PS_128;
 
             // Pins to use. These must be available on the selected peripheral
-            spi_conf.pin_config.sclk = DaisyPatchSM::D10; // Use pin D10 as SCLK
+            spi_conf.pin_config.sclk = OLED_SCLK; // Use pin D10 as SCLK
             spi_conf.pin_config.miso = Pin();             // We won't need this
-            spi_conf.pin_config.mosi = DaisyPatchSM::D9;  // Use D9 as MOSI
+            spi_conf.pin_config.mosi = OLED_MOSI;  // Use D9 as MOSI
             spi_conf.pin_config.nss = Pin();              // DaisyPatchSM::D1;   // use D1 as NSS
 
             // data will flow from master
             // The master will output on the NSS line
             spi_conf.nss = SpiHandle::Config::NSS::SOFT;
 
-            display_config.driver_config.transport_config.pin_config.dc = DaisyPatchSM::D2;
-            display_config.driver_config.transport_config.pin_config.reset = DaisyPatchSM::D3;
+            display_config.driver_config.transport_config.pin_config.dc = OLED_DC;
+            display_config.driver_config.transport_config.pin_config.reset = OLED_RST;
             display.Init(display_config);
         }
 

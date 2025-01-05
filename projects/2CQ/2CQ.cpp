@@ -14,7 +14,6 @@ Switch ch_toggle;
 
 bool debug = false;
 
-
 uint8_t message_idx;
 char symbols[5] = {'-', '\\', '|', '/', '-'};
 
@@ -59,7 +58,7 @@ void SetCurrentChannelEdits(Channel &channel)
 	int scale = QuantizeUtils::rescalefjw(scale_adc, 0, 1, 0, QuantizeUtils::NUM_SCALES);
 	int octaveShift = QuantizeUtils::rescalefjw(octave_adc, 0, 1, 0, 5);
 
-	if(channel.rootNote != rootNote || channel.scale != scale || channel.octaveShift != octaveShift)
+	if (channel.rootNote != rootNote || channel.scale != scale || channel.octaveShift != octaveShift)
 	{
 		channel.rootNote = rootNote;
 		channel.scale = scale;

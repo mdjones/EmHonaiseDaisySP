@@ -16,7 +16,7 @@ Switch ch_toggle;
 bool debug = true;
 
 uint8_t message_idx;
-uint8_t edit_indicator;
+uint8_t oled_edit_indicator;
 char symbols[5] = {'-', '\\', '|', '/', '-'};
 
 // To detect any knob adjustments
@@ -28,6 +28,8 @@ enum ChannelNum
 	CH_2,
 	NUM_CHANNELS
 };
+
+Channel channels[NUM_CHANNELS] = {Channel(hw), Channel(hw)};
 
 ChannelNum GetCurrentChannel()
 {
@@ -45,7 +47,7 @@ void UpdateOled(Channel &channel)
 
 	twoCQ.display.SetCursor(0, 0);
 	strbuff[0] = '\0';
-	sprintf(strbuff, "CH_%i    [%c]", channel.GetChannelNum(), symbols[edit_indicator]);
+	sprintf(strbuff, "CH_%i    [%c]", channel.GetChannelNum(), symbols[oled_edit_indicator]);
 	twoCQ.display.WriteString(strbuff, Font_11x18, true);
 
 	twoCQ.display.SetCursor(0, 20);
@@ -63,6 +65,7 @@ void UpdateOled(Channel &channel)
 
 bool SetCurrentChannelEdits(Channel &channel)
 {
+	hw.PrintLine("Edit Channel %d", channel.GetChannelNum());
 	bool changed = false;
 
 	int rootNote = twoCQ.GetRootNote();
@@ -99,8 +102,8 @@ void AudioCallback(AudioHandle::InputBuffer in,
 	hw.ProcessAllControls();
 	for (size_t i = 0; i < size; i++)
 	{
-		OUT_L[i] = IN_L[i];
-		OUT_R[i] = IN_R[i];
+		//OUT_L[i] = channels[CH_1].GetVoctOut();
+		//OUT_R[i] =channels[CH_2].GetVoctOut();
 	}
 }
 
@@ -119,12 +122,10 @@ int main(void)
 
 	if (debug)
 	{
-		bool wait_for_pc = false;
+		bool wait_for_pc = true;
 		hw.StartLog(wait_for_pc);
 		hw.PrintLine("Start logging");
 	}
-
-	Channel channels[NUM_CHANNELS] = {Channel(hw), Channel(hw)};
 
 	channels[CH_1].Init(
 		1,
@@ -132,7 +133,7 @@ int main(void)
 		hw.gate_out_1,
 		CH1_GATE_PATCHED,
 		CH1_IN_VOCT,
-		CH2_OUT_VOCT);
+		CH1_OUT_VOCT);
 
 	channels[CH_2].Init(
 		2,
@@ -146,10 +147,9 @@ int main(void)
 
 	int cnt = 0;
 	message_idx = 0;
-	edit_indicator = 0;
+	oled_edit_indicator = 0;
 
 	ChannelNum init_channel_num = GetCurrentChannel();
-
 	while (1)
 	{
 		cnt += 1;
@@ -169,7 +169,7 @@ int main(void)
 
 		if (SetCurrentChannelEdits(channels[edit_ch_num]))
 		{
-			edit_indicator = (edit_indicator + 1) % 5;
+			oled_edit_indicator = (oled_edit_indicator + 1) % 5;
 			UpdateOled(channels[edit_ch_num]);
 		}
 
@@ -198,6 +198,8 @@ int main(void)
 		{
 			//hw.PrintLine("~########## %d #############", cnt);
 			//hw.PrintLine("Channel Num: %i", edit_ch_num);
+			hw.PrintLine("GetVoctOut[%i]: %f", edit_ch_num, channels[edit_ch_num].GetVoctOut());
+			hw.PrintLine("%s", edit_ch_num == CH_1 ? "CH_1" : "CH_2");
 		}
 		message_idx = (message_idx + 1) % 5;
 	}

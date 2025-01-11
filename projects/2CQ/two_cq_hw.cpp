@@ -31,6 +31,10 @@ namespace two_cq
     
     constexpr int CH1_IN_VOCT = patch_sm::CV_5;
     constexpr int CH2_IN_VOCT = patch_sm::CV_6;
+    //patch.Init() uses CV_OUT_2 for an LED
+    //So I am doing a hack and sending these to
+    //OUT_L[i] and OUT_R[i] too. Will not need this
+    //For a pure patch_sm implementation
     constexpr int CH1_OUT_VOCT = patch_sm::CV_OUT_1;
     constexpr int CH2_OUT_VOCT = patch_sm::CV_OUT_2; 
 
@@ -226,6 +230,10 @@ namespace two_cq
             scale);
 
         quant_voct_ += octaveShift;
+        //patch.PrintLine("Channel %d: in_adc: %f", channelNum_, in_adc);
+        //patch.PrintLine("Channel %d: in_voct: %f", channelNum_, in_voct);
+        //patch.PrintLine("Channel %d: quant_voct: %f", channelNum_, quant_voct_);
+        //patch.PrintLine("Channel %d: out_voct_: %f", channelNum_, out_voct_);
     }
 
     bool Channel::quant_voct_changed()
@@ -238,6 +246,8 @@ namespace two_cq
     {
         out_voct_ = quant_voct_;
         patch.WriteCvOut(out_voct_accessor_, out_voct_);
+        //patch.PrintLine("Channel %d: out_voct_ %f", channelNum_, out_voct_);
+        //patch.PrintLine("Channel %d: quant_voct_!! %f", channelNum_, quant_voct_);
     }
 
 } // namespace two_cq_hw

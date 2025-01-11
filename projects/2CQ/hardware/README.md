@@ -23,7 +23,7 @@ Final Pin set up is:
 | OLED Pin Name | patch_sm pin | function |
 | ------------- | ------------ | -------- |
 | GND           | A7           | GND      |
-| VCC           | A19          | +3V3     |
+| VCC           | A10          | +3V3     |
 | D0            | D10          | SCLK     |
 | D1            | D9           | MOSI     |
 | RES           | D3           | RESET    |
@@ -36,11 +36,11 @@ Correction: Based on <https://forum.electro-smith.com/t/connecting-an-oled-to-th
 
 | OLED Pin Name | patch_sm pin | function | P1-M12 patch.Init() breakout |
 | ------------- | ------------ | -------- | ---------------------------- |
-| GND           | A7           | GND      | 12                           |
-| VCC           | A19          | +3V3     | 1                            |
+| GND           | A4           | GND      | 12                           |
+| VCC           | A10          | +3V3     | 1                            |
 | D0            | D10          | SCLK     | 7                            |
 | D1            | D9           | MOSI     | 5                            |
-| RES           | D3           | RESET    | 10                           |
+| RES           | A3           | RESET    | 10                           |
 | DC            | A2           | dc       | 9                            |
 | C5            | Not Wired    |          | Not wired                    |
 

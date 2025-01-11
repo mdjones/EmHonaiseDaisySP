@@ -7,6 +7,7 @@
  *
  * Configured based on
  * https://github.com/electro-smith/libDaisy/blob/master/examples/OLED_SPI/OledSPI.cpp
+ * and  https://discord.com/channels/1037767234803740694/1039589722831474830/1203742317346037800
  *
  */
 #pragma once
@@ -40,8 +41,8 @@ namespace two_cq
     constexpr static Pin CH1_GATE_PATCHED = DaisyPatchSM::B1;
     constexpr static Pin CH2_GATE_PATCHED = DaisyPatchSM::B2;
 
-    constexpr static Pin OLED_DC = DaisyPatchSM::D2;
-    constexpr static Pin OLED_RST = DaisyPatchSM::D3;
+    constexpr static Pin OLED_DC = DaisyPatchSM::A2;
+    constexpr static Pin OLED_RST = DaisyPatchSM::A3;
     constexpr static Pin OLED_SCLK = DaisyPatchSM::D10;
     constexpr static Pin OLED_MOSI = DaisyPatchSM::D9;
 
@@ -54,6 +55,7 @@ namespace two_cq
 
         void Init()
         {
+           
             Display::Config display_config;
 
             SpiHandle::Config &spi_conf = display_config.driver_config.transport_config.spi_config;

@@ -30,6 +30,25 @@ Final Pin set up is:
 | DC            | D2           | dc       |
 | C5            | Not Wired    |          |
 
+Correction: Based on <https://forum.electro-smith.com/t/connecting-an-oled-to-the-patch-init/7501/2>
+
+> note! I am using +3V3 instead of +5V5 as above.
+
+| OLED Pin Name | patch_sm pin | function | P1-M12 patch.Init() breakout |
+| ------------- | ------------ | -------- | ---------------------------- |
+| GND           | A7           | GND      | 12                           |
+| VCC           | A19          | +3V3     | 1                            |
+| D0            | D10          | SCLK     | 7                            |
+| D1            | D9           | MOSI     | 5                            |
+| RES           | D3           | RESET    | 10                           |
+| DC            | A2           | dc       | 9                            |
+| C5            | Not Wired    |          | Not wired                    |
+
+
 ## 3 Way Switch
 
 <https://forum.electro-smith.com/t/adding-a-3-way-switch-to-seed/2418/4>
+
+## Panels
+
+<https://forum.electro-smith.com/t/frequently-asked-questions-specifically-about-patch-init/2630/5>

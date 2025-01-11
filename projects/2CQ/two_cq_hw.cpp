@@ -27,7 +27,7 @@ namespace two_cq
     constexpr int SCALE_ADC_IN  = patch_sm::CV_2; //C4
     constexpr int OCATAVE_ADC_IN = patch_sm::CV_3; //C3
 
-    constexpr static Pin CH_SELECT = DaisyPatchSM::D4;
+    constexpr static Pin CH_SELECT = DaisyPatchSM::B8;
     
     constexpr int CH1_IN_VOCT = patch_sm::CV_5;
     constexpr int CH2_IN_VOCT = patch_sm::CV_6;

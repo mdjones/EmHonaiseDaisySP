@@ -13,7 +13,7 @@ two_cq::TwoCQ twoCQ = two_cq::TwoCQ(hw);
 
 Switch ch_toggle;
 
-bool debug = false;
+bool debug = true;
 
 uint8_t message_idx;
 uint8_t edit_indicator;
@@ -33,7 +33,7 @@ ChannelNum GetCurrentChannel()
 {
 	ch_toggle.Debounce();
 	bool ch_toggle_pressed = ch_toggle.Pressed();
-	return ch_toggle_pressed ? ChannelNum::CH_1 : ChannelNum::CH_2;
+	return ch_toggle_pressed ? ChannelNum::CH_2 : ChannelNum::CH_1;
 }
 
 void UpdateOled(Channel &channel)
@@ -50,7 +50,7 @@ void UpdateOled(Channel &channel)
 
 	twoCQ.display.SetCursor(0, 20);
 	strbuff[0] = '\0';
-	sprintf(strbuff, "Rt %s, Oct %i", QuantizeUtils::noteName(channel.rootNote).c_str(), channel.octaveShift);
+	sprintf(strbuff, "Rt %s, Oc %i", QuantizeUtils::noteName(channel.rootNote).c_str(), channel.octaveShift);
 	twoCQ.display.WriteString(strbuff, Font_11x18, true);
 
 	twoCQ.display.SetCursor(0, 40);
@@ -156,6 +156,11 @@ int main(void)
 
 		// Set channel inputs
 		ChannelNum edit_ch_num = GetCurrentChannel();
+		if (cnt == 1)
+		{
+			UpdateOled(channels[edit_ch_num]);
+		}
+
 		if (init_channel_num != edit_ch_num)
 		{
 			UpdateOled(channels[edit_ch_num]);
@@ -191,8 +196,8 @@ int main(void)
 
 		if (debug)
 		{
-			// hw.PrintLine("~########## %d #############", cnt);
-			hw.PrintLine("Channel Num: %i", edit_ch_num);
+			//hw.PrintLine("~########## %d #############", cnt);
+			//hw.PrintLine("Channel Num: %i", edit_ch_num);
 		}
 		message_idx = (message_idx + 1) % 5;
 	}

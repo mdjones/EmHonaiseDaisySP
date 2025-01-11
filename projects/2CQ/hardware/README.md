@@ -52,3 +52,8 @@ Correction: Based on <https://forum.electro-smith.com/t/connecting-an-oled-to-th
 ## Panels
 
 <https://forum.electro-smith.com/t/frequently-asked-questions-specifically-about-patch-init/2630/5>
+
+
+## Trouble shooting
+
+Problem: CV values hoover around 1. Make sure the 12V power supply is on

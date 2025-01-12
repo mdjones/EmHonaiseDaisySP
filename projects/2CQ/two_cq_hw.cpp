@@ -23,20 +23,22 @@ namespace two_cq
 {
 
     // Hardware Definitions
-    constexpr int ROOT_ADC_IN  = patch_sm::CV_1; //C5
-    constexpr int SCALE_ADC_IN  = patch_sm::CV_2; //C4
-    constexpr int OCATAVE_ADC_IN = patch_sm::CV_3; //C3
+    constexpr int ROOT_ADC_IN = patch_sm::CV_1;    // C5
+    constexpr int SCALE_ADC_IN = patch_sm::CV_2;   // C4
+    constexpr int OCATAVE_ADC_IN = patch_sm::CV_3; // C3
 
+    constexpr static Pin CH_RESET = DaisyPatchSM::B7;
     constexpr static Pin CH_SELECT = DaisyPatchSM::B8;
-    
+
     constexpr int CH1_IN_VOCT = patch_sm::CV_5;
     constexpr int CH2_IN_VOCT = patch_sm::CV_6;
-    //patch.Init() uses CV_OUT_2 for an LED
-    //So I am doing a hack and sending these to
-    //OUT_L[i] and OUT_R[i] too. Will not need this
-    //For a pure patch_sm implementation
+    // patch.Init() uses CV_OUT_2 for an LED
+    // So I am doing a hack and sending these to
+    // OUT_L[i] and OUT_R[i] too. Will not need this
+    // For a pure patch_sm implementation. Maybe use
+    // for random quantized voltage.
     constexpr int CH1_OUT_VOCT = patch_sm::CV_OUT_1;
-    constexpr int CH2_OUT_VOCT = patch_sm::CV_OUT_2; 
+    constexpr int CH2_OUT_VOCT = patch_sm::CV_OUT_2;
 
     // GATE_IN_1: B10
     // GATE_IN_2: B9
@@ -50,7 +52,6 @@ namespace two_cq
     constexpr static Pin OLED_SCLK = DaisyPatchSM::D10;
     constexpr static Pin OLED_MOSI = DaisyPatchSM::D9;
 
-
     class TwoCQ
     {
     public:
@@ -59,7 +60,7 @@ namespace two_cq
 
         void Init()
         {
-           
+
             Display::Config display_config;
 
             SpiHandle::Config &spi_conf = display_config.driver_config.transport_config.spi_config;
@@ -76,9 +77,9 @@ namespace two_cq
 
             // Pins to use. These must be available on the selected peripheral
             spi_conf.pin_config.sclk = OLED_SCLK; // Use pin D10 as SCLK
-            spi_conf.pin_config.miso = Pin();             // We won't need this
-            spi_conf.pin_config.mosi = OLED_MOSI;  // Use D9 as MOSI
-            spi_conf.pin_config.nss = Pin();              // DaisyPatchSM::D1;   // use D1 as NSS
+            spi_conf.pin_config.miso = Pin();     // We won't need this
+            spi_conf.pin_config.mosi = OLED_MOSI; // Use D9 as MOSI
+            spi_conf.pin_config.nss = Pin();      // DaisyPatchSM::D1;   // use D1 as NSS
 
             // data will flow from master
             // The master will output on the NSS line
@@ -103,7 +104,7 @@ namespace two_cq
     int TwoCQ::GetRootNote()
     {
         float root_adc = patch.GetAdcValue(ROOT_ADC_IN);
-	    int rootNote = QuantizeUtils::rescalefjw(root_adc, 0, 1, 0, QuantizeUtils::NUM_NOTES);
+        int rootNote = QuantizeUtils::rescalefjw(root_adc, 0, 1, 0, QuantizeUtils::NUM_NOTES);
         return rootNote;
     }
 

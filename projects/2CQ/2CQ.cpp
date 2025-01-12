@@ -10,7 +10,7 @@ using namespace two_cq;
 DaisyPatchSM hw;
 two_cq::TwoCQ twoCQ = two_cq::TwoCQ(hw);
 
-Switch ch_toggle;
+Switch ch_select, ch_reset;
 
 bool debug = false;
 
@@ -32,9 +32,7 @@ Channel channels[NUM_CHANNELS] = {Channel(hw), Channel(hw)};
 
 ChannelNum GetCurrentChannel()
 {
-	ch_toggle.Debounce();
-	bool ch_toggle_pressed = ch_toggle.Pressed();
-	return ch_toggle_pressed ? ChannelNum::CH_2 : ChannelNum::CH_1;
+	return ch_select.Pressed() ? ChannelNum::CH_2 : ChannelNum::CH_1;
 }
 
 void UpdateOled(Channel &channel)
@@ -93,17 +91,20 @@ bool SetCurrentChannelEdits(Channel &channel, bool force = false)
 }
 
 /**
- * I expected hw.audio.SetPostGain(-0.1f); to work to invert the audio cignal
- * but it did not. So I am doing it manually here.
- * https://github.com/electro-smith/libDaisy/issues/575
+ * I expected `hw.audio.SetPostGain(-0.1f);` to work to invert the audio cignal
+ * but it did not.
+ * See: https://github.com/electro-smith/libDaisy/issues/575
+ * So I am doing it manually here.
  * OUT_L is not a perfect match to CV_OUT_1 but it's close enough for
- * functional testing.
+ * functional testing but will be a little flat or sharp.
  */
 void AudioCallback(AudioHandle::InputBuffer in,
 				   AudioHandle::OutputBuffer out,
 				   size_t size)
 {
 	hw.ProcessAllControls();
+	ch_reset.Debounce();
+	ch_select.Debounce();
 	float gain_adj = -1.0f / 10.0f;
 	for (size_t i = 0; i < size; i++)
 	{
@@ -148,7 +149,8 @@ int main(void)
 		CH2_IN_VOCT,
 		CH2_OUT_VOCT);
 
-	ch_toggle.Init(CH_SELECT);
+	ch_reset.Init(CH_RESET, hw.AudioCallbackRate());
+	ch_select.Init(CH_SELECT, hw.AudioCallbackRate());
 
 	int cnt = 0;
 	message_idx = 0;
@@ -172,7 +174,9 @@ int main(void)
 			init_channel_num = edit_ch_num;
 		}
 
-		if (SetCurrentChannelEdits(channels[edit_ch_num]))
+		hw.SetLed(ch_reset.Pressed());
+
+		if (SetCurrentChannelEdits(channels[edit_ch_num], ch_reset.Pressed()))
 		{
 			oled_edit_indicator = (oled_edit_indicator + 1) % 5;
 			UpdateOled(channels[edit_ch_num]);

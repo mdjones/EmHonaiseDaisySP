@@ -17,14 +17,14 @@ channel switch.
 * Channel switch: Select which channel is selected for setting adjustment. A 
 setting will be changed only if a knob has been adjusted or the All button
 has been triggered.
-* All button: Change all setting in the current channel to match all the knobs.
+* Reset button: Change all current channgle settings to match the knob values.
 * Scale knob: Select the scale. Position 1 is chromatic.
-* Root knob: Select the scales root note
-* Octave knob: Select the scales octave
-* Sparse knob: Select the sparcity of the scale
+* Root knob: Select the scales root note.
+* Octave knob: Select the octave.
+* Sparse knob: Select the sparcity of the scale.
 * V/OCT. IN: Channel V/OCT. input. Voltage outside of the 0-5 V will be ignored.
 * Gate IN: Gate ins for each channel.
-* Gate OUT: Gate out for each channel. If there is now gate input a gate will
+* Gate OUT: Gate out for each channel. If there is no gate input a gate will
 be emitted if the note changes. Otherwise a gate will be emitted whenever an
 input gate is recieved.
 * V/OCT. OUT: Quantized V/OCT

@@ -35,6 +35,28 @@ ChannelNum GetCurrentChannel()
 	return ch_select.Pressed() ? ChannelNum::CH_2 : ChannelNum::CH_1;
 }
 
+void Splash()
+{
+	std::string progress = "";
+	for (int i=0; i<5; i++)
+	{
+		progress += ".";
+		twoCQ.display.Fill(false);
+		twoCQ.display.SetCursor(0, 0);
+		twoCQ.display.WriteString("O2CQ", Font_16x26, true);
+		twoCQ.display.SetCursor(0, 35);
+		twoCQ.display.WriteString(progress.c_str(), Font_16x26, true);
+		twoCQ.display.Update();
+		hw.Delay(100);
+	}
+	twoCQ.display.Fill(false);
+	twoCQ.display.SetCursor(0, 0);
+	twoCQ.display.WriteString("O2CQ", Font_16x26, true);
+	twoCQ.display.SetCursor(0, 35);
+	twoCQ.display.WriteString("by EmHonaise", Font_11x18, true);
+	twoCQ.display.Update();
+	hw.Delay(2000);
+}
 
 void UpdateOled(Channel &channel)
 {
@@ -62,7 +84,6 @@ void UpdateOled(Channel &channel)
 
 	twoCQ.display.SetCursor(0, 40);
 	strbuff[0] = '\0';
-	//sprintf(strbuff, "%s", sparcity.c_str());
 	sprintf(strbuff, "%s", sparcity.c_str());
 	twoCQ.display.WriteString(strbuff, Font_11x18, true);
 
@@ -165,6 +186,8 @@ int main(void)
 
 	ch_reset.Init(CH_RESET, hw.AudioCallbackRate());
 	ch_select.Init(CH_SELECT, hw.AudioCallbackRate());
+
+	Splash();
 
 	int cnt = 0;
 	message_idx = 0;

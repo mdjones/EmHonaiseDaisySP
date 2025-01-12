@@ -239,7 +239,9 @@ namespace two_cq
         quant_voct_ = QuantizeUtils::closestVoltageInScale(
             in_voct,
             rootNote,
-            scale);
+            scale,
+            sparcity,
+            patch);
 
         quant_voct_ += octaveShift;
     }

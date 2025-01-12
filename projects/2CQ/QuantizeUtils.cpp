@@ -1,12 +1,41 @@
 // Copied from JW-Modules. See ./JW_LICENSE
 
+#include <cmath>
+#include <vector>
+#include <algorithm>
+#include "daisy_patch_sm.h"
+
+using namespace daisy;
+using namespace patch_sm;
+
 namespace QuantizeUtils {
 
+	template <typename T, size_t N>
+	constexpr size_t arraySize(const T (&)[N]) noexcept {
+    	return N;
+	}
+
+	std::vector<int> ApplyMask(const std::vector<int>& data, const std::vector<bool>& mask) {
+		std::vector<int> result;
+
+		if (data.size() != mask.size()) {
+			return data;
+		}
+
+		for (size_t i = 0; i < data.size(); ++i) {
+			if (mask[i]) {
+				result.push_back(data[i]);
+			}
+		}
+		return result;
+	}
+
 	//Sparcity masks
-	int FULL_MASK [8]= {1, 1, 1, 1, 1, 1, 1, 1};
-	int ROOT_MASK [8]= {1, 0, 0, 0, 0, 0, 0, 0};
-	int FIFTH_MASK [8]= {1, 0, 0, 0, 1, 0, 0, 0};
-	int THIRD_MASK [8]= {1, 0, 1, 0, 1, 0, 0, 0};
+	int MASK_SIZE = 8;
+	bool FULL_MASK [8]= {true, true, true, true, true, true, true, true};
+	bool ROOT_MASK [8]= {true, false, false, false, false, false, false, false};
+	bool FIFTH_MASK [8]= {true, false, false, false, true, false, false, false};
+	bool THIRD_MASK [8]= {true, false, true, false, true, false, false, false};
 
 
 	//copied & fixed these scales http://www.grantmuller.com/MidiReference/doc/midiReference/ScaleReference.html
@@ -78,29 +107,43 @@ namespace QuantizeUtils {
 	// long printIter = 0;
 	float closestVoltageInScale(float voltsIn, 
 								int rootNote, 
-								int currScale){
+								int currScale,
+								int sparcity,
+								DaisyPatchSM &patch) {
 		int *curScaleArr;
 		int notesInScale = 0;
 		switch(currScale){
-			case AEOLIAN:        curScaleArr = SCALE_AEOLIAN;       notesInScale=sizeof(SCALE_AEOLIAN); break;
-			case BLUES:          curScaleArr = SCALE_BLUES;         notesInScale=sizeof(SCALE_BLUES); break;
-			case CHROMATIC:      curScaleArr = SCALE_CHROMATIC;     notesInScale=sizeof(SCALE_CHROMATIC); break;
-			case DIATONIC_MINOR: curScaleArr = SCALE_DIATONIC_MINOR;notesInScale=sizeof(SCALE_DIATONIC_MINOR); break;
-			case DORIAN:         curScaleArr = SCALE_DORIAN;        notesInScale=sizeof(SCALE_DORIAN); break;
-			case HARMONIC_MINOR: curScaleArr = SCALE_HARMONIC_MINOR;notesInScale=sizeof(SCALE_HARMONIC_MINOR); break;
-			case INDIAN:         curScaleArr = SCALE_INDIAN;        notesInScale=sizeof(SCALE_INDIAN); break;
-			case LOCRIAN:        curScaleArr = SCALE_LOCRIAN;       notesInScale=sizeof(SCALE_LOCRIAN); break;
-			case LYDIAN:         curScaleArr = SCALE_LYDIAN;        notesInScale=sizeof(SCALE_LYDIAN); break;
-			case MAJOR:          curScaleArr = SCALE_MAJOR;         notesInScale=sizeof(SCALE_MAJOR); break;
-			case MELODIC_MINOR:  curScaleArr = SCALE_MELODIC_MINOR; notesInScale=sizeof(SCALE_MELODIC_MINOR); break;
-			case MINOR:          curScaleArr = SCALE_MINOR;         notesInScale=sizeof(SCALE_MINOR); break;
-			case MIXOLYDIAN:     curScaleArr = SCALE_MIXOLYDIAN;    notesInScale=sizeof(SCALE_MIXOLYDIAN); break;
-			case NATURAL_MINOR:  curScaleArr = SCALE_NATURAL_MINOR; notesInScale=sizeof(SCALE_NATURAL_MINOR); break;
-			case PENTATONIC:     curScaleArr = SCALE_PENTATONIC;    notesInScale=sizeof(SCALE_PENTATONIC); break;
-			case PHRYGIAN:       curScaleArr = SCALE_PHRYGIAN;      notesInScale=sizeof(SCALE_PHRYGIAN); break;
-			case TURKISH:        curScaleArr = SCALE_TURKISH;       notesInScale=sizeof(SCALE_TURKISH); break;
+			case AEOLIAN:        curScaleArr = SCALE_AEOLIAN;       notesInScale=arraySize(SCALE_AEOLIAN); break;
+			case BLUES:          curScaleArr = SCALE_BLUES;         notesInScale=arraySize(SCALE_BLUES); break;
+			case CHROMATIC:      curScaleArr = SCALE_CHROMATIC;     notesInScale=arraySize(SCALE_CHROMATIC); break;
+			case DIATONIC_MINOR: curScaleArr = SCALE_DIATONIC_MINOR;notesInScale=arraySize(SCALE_DIATONIC_MINOR); break;
+			case DORIAN:         curScaleArr = SCALE_DORIAN;        notesInScale=arraySize(SCALE_DORIAN); break;
+			case HARMONIC_MINOR: curScaleArr = SCALE_HARMONIC_MINOR;notesInScale=arraySize(SCALE_HARMONIC_MINOR); break;
+			case INDIAN:         curScaleArr = SCALE_INDIAN;        notesInScale=arraySize(SCALE_INDIAN); break;
+			case LOCRIAN:        curScaleArr = SCALE_LOCRIAN;       notesInScale=arraySize(SCALE_LOCRIAN); break;
+			case LYDIAN:         curScaleArr = SCALE_LYDIAN;        notesInScale=arraySize(SCALE_LYDIAN); break;
+			case MAJOR:          curScaleArr = SCALE_MAJOR;         notesInScale=arraySize(SCALE_MAJOR); break;
+			case MELODIC_MINOR:  curScaleArr = SCALE_MELODIC_MINOR; notesInScale=arraySize(SCALE_MELODIC_MINOR); break;
+			case MINOR:          curScaleArr = SCALE_MINOR;         notesInScale=arraySize(SCALE_MINOR); break;
+			case MIXOLYDIAN:     curScaleArr = SCALE_MIXOLYDIAN;    notesInScale=arraySize(SCALE_MIXOLYDIAN); break;
+			case NATURAL_MINOR:  curScaleArr = SCALE_NATURAL_MINOR; notesInScale=arraySize(SCALE_NATURAL_MINOR); break;
+			case PENTATONIC:     curScaleArr = SCALE_PENTATONIC;    notesInScale=arraySize(SCALE_PENTATONIC); break;
+			case PHRYGIAN:       curScaleArr = SCALE_PHRYGIAN;      notesInScale=arraySize(SCALE_PHRYGIAN); break;
+			case TURKISH:        curScaleArr = SCALE_TURKISH;       notesInScale=arraySize(SCALE_TURKISH); break;
 			case NONE:           return voltsIn;
 		}
+
+		std::vector<int> scaleVector(curScaleArr, curScaleArr + notesInScale);
+		std::vector<bool> mask;
+
+		switch (sparcity) {
+			case FULL:  mask.assign(FULL_MASK, FULL_MASK + MASK_SIZE); break;
+			case ROOT:  mask.assign(ROOT_MASK, ROOT_MASK + MASK_SIZE); break;
+			case FIFTH: mask.assign(FIFTH_MASK, FIFTH_MASK + MASK_SIZE); break;
+			case THIRD: mask.assign(THIRD_MASK, THIRD_MASK + MASK_SIZE); break;
+		}
+
+		std::vector<int> maskedScale = ApplyMask(scaleVector, mask);
 
 		//C1 == -2.00, C2 == -1.00, C3 == 0.00, C4 == 1.00
 		//B1 == -1.08, B2 == -0.08, B3 == 0.92, B4 == 1.92
@@ -110,8 +153,8 @@ namespace QuantizeUtils {
 		float distAway = 0;
 		int octaveInVolts = int(floorf(voltsIn));
 		float voltMinusOct = voltsIn - octaveInVolts;
-		for (int i=0; i < notesInScale; i++) {
-			scaleNoteInVolts = curScaleArr[i] / 12.0;
+		for (unsigned int i=0; i < maskedScale.size(); i++) {
+			scaleNoteInVolts = maskedScale[i] / 12.0;
 			distAway = fabs(voltMinusOct - scaleNoteInVolts);
 			if(distAway < closestDist){
 				closestVal = scaleNoteInVolts;

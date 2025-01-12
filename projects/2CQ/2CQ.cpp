@@ -19,7 +19,7 @@ uint8_t oled_edit_indicator;
 char symbols[5] = {'-', '\\', '|', '/', '-'};
 
 // To detect any knob adjustments
-int cur_rootNote, cur_scale, cur_octaveShift;
+int cur_rootNote, cur_scale, cur_octaveShift, cur_sparcity;
 
 enum ChannelNum
 {
@@ -35,6 +35,7 @@ ChannelNum GetCurrentChannel()
 	return ch_select.Pressed() ? ChannelNum::CH_2 : ChannelNum::CH_1;
 }
 
+
 void UpdateOled(Channel &channel)
 {
 	// SPI Serial 128 * 64
@@ -44,23 +45,25 @@ void UpdateOled(Channel &channel)
 
 	int ch_num = channel.GetChannelNum();
 	char sym = symbols[oled_edit_indicator];
-	std::string note_name = QuantizeUtils::noteName(channel.rootNote);
+	std::string note = QuantizeUtils::noteName(channel.rootNote) + std::to_string(channel.octaveShift);
+	note = QuantizeUtils::PadString(note, 3);
 	std::string scale = QuantizeUtils::scaleName(channel.scale);
-	int oct = channel.octaveShift;
+	std::string sparcity = QuantizeUtils::sparcityName(channel.sparcity);
 
 	twoCQ.display.SetCursor(0, 0);
 	strbuff[0] = '\0';
-	sprintf(strbuff, "CH_%i    [%c]", ch_num, sym);
+	sprintf(strbuff, "CH%i %s [%c]", ch_num, note.c_str(), sym);
 	twoCQ.display.WriteString(strbuff, Font_11x18, true);
 
 	twoCQ.display.SetCursor(0, 20);
 	strbuff[0] = '\0';
-	sprintf(strbuff, "Rt %s, Oc %i", note_name.c_str(), oct);
+	sprintf(strbuff, "%s", scale.c_str());
 	twoCQ.display.WriteString(strbuff, Font_11x18, true);
 
 	twoCQ.display.SetCursor(0, 40);
 	strbuff[0] = '\0';
-	sprintf(strbuff, "Sc %s", scale.c_str());
+	//sprintf(strbuff, "%s", sparcity.c_str());
+	sprintf(strbuff, "%s", sparcity.c_str());
 	twoCQ.display.WriteString(strbuff, Font_11x18, true);
 
 	twoCQ.display.Update();
@@ -73,6 +76,7 @@ bool SetCurrentChannelEdits(Channel &channel, bool force = false)
 	int rootNote = twoCQ.GetRootNote();
 	int scale = twoCQ.GetScale();
 	int octaveShift = twoCQ.GetOctaveShift();
+	int sparcity = twoCQ.GetScaleSparcity();
 
 	// Check is a knob has been turned recently and if so update the channel
 	if ((cur_rootNote != rootNote) || force)
@@ -91,6 +95,12 @@ bool SetCurrentChannelEdits(Channel &channel, bool force = false)
 	{
 		cur_octaveShift = octaveShift;
 		channel.octaveShift = octaveShift;
+		changed = true;
+	}
+	if ((cur_sparcity != sparcity) || force)
+	{
+		cur_sparcity = sparcity;
+		channel.sparcity = sparcity;
 		changed = true;
 	}
 	return changed;
@@ -128,10 +138,7 @@ int main(void)
 
 	twoCQ.Init();
 
-	// Save the current values
-	cur_rootNote = twoCQ.GetRootNote();
-	cur_scale = twoCQ.GetScale();
-	cur_octaveShift = twoCQ.GetOctaveShift();
+	
 
 	if (debug)
 	{
@@ -165,6 +172,12 @@ int main(void)
 
 	ChannelNum init_channel_num = GetCurrentChannel();
 	hw.ProcessAllControls();
+	// Save the current values
+	cur_rootNote = twoCQ.GetRootNote();
+	cur_scale = twoCQ.GetScale();
+	cur_octaveShift = twoCQ.GetOctaveShift();
+	cur_sparcity = twoCQ.GetScaleSparcity();
+
 	SetCurrentChannelEdits(channels[init_channel_num], true);
 	UpdateOled(channels[init_channel_num]);
 

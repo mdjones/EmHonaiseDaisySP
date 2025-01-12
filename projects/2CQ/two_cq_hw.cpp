@@ -126,7 +126,7 @@ namespace two_cq
 
     int TwoCQ::GetScaleSparcity()
     {
-        float adc = patch.GetAdcValue(OCATAVE_ADC_IN);
+        float adc = patch.GetAdcValue(SPARSE_ADC_IN);
         int scaleSparcity = QuantizeUtils::rescalefjw(adc, 0, 1, 0, 4);
         return scaleSparcity;
     }
@@ -168,6 +168,7 @@ namespace two_cq
         int rootNote;
         int scale;
         int octaveShift;
+        int sparcity;
     };
 
     void Channel::Init(
@@ -188,6 +189,7 @@ namespace two_cq
         rootNote = 0;
         scale = 0;
         octaveShift = 0;
+        sparcity = 0;
 
         quantize();
         set_quant2voct();

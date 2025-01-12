@@ -181,8 +181,8 @@ namespace QuantizeUtils {
 		switch(sparcity){
 			case FULL:  return "Full";
 			case ROOT:  return "Root";
-			case FIFTH: return "Fifth";
-			case THIRD: return "Third";
+			case FIFTH: return "+5th";
+			case THIRD: return "+5th,3rd";
 			default: return "";
 		}
 	}
@@ -205,5 +205,12 @@ namespace QuantizeUtils {
 		if (diff <= largest * maxRelDiff)
 			return true;
 		return false;
+	}
+
+	std::string PadString(const std::string& str, size_t total_length) {
+		if (str.length() >= total_length) {
+			return str;
+		}
+		return str + std::string(total_length - str.length(), ' ');
 	}
 };

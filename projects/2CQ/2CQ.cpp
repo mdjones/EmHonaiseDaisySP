@@ -42,19 +42,25 @@ void UpdateOled(Channel &channel)
 	char strbuff[128];
 	twoCQ.display.Fill(false);
 
+	int ch_num = channel.GetChannelNum();
+	char sym = symbols[oled_edit_indicator];
+	std::string note_name = QuantizeUtils::noteName(channel.rootNote);
+	std::string scale = QuantizeUtils::scaleName(channel.scale);
+	int oct = channel.octaveShift;
+
 	twoCQ.display.SetCursor(0, 0);
 	strbuff[0] = '\0';
-	sprintf(strbuff, "CH_%i    [%c]", channel.GetChannelNum(), symbols[oled_edit_indicator]);
+	sprintf(strbuff, "CH_%i    [%c]", ch_num, sym);
 	twoCQ.display.WriteString(strbuff, Font_11x18, true);
 
 	twoCQ.display.SetCursor(0, 20);
 	strbuff[0] = '\0';
-	sprintf(strbuff, "Rt %s, Oc %i", QuantizeUtils::noteName(channel.rootNote).c_str(), channel.octaveShift);
+	sprintf(strbuff, "Rt %s, Oc %i", note_name.c_str(), oct);
 	twoCQ.display.WriteString(strbuff, Font_11x18, true);
 
 	twoCQ.display.SetCursor(0, 40);
 	strbuff[0] = '\0';
-	sprintf(strbuff, "Sc %s", QuantizeUtils::scaleName(channel.scale).c_str());
+	sprintf(strbuff, "Sc %s", scale.c_str());
 	twoCQ.display.WriteString(strbuff, Font_11x18, true);
 
 	twoCQ.display.Update();
@@ -106,7 +112,7 @@ void AudioCallback(AudioHandle::InputBuffer in,
 	ch_reset.Debounce();
 	ch_select.Debounce();
 	float gain_adj = -1.0f / 10.0f;
-	float min = 5.0f*gain_adj;
+	float min = 5.0f * gain_adj;
 	for (size_t i = 0; i < size; i++)
 	{
 		OUT_L[i] = std::max(channels[CH_1].GetVoctOut() * gain_adj, min);

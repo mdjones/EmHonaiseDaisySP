@@ -2,6 +2,13 @@
 
 namespace QuantizeUtils {
 
+	//Sparcity masks
+	int FULL_MASK [8]= {1, 1, 1, 1, 1, 1, 1, 1};
+	int ROOT_MASK [8]= {1, 0, 0, 0, 0, 0, 0, 0};
+	int FIFTH_MASK [8]= {1, 0, 0, 0, 1, 0, 0, 0};
+	int THIRD_MASK [8]= {1, 0, 1, 0, 1, 0, 0, 0};
+
+
 	//copied & fixed these scales http://www.grantmuller.com/MidiReference/doc/midiReference/ScaleReference.html
 	//more scales http://lawriecape.co.uk/theblog/index.php/archives/881
 	int SCALE_AEOLIAN        [8] = {0, 2, 3, 5, 7, 8, 10, 12};
@@ -58,6 +65,14 @@ namespace QuantizeUtils {
 		TURKISH,
 		NONE,
 		NUM_SCALES
+	};
+
+	enum SparcityEnum {
+		FULL,
+		ROOT,
+		FIFTH,
+		THIRD,
+		NUM_SPARCITIES
 	};
 
 	// long printIter = 0;
@@ -158,6 +173,16 @@ namespace QuantizeUtils {
 			case PHRYGIAN:       return "Phrygian";
 			case TURKISH:        return "Turkish";
 			case NONE:           return "None";
+			default: return "";
+		}
+	}
+
+	std::string sparcityName(int sparcity) {
+		switch(sparcity){
+			case FULL:  return "Full";
+			case ROOT:  return "Root";
+			case FIFTH: return "Fifth";
+			case THIRD: return "Third";
 			default: return "";
 		}
 	}

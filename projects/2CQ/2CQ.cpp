@@ -62,9 +62,8 @@ void UpdateOled(Channel &channel)
 	twoCQ.display.Update();
 }
 
-bool SetCurrentChannelEdits(Channel &channel)
+bool SetCurrentChannelEdits(Channel &channel, bool force = false)
 {
-	hw.PrintLine("Edit Channel %d", channel.GetChannelNum());
 	bool changed = false;
 
 	int rootNote = twoCQ.GetRootNote();
@@ -72,19 +71,19 @@ bool SetCurrentChannelEdits(Channel &channel)
 	int octaveShift = twoCQ.GetOctaveShift();
 
 	// Check is a knob has been turned recently and if so update the channel
-	if (cur_rootNote != rootNote)
+	if ((cur_rootNote != rootNote) || force)
 	{
 		cur_rootNote = rootNote;
 		channel.rootNote = rootNote;
 		changed = true;
 	}
-	if (cur_scale != scale)
+	if ((cur_scale != scale) || force)
 	{
 		cur_scale = scale;
 		channel.scale = scale;
 		changed = true;
 	}
-	if (cur_octaveShift != octaveShift)
+	if ((cur_octaveShift != octaveShift) || force)
 	{
 		cur_octaveShift = octaveShift;
 		channel.octaveShift = octaveShift;
@@ -97,7 +96,7 @@ bool SetCurrentChannelEdits(Channel &channel)
  * I expected hw.audio.SetPostGain(-0.1f); to work to invert the audio cignal
  * but it did not. So I am doing it manually here.
  * https://github.com/electro-smith/libDaisy/issues/575
- * OUT_L is not a perfect match to CV_OUT_1 but it's close enough for 
+ * OUT_L is not a perfect match to CV_OUT_1 but it's close enough for
  * functional testing.
  */
 void AudioCallback(AudioHandle::InputBuffer in,
@@ -105,12 +104,11 @@ void AudioCallback(AudioHandle::InputBuffer in,
 				   size_t size)
 {
 	hw.ProcessAllControls();
-
-	float gain_adj = -1.0f/10.0f;
+	float gain_adj = -1.0f / 10.0f;
 	for (size_t i = 0; i < size; i++)
 	{
-		OUT_L[i] = channels[CH_1].GetVoctOut()*gain_adj;
-		OUT_R[i] = channels[CH_2].GetVoctOut()*gain_adj;
+		OUT_L[i] = channels[CH_1].GetVoctOut() * gain_adj;
+		OUT_R[i] = channels[CH_2].GetVoctOut() * gain_adj;
 	}
 }
 
@@ -157,16 +155,16 @@ int main(void)
 	oled_edit_indicator = 0;
 
 	ChannelNum init_channel_num = GetCurrentChannel();
+	hw.ProcessAllControls();
+	SetCurrentChannelEdits(channels[init_channel_num], true);
+	UpdateOled(channels[init_channel_num]);
+
 	while (1)
 	{
 		cnt += 1;
 
 		// Set channel inputs
 		ChannelNum edit_ch_num = GetCurrentChannel();
-		if (cnt == 1)
-		{
-			UpdateOled(channels[edit_ch_num]);
-		}
 
 		if (init_channel_num != edit_ch_num)
 		{
@@ -203,10 +201,11 @@ int main(void)
 
 		if (debug)
 		{
-			//hw.PrintLine("~########## %d #############", cnt);
-			//hw.PrintLine("Channel Num: %i", edit_ch_num);
-			//hw.PrintLine("GetVoctOut[%i]: %f", edit_ch_num, channels[edit_ch_num].GetVoctOut());
-			//hw.PrintLine("%s", edit_ch_num == CH_1 ? "CH_1" : "CH_2");
+			hw.PrintLine("~########## %d #############", cnt);
+
+			// hw.PrintLine("Channel Num: %i", edit_ch_num);
+			// hw.PrintLine("GetVoctOut[%i]: %f", edit_ch_num, channels[edit_ch_num].GetVoctOut());
+			// hw.PrintLine("%s", edit_ch_num == CH_1 ? "CH_1" : "CH_2");
 		}
 		message_idx = (message_idx + 1) % 5;
 	}

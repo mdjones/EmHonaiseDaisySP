@@ -47,7 +47,7 @@ void Splash()
 		twoCQ.display.SetCursor(0, 35);
 		twoCQ.display.WriteString(progress.c_str(), Font_16x26, true);
 		twoCQ.display.Update();
-		hw.Delay(100);
+		hw.Delay(75);
 	}
 	twoCQ.display.Fill(false);
 	twoCQ.display.SetCursor(0, 0);
@@ -55,7 +55,7 @@ void Splash()
 	twoCQ.display.SetCursor(0, 35);
 	twoCQ.display.WriteString("by EmHonaise", Font_11x18, true);
 	twoCQ.display.Update();
-	hw.Delay(2000);
+	hw.Delay(500);
 }
 
 void UpdateOled(Channel &channel)

@@ -12,7 +12,7 @@ two_cq::TwoCQ twoCQ = two_cq::TwoCQ(hw);
 
 Switch ch_select, ch_reset;
 
-bool debug = true;
+bool debug = false;
 
 uint8_t message_idx;
 uint8_t oled_edit_indicator;

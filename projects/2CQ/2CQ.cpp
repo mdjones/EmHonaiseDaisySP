@@ -106,10 +106,11 @@ void AudioCallback(AudioHandle::InputBuffer in,
 	ch_reset.Debounce();
 	ch_select.Debounce();
 	float gain_adj = -1.0f / 10.0f;
+	float min = 5.0f*gain_adj;
 	for (size_t i = 0; i < size; i++)
 	{
-		OUT_L[i] = channels[CH_1].GetVoctOut() * gain_adj;
-		OUT_R[i] = channels[CH_2].GetVoctOut() * gain_adj;
+		OUT_L[i] = std::max(channels[CH_1].GetVoctOut() * gain_adj, min);
+		OUT_R[i] = std::max(channels[CH_2].GetVoctOut() * gain_adj, min);
 	}
 }
 

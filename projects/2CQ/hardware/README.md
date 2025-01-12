@@ -53,6 +53,11 @@ Correction: Based on <https://forum.electro-smith.com/t/connecting-an-oled-to-th
 
 <https://forum.electro-smith.com/t/frequently-asked-questions-specifically-about-patch-init/2630/5>
 
+## Using the Audio outs as CV outs
+
+<https://forum.electro-smith.com/t/audio-outputs-negate-the-value-i-send-from-firmware/3566/8>
+
+
 
 ## Trouble shooting
 

@@ -93,15 +93,24 @@ bool SetCurrentChannelEdits(Channel &channel)
 	return changed;
 }
 
+/**
+ * I expected hw.audio.SetPostGain(-0.1f); to work to invert the audio cignal
+ * but it did not. So I am doing it manually here.
+ * https://github.com/electro-smith/libDaisy/issues/575
+ * OUT_L is not a perfect match to CV_OUT_1 but it's close enough for 
+ * functional testing.
+ */
 void AudioCallback(AudioHandle::InputBuffer in,
 				   AudioHandle::OutputBuffer out,
 				   size_t size)
 {
 	hw.ProcessAllControls();
+
+	float gain_adj = -1.0f/10.0f;
 	for (size_t i = 0; i < size; i++)
 	{
-		//OUT_L[i] = channels[CH_1].GetVoctOut();
-		//OUT_R[i] =channels[CH_2].GetVoctOut();
+		OUT_L[i] = channels[CH_1].GetVoctOut()*gain_adj;
+		OUT_R[i] = channels[CH_2].GetVoctOut()*gain_adj;
 	}
 }
 

@@ -216,7 +216,7 @@ namespace two_cq
         // TODO: Revert to !gatePatchedSwitch_.Pressed() when I have the thonk wired
         // up
         // return gatePatchedSwitch_.Pressed();
-        return true;
+        return false;
     }
 
     /** Quantize any voltage from 0-5 */
@@ -230,10 +230,6 @@ namespace two_cq
             scale);
 
         quant_voct_ += octaveShift;
-        //patch.PrintLine("Channel %d: in_adc: %f", channelNum_, in_adc);
-        //patch.PrintLine("Channel %d: in_voct: %f", channelNum_, in_voct);
-        //patch.PrintLine("Channel %d: quant_voct: %f", channelNum_, quant_voct_);
-        //patch.PrintLine("Channel %d: out_voct_: %f", channelNum_, out_voct_);
     }
 
     bool Channel::quant_voct_changed()
@@ -246,8 +242,6 @@ namespace two_cq
     {
         out_voct_ = quant_voct_;
         patch.WriteCvOut(out_voct_accessor_, out_voct_);
-        //patch.PrintLine("Channel %d: out_voct_ %f", channelNum_, out_voct_);
-        //patch.PrintLine("Channel %d: quant_voct_!! %f", channelNum_, quant_voct_);
     }
 
 } // namespace two_cq_hw

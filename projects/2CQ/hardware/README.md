@@ -34,15 +34,15 @@ Correction: Based on <https://forum.electro-smith.com/t/connecting-an-oled-to-th
 
 > note! I am using +3V3 instead of +5V5 as above.
 
-| OLED Pin Name | patch_sm pin | function | P1-M12 patch.Init() breakout |
-| ------------- | ------------ | -------- | ---------------------------- |
-| GND           | A4           | GND      | 12                           |
-| VCC           | A10          | +3V3     | 1                            |
-| D0            | D10          | SCLK     | 7                            |
-| D1            | D9           | MOSI     | 5                            |
-| RES           | A3           | RESET    | 10                           |
-| DC            | A2           | dc       | 9                            |
-| C5            | Not Wired    |          | Not wired                    |
+| OLED Pin Name | patch_sm pin | function | P1-M12 patch.Init() breakout | Wire color |
+| ------------- | ------------ | -------- | ---------------------------- | ---------- |
+| GND           | A4           | GND      | 12                           | black      |
+| VCC           | A10          | +3V3     | 1                            | white      |
+| D0            | D10          | SCLK     | 7                            | grey       |
+| D1            | D9           | MOSI     | 5                            | purple     |
+| RES           | A3           | RESET    | 10                           | blue       |
+| DC            | A2           | dc       | 9                            | green      |
+| C5            | Not Wired    |          | Not wired                    | Not wired  |
 
 
 ## 3 Way Switch

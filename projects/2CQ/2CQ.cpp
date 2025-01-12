@@ -1,6 +1,5 @@
 #include "daisy_patch_sm.h"
 #include "daisysp.h"
-// #include "Channel.cpp"
 #include "two_cq_hw.cpp"
 
 using namespace daisy;
@@ -13,7 +12,7 @@ two_cq::TwoCQ twoCQ = two_cq::TwoCQ(hw);
 
 Switch ch_toggle;
 
-bool debug = true;
+bool debug = false;
 
 uint8_t message_idx;
 uint8_t oled_edit_indicator;
@@ -94,7 +93,6 @@ bool SetCurrentChannelEdits(Channel &channel)
 	return changed;
 }
 
-// TODO: I can probably remove this function
 void AudioCallback(AudioHandle::InputBuffer in,
 				   AudioHandle::OutputBuffer out,
 				   size_t size)
@@ -198,8 +196,8 @@ int main(void)
 		{
 			//hw.PrintLine("~########## %d #############", cnt);
 			//hw.PrintLine("Channel Num: %i", edit_ch_num);
-			hw.PrintLine("GetVoctOut[%i]: %f", edit_ch_num, channels[edit_ch_num].GetVoctOut());
-			hw.PrintLine("%s", edit_ch_num == CH_1 ? "CH_1" : "CH_2");
+			//hw.PrintLine("GetVoctOut[%i]: %f", edit_ch_num, channels[edit_ch_num].GetVoctOut());
+			//hw.PrintLine("%s", edit_ch_num == CH_1 ? "CH_1" : "CH_2");
 		}
 		message_idx = (message_idx + 1) % 5;
 	}

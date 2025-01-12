@@ -22,7 +22,7 @@ has been triggered.
 * Root knob: Select the scales root note
 * Octave knob: Select the scales octave
 * Sparse knob: Select the sparcity of the scale
-* V/OCT. IN: Channel V/OCT. input
+* V/OCT. IN: Channel V/OCT. input. Voltage outside of the 0-5 V will be ignored.
 * Gate IN: Gate ins for each channel.
 * Gate OUT: Gate out for each channel. If there is now gate input a gate will
 be emitted if the note changes. Otherwise a gate will be emitted whenever an

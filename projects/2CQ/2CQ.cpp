@@ -15,7 +15,7 @@ Switch ch_select, ch_reset;
 bool debug = false;
 
 uint8_t message_idx;
-uint8_t oled_edit_indicator;
+uint8_t oled_quant_indicator=0;
 char symbols[5] = {'-', '\\', '|', '/', '-'};
 
 // To detect any knob adjustments
@@ -66,7 +66,7 @@ void UpdateOled(Channel &channel)
 	twoCQ.display.Fill(false);
 
 	int ch_num = channel.GetChannelNum();
-	char sym = symbols[oled_edit_indicator];
+	char sym = symbols[oled_quant_indicator];
 	std::string note = QuantizeUtils::noteName(channel.rootNote) + std::to_string(channel.octaveShift);
 	note = QuantizeUtils::PadString(note, 3);
 	std::string scale = QuantizeUtils::scaleName(channel.scale);
@@ -88,6 +88,12 @@ void UpdateOled(Channel &channel)
 	twoCQ.display.WriteString(strbuff, Font_11x18, true);
 
 	twoCQ.display.Update();
+}
+
+void QuantEventIndicator(Channel &channel)
+{
+	oled_quant_indicator = (oled_quant_indicator + 1) % 5;
+	UpdateOled(channel);
 }
 
 bool SetCurrentChannelEdits(Channel &channel, bool force = false)
@@ -191,7 +197,6 @@ int main(void)
 
 	int cnt = 0;
 	message_idx = 0;
-	oled_edit_indicator = 0;
 
 	ChannelNum init_channel_num = GetCurrentChannel();
 	hw.ProcessAllControls();
@@ -221,7 +226,6 @@ int main(void)
 
 		if (SetCurrentChannelEdits(channels[edit_ch_num], ch_reset.Pressed()))
 		{
-			oled_edit_indicator = (oled_edit_indicator + 1) % 5;
 			UpdateOled(channels[edit_ch_num]);
 		}
 
@@ -231,17 +235,20 @@ int main(void)
 			if (channels[i].scale == QuantizeUtils::ScaleEnum::NONE)
 			{
 				channels[i].set_quant2voct();
+				QuantEventIndicator(channels[i]);
 			}
 			else if (channels[i].gate_patched() && channels[i].GetGateIn().State())
 			{
 				// requant incase it has changed very recently
 				channels[i].quantize();
 				channels[i].set_quant2voct();
+				QuantEventIndicator(channels[i]);
 				channels[i].trig();
 			}
 			else if (!channels[i].gate_patched() && channels[i].quant_voct_changed())
 			{
 				channels[i].set_quant2voct();
+				QuantEventIndicator(channels[i]);
 				channels[i].trig();
 			}
 		}

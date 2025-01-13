@@ -99,13 +99,13 @@ namespace QuantizeUtils {
 		NUM_SCALES
 	};
 
-	enum SparcityEnum {
+	enum MaskEnum {
 		FULL,
 		THIRD_FIFTH,
 		THIRD,
 		FIFTH,
 		ROOT,
-		NUM_SPARCITY
+		NUM_MASKS
 	};
 
 	// long printIter = 0;
@@ -225,7 +225,7 @@ namespace QuantizeUtils {
 		}
 	}
 
-	std::string sparcityName(int sparcity) {
+	std::string maskName(int sparcity) {
 		switch(sparcity){
 			case FULL:  return "Full";
 			case THIRD_FIFTH: return "+5th,3rd";

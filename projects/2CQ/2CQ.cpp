@@ -19,7 +19,7 @@ uint8_t oled_quant_indicator=0;
 char symbols[5] = {'-', '\\', '|', '/', '-'};
 
 // To detect any knob adjustments
-int cur_rootNote, cur_scale, cur_octaveShift, cur_sparcity;
+int cur_rootNote, cur_scale, cur_octaveShift, cur_mask;
 
 enum ChannelNum
 {
@@ -70,7 +70,7 @@ void UpdateOled(Channel &channel)
 	std::string note = QuantizeUtils::noteName(channel.rootNote) + std::to_string(channel.octaveShift);
 	note = QuantizeUtils::PadString(note, 3);
 	std::string scale = QuantizeUtils::scaleName(channel.scale);
-	std::string sparcity = QuantizeUtils::sparcityName(channel.sparcity);
+	std::string mask = QuantizeUtils::maskName(channel.mask);
 
 	twoCQ.display.SetCursor(0, 0);
 	strbuff[0] = '\0';
@@ -84,7 +84,7 @@ void UpdateOled(Channel &channel)
 
 	twoCQ.display.SetCursor(0, 40);
 	strbuff[0] = '\0';
-	sprintf(strbuff, "%s", sparcity.c_str());
+	sprintf(strbuff, "%s", mask.c_str());
 	twoCQ.display.WriteString(strbuff, Font_11x18, true);
 
 	twoCQ.display.Update();
@@ -103,7 +103,7 @@ bool SetCurrentChannelEdits(Channel &channel, bool force = false)
 	int rootNote = twoCQ.GetRootNote();
 	int scale = twoCQ.GetScale();
 	int octaveShift = twoCQ.GetOctaveShift();
-	int sparcity = twoCQ.GetScaleSparcity();
+	int mask = twoCQ.GetScaleMask();
 
 	// Check is a knob has been turned recently and if so update the channel
 	if ((cur_rootNote != rootNote) || force)
@@ -124,10 +124,10 @@ bool SetCurrentChannelEdits(Channel &channel, bool force = false)
 		channel.octaveShift = octaveShift;
 		changed = true;
 	}
-	if ((cur_sparcity != sparcity) || force)
+	if ((cur_mask != mask) || force)
 	{
-		cur_sparcity = sparcity;
-		channel.sparcity = sparcity;
+		cur_mask = mask;
+		channel.mask = mask;
 		changed = true;
 	}
 	return changed;
@@ -204,7 +204,7 @@ int main(void)
 	cur_rootNote = twoCQ.GetRootNote();
 	cur_scale = twoCQ.GetScale();
 	cur_octaveShift = twoCQ.GetOctaveShift();
-	cur_sparcity = twoCQ.GetScaleSparcity();
+	cur_mask = twoCQ.GetScaleMask();
 
 	SetCurrentChannelEdits(channels[init_channel_num], true);
 	UpdateOled(channels[init_channel_num]);

@@ -26,7 +26,7 @@ namespace two_cq
     constexpr int ROOT_ADC_IN = patch_sm::CV_1;    // C5
     constexpr int SCALE_ADC_IN = patch_sm::CV_2;   // C4
     constexpr int OCATAVE_ADC_IN = patch_sm::CV_3; // C3
-    constexpr int SPARSE_ADC_IN = patch_sm::CV_4; // C2
+    constexpr int MASK_ADC_IN = patch_sm::CV_4; // C2
 
     constexpr static Pin CH_RESET = DaisyPatchSM::B7;
     constexpr static Pin CH_SELECT = DaisyPatchSM::B8;
@@ -94,7 +94,7 @@ namespace two_cq
         int GetRootNote();
         int GetScale();
         int GetOctaveShift();
-        int GetScaleSparcity();
+        int GetScaleMask();
 
         using Display = OledDisplay<SSD130x4WireSpi128x64Driver>;
         Display display;
@@ -127,12 +127,12 @@ namespace two_cq
         return octaveShift;
     }
 
-    int TwoCQ::GetScaleSparcity()
+    int TwoCQ::GetScaleMask()
     {
-        float adc = patch.GetAdcValue(SPARSE_ADC_IN);
-        int scaleSparcity = QuantizeUtils::rescalefjw(
-                    adc, 0, 1, 0, QuantizeUtils::NUM_SPARCITY);
-        return scaleSparcity;
+        float adc = patch.GetAdcValue(MASK_ADC_IN);
+        int scaleMask = QuantizeUtils::rescalefjw(
+                    adc, 0, 1, 0, QuantizeUtils::NUM_MASKS);
+        return scaleMask;
     }
 
     class Channel
@@ -172,7 +172,7 @@ namespace two_cq
         int rootNote;
         int scale;
         int octaveShift;
-        int sparcity;
+        int mask;
     };
 
     void Channel::Init(
@@ -193,7 +193,7 @@ namespace two_cq
         rootNote = 0;
         scale = 0;
         octaveShift = 0;
-        sparcity = 0;
+        mask = 0;
 
         quantize();
         set_quant2voct();
@@ -244,7 +244,7 @@ namespace two_cq
             in_voct,
             rootNote,
             scale,
-            sparcity,
+            mask,
             patch);
 
         quant_voct_ += octaveShift;

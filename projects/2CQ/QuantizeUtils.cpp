@@ -225,14 +225,45 @@ namespace QuantizeUtils {
 		}
 	}
 
-	std::string maskName(int mask) {
-		//Currenltly only only works with 8 note scales
-		//May need to do some fancy array stuff to make this work with other 
-		//scales
+	std::string maskName(int mask, int scale) {
+		//Mask and scale size must be the same
+		//I don't know of a better way to calculate this that doesn't inolve
+		//duplication of the switch statements
+		int notesInMask = 0;
+		switch(mask){ 
+			case FULL: notesInMask=arraySize(FULL_MASK); break;
+			case THIRD_FIFTH: notesInMask = arraySize(THIRD_FIFTH_MASK); break;
+			case THIRD: notesInMask = arraySize(THIRD_MASK); break;
+			case FIFTH: notesInMask = arraySize(FIFTH_MASK); break;
+			case ROOT:  notesInMask = arraySize(ROOT_MASK); break;
+		}
 
+		int notesInScale = 0;
+		switch(scale){
+			case AEOLIAN:       notesInScale=arraySize(SCALE_AEOLIAN); break;
+			case BLUES:         notesInScale=arraySize(SCALE_BLUES); break;
+			case CHROMATIC:      notesInScale=arraySize(SCALE_CHROMATIC); break;
+			case DIATONIC_MINOR: notesInScale=arraySize(SCALE_DIATONIC_MINOR); break;
+			case DORIAN:         notesInScale=arraySize(SCALE_DORIAN); break;
+			case HARMONIC_MINOR: notesInScale=arraySize(SCALE_HARMONIC_MINOR); break;
+			case INDIAN:         notesInScale=arraySize(SCALE_INDIAN); break;
+			case LOCRIAN:       notesInScale=arraySize(SCALE_LOCRIAN); break;
+			case LYDIAN:         notesInScale=arraySize(SCALE_LYDIAN); break;
+			case MAJOR:          notesInScale=arraySize(SCALE_MAJOR); break;
+			case MELODIC_MINOR:  notesInScale=arraySize(SCALE_MELODIC_MINOR); break;
+			case MINOR:          notesInScale=arraySize(SCALE_MINOR); break;
+			case MIXOLYDIAN:     notesInScale=arraySize(SCALE_MIXOLYDIAN); break;
+			case NATURAL_MINOR:  notesInScale=arraySize(SCALE_NATURAL_MINOR); break;
+			case PENTATONIC:     notesInScale=arraySize(SCALE_PENTATONIC); break;
+			case PHRYGIAN:       notesInScale=arraySize(SCALE_PHRYGIAN); break;
+			case TURKISH:        notesInScale=arraySize(SCALE_TURKISH); break;
+		}
 		
+		if (notesInMask != notesInScale) {
+			return "No mask";
+		}
 		switch(mask){
-			case FULL:  return "Full";
+			case FULL:  return "Full scale";
 			case THIRD_FIFTH: return "+5th,3rd";
 			case THIRD: return "+3rd";
 			case FIFTH: return "+5th";

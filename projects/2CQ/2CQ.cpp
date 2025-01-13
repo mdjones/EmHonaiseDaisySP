@@ -70,7 +70,7 @@ void UpdateOled(Channel &channel)
 	std::string note = QuantizeUtils::noteName(channel.rootNote) + std::to_string(channel.octaveShift);
 	note = QuantizeUtils::PadString(note, 3);
 	std::string scale = QuantizeUtils::scaleName(channel.scale);
-	std::string mask = QuantizeUtils::maskName(channel.mask);
+	std::string mask = QuantizeUtils::maskName(channel.mask, channel.scale);
 
 	twoCQ.display.SetCursor(0, 0);
 	strbuff[0] = '\0';

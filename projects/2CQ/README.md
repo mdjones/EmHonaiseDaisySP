@@ -21,7 +21,7 @@ has been triggered.
 * Scale knob: Select the scale. Position 1 is chromatic.
 * Root knob: Select the scales root note.
 * Octave knob: Select the octave.
-* Sparse knob: Select the sparcity of the scale.
+* Mask knob: Select the scale mask.
 * V/OCT. IN: Channel V/OCT. input. Voltage outside of the 0-5 V will be ignored.
 * Gate IN: Gate ins for each channel.
 * Gate OUT: Gate out for each channel. If there is no gate input a gate will

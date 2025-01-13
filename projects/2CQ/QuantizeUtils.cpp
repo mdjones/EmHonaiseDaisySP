@@ -112,7 +112,7 @@ namespace QuantizeUtils {
 	float closestVoltageInScale(float voltsIn, 
 								int rootNote, 
 								int currScale,
-								int sparcity,
+								int mask,
 								DaisyPatchSM &patch) {
 		int *curScaleArr;
 		int notesInScale = 0;
@@ -138,17 +138,17 @@ namespace QuantizeUtils {
 		}
 
 		std::vector<int> scaleVector(curScaleArr, curScaleArr + notesInScale);
-		std::vector<bool> mask;
+		std::vector<bool> maskVector;
 
-		switch(sparcity){
-			case FULL:  mask = std::vector<bool>(FULL_MASK, FULL_MASK + MASK_SIZE); break;
-			case THIRD_FIFTH: mask = std::vector<bool>(THIRD_FIFTH_MASK, THIRD_FIFTH_MASK + MASK_SIZE); break;
-			case THIRD: mask = std::vector<bool>(THIRD_MASK, THIRD_MASK + MASK_SIZE); break;
-			case FIFTH: mask = std::vector<bool>(FIFTH_MASK, FIFTH_MASK + MASK_SIZE); break;
-			case ROOT:  mask = std::vector<bool>(ROOT_MASK, ROOT_MASK + MASK_SIZE); break;
+		switch(mask){
+			case FULL:  maskVector = std::vector<bool>(FULL_MASK, FULL_MASK + MASK_SIZE); break;
+			case THIRD_FIFTH: maskVector = std::vector<bool>(THIRD_FIFTH_MASK, THIRD_FIFTH_MASK + MASK_SIZE); break;
+			case THIRD: maskVector = std::vector<bool>(THIRD_MASK, THIRD_MASK + MASK_SIZE); break;
+			case FIFTH: maskVector = std::vector<bool>(FIFTH_MASK, FIFTH_MASK + MASK_SIZE); break;
+			case ROOT:  maskVector = std::vector<bool>(ROOT_MASK, ROOT_MASK + MASK_SIZE); break;
 		}
 
-		std::vector<int> maskedScale = ApplyMask(scaleVector, mask);
+		std::vector<int> maskedScale = ApplyMask(scaleVector, maskVector);
 
 		//C1 == -2.00, C2 == -1.00, C3 == 0.00, C4 == 1.00
 		//B1 == -1.08, B2 == -0.08, B3 == 0.92, B4 == 1.92
@@ -225,8 +225,13 @@ namespace QuantizeUtils {
 		}
 	}
 
-	std::string maskName(int sparcity) {
-		switch(sparcity){
+	std::string maskName(int mask) {
+		//Currenltly only only works with 8 note scales
+		//May need to do some fancy array stuff to make this work with other 
+		//scales
+
+		
+		switch(mask){
 			case FULL:  return "Full";
 			case THIRD_FIFTH: return "+5th,3rd";
 			case THIRD: return "+3rd";

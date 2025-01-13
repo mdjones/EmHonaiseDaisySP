@@ -30,12 +30,15 @@ namespace QuantizeUtils {
 		return result;
 	}
 
+	int NUM_OCTAVES = 5;
+
 	//Sparcity masks
 	int MASK_SIZE = 8;
 	bool FULL_MASK [8]= {true, true, true, true, true, true, true, true};
-	bool ROOT_MASK [8]= {true, false, false, false, false, false, false, false};
+	bool THIRD_FIFTH_MASK [8]= {true, false, true, false, true, false, false, false};
 	bool FIFTH_MASK [8]= {true, false, false, false, true, false, false, false};
-	bool THIRD_MASK [8]= {true, false, true, false, true, false, false, false};
+	bool THIRD_MASK [8]= {true, false, true, false, false, false, false, false};
+	bool ROOT_MASK [8]= {true, false, false, false, false, false, false, false};
 
 
 	//copied & fixed these scales http://www.grantmuller.com/MidiReference/doc/midiReference/ScaleReference.html
@@ -98,10 +101,11 @@ namespace QuantizeUtils {
 
 	enum SparcityEnum {
 		FULL,
-		ROOT,
-		FIFTH,
+		THIRD_FIFTH,
 		THIRD,
-		NUM_SPARCITIES
+		FIFTH,
+		ROOT,
+		NUM_SPARCITY
 	};
 
 	// long printIter = 0;
@@ -136,11 +140,12 @@ namespace QuantizeUtils {
 		std::vector<int> scaleVector(curScaleArr, curScaleArr + notesInScale);
 		std::vector<bool> mask;
 
-		switch (sparcity) {
-			case FULL:  mask.assign(FULL_MASK, FULL_MASK + MASK_SIZE); break;
-			case ROOT:  mask.assign(ROOT_MASK, ROOT_MASK + MASK_SIZE); break;
-			case FIFTH: mask.assign(FIFTH_MASK, FIFTH_MASK + MASK_SIZE); break;
-			case THIRD: mask.assign(THIRD_MASK, THIRD_MASK + MASK_SIZE); break;
+		switch(sparcity){
+			case FULL:  mask = std::vector<bool>(FULL_MASK, FULL_MASK + MASK_SIZE); break;
+			case THIRD_FIFTH: mask = std::vector<bool>(THIRD_FIFTH_MASK, THIRD_FIFTH_MASK + MASK_SIZE); break;
+			case THIRD: mask = std::vector<bool>(THIRD_MASK, THIRD_MASK + MASK_SIZE); break;
+			case FIFTH: mask = std::vector<bool>(FIFTH_MASK, FIFTH_MASK + MASK_SIZE); break;
+			case ROOT:  mask = std::vector<bool>(ROOT_MASK, ROOT_MASK + MASK_SIZE); break;
 		}
 
 		std::vector<int> maskedScale = ApplyMask(scaleVector, mask);
@@ -223,9 +228,11 @@ namespace QuantizeUtils {
 	std::string sparcityName(int sparcity) {
 		switch(sparcity){
 			case FULL:  return "Full";
-			case ROOT:  return "Root";
+			case THIRD_FIFTH: return "+5th,3rd";
+			case THIRD: return "+3rd";
 			case FIFTH: return "+5th";
-			case THIRD: return "+5th,3rd";
+			case ROOT:  return "Root";
+			
 			default: return "";
 		}
 	}

@@ -106,28 +106,32 @@ namespace two_cq
     int TwoCQ::GetRootNote()
     {
         float adc = patch.GetAdcValue(ROOT_ADC_IN);
-        int rootNote = QuantizeUtils::rescalefjw(adc, 0, 1, 0, QuantizeUtils::NUM_NOTES);
+        int rootNote = QuantizeUtils::rescalefjw(
+            adc, 0, 1, 0, QuantizeUtils::NUM_NOTES);
         return rootNote;
     }
 
     int TwoCQ::GetScale()
     {
         float adc = patch.GetAdcValue(SCALE_ADC_IN);
-        int scale = QuantizeUtils::rescalefjw(adc, 0, 1, 0, QuantizeUtils::NUM_SCALES);
+        int scale = QuantizeUtils::rescalefjw(
+            adc, 0, 1, 0, QuantizeUtils::NUM_SCALES);
         return scale;
     }
 
     int TwoCQ::GetOctaveShift()
     {
         float adc = patch.GetAdcValue(OCATAVE_ADC_IN);
-        int octaveShift = QuantizeUtils::rescalefjw(adc, 0, 1, 0, 5);
+        int octaveShift = QuantizeUtils::rescalefjw(
+            adc, 0, 1, 0, QuantizeUtils::NUM_OCTAVES);
         return octaveShift;
     }
 
     int TwoCQ::GetScaleSparcity()
     {
         float adc = patch.GetAdcValue(SPARSE_ADC_IN);
-        int scaleSparcity = QuantizeUtils::rescalefjw(adc, 0, 1, 0, 4);
+        int scaleSparcity = QuantizeUtils::rescalefjw(
+                    adc, 0, 1, 0, QuantizeUtils::NUM_SPARCITY);
         return scaleSparcity;
     }
 

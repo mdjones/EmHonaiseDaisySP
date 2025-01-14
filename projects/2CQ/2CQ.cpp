@@ -134,6 +134,12 @@ bool SetCurrentChannelEdits(Channel &channel, bool force = false)
 }
 
 /**
+ * 
+ * patch.Init() uses CV_OUT_2 for an LED
+ * So I am doing a hack and sending these to
+ * OUT_L[i] and OUT_R[i] too. Will not need this
+ * For a pure patch_sm implementation. Maybe use
+ * for random quantized voltage.
  * I expected `hw.audio.SetPostGain(-0.1f);` to work to invert the audio cignal
  * but it did not.
  * See: https://github.com/electro-smith/libDaisy/issues/575

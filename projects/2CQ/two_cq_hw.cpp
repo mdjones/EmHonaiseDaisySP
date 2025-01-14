@@ -23,23 +23,19 @@ namespace two_cq
 {
 
     // Hardware Definitions
-    constexpr int ROOT_ADC_IN = patch_sm::CV_1;    // C5
-    constexpr int SCALE_ADC_IN = patch_sm::CV_2;   // C4
-    constexpr int OCATAVE_ADC_IN = patch_sm::CV_3; // C3
-    constexpr int MASK_ADC_IN = patch_sm::CV_4; // C2
+    constexpr int ROOT_ADC_IN = patch_sm::CV_1;     // C5
+    constexpr int SCALE_ADC_IN = patch_sm::CV_2;    // C4
+    constexpr int OCATAVE_ADC_IN = patch_sm::CV_3;  // C3
+    constexpr int MASK_ADC_IN = patch_sm::CV_4;     // C2
 
     constexpr static Pin CH_RESET = DaisyPatchSM::B7;
     constexpr static Pin CH_SELECT = DaisyPatchSM::B8;
 
-    constexpr int CH1_IN_VOCT = patch_sm::CV_5;
-    constexpr int CH2_IN_VOCT = patch_sm::CV_6;
-    // patch.Init() uses CV_OUT_2 for an LED
-    // So I am doing a hack and sending these to
-    // OUT_L[i] and OUT_R[i] too. Will not need this
-    // For a pure patch_sm implementation. Maybe use
-    // for random quantized voltage.
-    constexpr int CH1_OUT_VOCT = patch_sm::CV_OUT_1;
-    constexpr int CH2_OUT_VOCT = patch_sm::CV_OUT_2;
+    constexpr int CH1_IN_VOCT = patch_sm::CV_5; // C6
+    constexpr int CH2_IN_VOCT = patch_sm::CV_6; // C7
+    
+    constexpr int CH1_OUT_VOCT = patch_sm::CV_OUT_1; // C10
+    constexpr int CH2_OUT_VOCT = patch_sm::CV_OUT_2; // C1
 
     // GATE_IN_1: B10
     // GATE_IN_2: B9

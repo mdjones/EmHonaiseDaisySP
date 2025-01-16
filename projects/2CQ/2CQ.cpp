@@ -90,10 +90,13 @@ void UpdateOled(Channel &channel)
 	twoCQ.display.Update();
 }
 
-void QuantEventIndicator(Channel &channel)
+void QuantEventIndicator(int ch_num, int edit_ch_num)
 {
-	oled_quant_indicator = (oled_quant_indicator + 1) % 5;
-	UpdateOled(channel);
+	if (ch_num == edit_ch_num)
+	{
+		oled_quant_indicator = (oled_quant_indicator + 1) % 5;
+		UpdateOled(channels[ch_num]);
+	}
 }
 
 bool SetCurrentChannelEdits(Channel &channel, bool force = false)
@@ -228,7 +231,7 @@ int main(void)
 			init_channel_num = edit_ch_num;
 		}
 
-		hw.SetLed(ch_reset.Pressed());
+		hw.SetLed(ch_select.Pressed());
 
 		if (SetCurrentChannelEdits(channels[edit_ch_num], ch_reset.Pressed()))
 		{
@@ -241,20 +244,20 @@ int main(void)
 			if (channels[i].scale == QuantizeUtils::ScaleEnum::NONE)
 			{
 				channels[i].set_quant2voct();
-				QuantEventIndicator(channels[i]);
+				QuantEventIndicator(i, edit_ch_num);
 			}
 			else if (channels[i].gate_patched() && channels[i].GetGateIn().State())
 			{
 				// requant incase it has changed very recently
 				channels[i].quantize();
 				channels[i].set_quant2voct();
-				QuantEventIndicator(channels[i]);
+				QuantEventIndicator(i, edit_ch_num);
 				channels[i].trig();
 			}
 			else if (!channels[i].gate_patched() && channels[i].quant_voct_changed())
 			{
 				channels[i].set_quant2voct();
-				QuantEventIndicator(channels[i]);
+				QuantEventIndicator(i, edit_ch_num);
 				channels[i].trig();
 			}
 		}

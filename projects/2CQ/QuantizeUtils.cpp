@@ -32,9 +32,10 @@ namespace QuantizeUtils {
 
 	int NUM_OCTAVES = 5;
 
-	//Sparcity masks
+	//Scale masks
 	int MASK_SIZE = 8;
 	bool FULL_MASK [8]= {true, true, true, true, true, true, true, true};
+	bool THIRD_FIFTH_SIXTH_MASK [8]= {true, false, true, false, true, true, true, false};
 	bool THIRD_FIFTH_SEVENTH_MASK [8]= {true, false, true, false, true, false, true, false};
 	bool THIRD_FIFTH_MASK [8]= {true, false, true, false, true, false, false, false};
 	bool FIFTH_MASK [8]= {true, false, false, false, true, false, false, false};
@@ -102,6 +103,7 @@ namespace QuantizeUtils {
 
 	enum MaskEnum {
 		FULL,
+		THIRD_FIFTH_SIXTH,
 		THIRD_FIFTH_SEVENTH,
 		THIRD_FIFTH,
 		THIRD,
@@ -144,6 +146,7 @@ namespace QuantizeUtils {
 
 		switch(mask){
 			case FULL:  maskVector = std::vector<bool>(FULL_MASK, FULL_MASK + MASK_SIZE); break;
+			case THIRD_FIFTH_SIXTH: maskVector = std::vector<bool>(THIRD_FIFTH_SIXTH_MASK, THIRD_FIFTH_SIXTH_MASK + MASK_SIZE); break;
 			case THIRD_FIFTH_SEVENTH: maskVector = std::vector<bool>(THIRD_FIFTH_SEVENTH_MASK, THIRD_FIFTH_SEVENTH_MASK + MASK_SIZE); break;
 			case THIRD_FIFTH: maskVector = std::vector<bool>(THIRD_FIFTH_MASK, THIRD_FIFTH_MASK + MASK_SIZE); break;
 			case THIRD: maskVector = std::vector<bool>(THIRD_MASK, THIRD_MASK + MASK_SIZE); break;
@@ -235,6 +238,7 @@ namespace QuantizeUtils {
 		int notesInMask = 0;
 		switch(mask){ 
 			case FULL: notesInMask=arraySize(FULL_MASK); break;
+			case THIRD_FIFTH_SIXTH: notesInMask=arraySize(THIRD_FIFTH_SIXTH_MASK); break;
 			case THIRD_FIFTH_SEVENTH: notesInMask=arraySize(THIRD_FIFTH_SEVENTH_MASK); break;
 			case THIRD_FIFTH: notesInMask = arraySize(THIRD_FIFTH_MASK); break;
 			case THIRD: notesInMask = arraySize(THIRD_MASK); break;
@@ -268,6 +272,7 @@ namespace QuantizeUtils {
 		}
 		switch(mask){
 			case FULL:  return "Full scale";
+			case THIRD_FIFTH_SIXTH:  return "+5th,3rd,6th";
 			case THIRD_FIFTH_SEVENTH:  return "+5th,3rd,7th";
 			case THIRD_FIFTH: return "+5th,3rd";
 			case THIRD: return "+3rd";

@@ -57,7 +57,11 @@ Correction: Based on <https://forum.electro-smith.com/t/connecting-an-oled-to-th
 
 <https://forum.electro-smith.com/t/audio-outputs-negate-the-value-i-send-from-firmware/3566/8>
 
+## Knobs
 
+These are probably the knobs. 
+
+<https://www.thonk.co.uk/shop/make-noise-mutable-style-knobs/>
 
 ## Trouble shooting
 

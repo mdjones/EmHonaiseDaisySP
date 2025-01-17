@@ -15,6 +15,7 @@
 #include "dev/oled_ssd130x.h"
 #include "daisy_patch_sm.h"
 #include "QuantizeUtils.cpp"
+#include "two_cq_hw.h"
 
 using namespace daisy;
 using namespace patch_sm;
@@ -22,82 +23,37 @@ using namespace patch_sm;
 namespace two_cq
 {
 
-    // Hardware Definitions
-    constexpr int ROOT_ADC_IN = patch_sm::CV_1;     // C5
-    constexpr int SCALE_ADC_IN = patch_sm::CV_2;    // C4
-    constexpr int OCATAVE_ADC_IN = patch_sm::CV_3;  // C3
-    constexpr int MASK_ADC_IN = patch_sm::CV_4;     // C2
-
-    constexpr static Pin CH_RESET = DaisyPatchSM::B7;
-    constexpr static Pin CH_SELECT = DaisyPatchSM::B8;
-
-    constexpr int CH1_IN_VOCT = patch_sm::CV_5; // C6
-    constexpr int CH2_IN_VOCT = patch_sm::CV_6; // C7
-    
-    constexpr int CH1_OUT_VOCT = patch_sm::CV_OUT_1; // C10
-    constexpr int CH2_OUT_VOCT = patch_sm::CV_OUT_2; // C1
-
-    // GATE_IN_1: B10
-    // GATE_IN_2: B9
-    // GATE_OUT_1: B5
-    // GATE_OUT_2: B6
-    constexpr static Pin CH1_GATE_PATCHED = DaisyPatchSM::B1;
-    constexpr static Pin CH2_GATE_PATCHED = DaisyPatchSM::B2;
-
-    constexpr static Pin OLED_DC = DaisyPatchSM::A2;
-    constexpr static Pin OLED_RST = DaisyPatchSM::A3;
-    constexpr static Pin OLED_SCLK = DaisyPatchSM::D10;
-    constexpr static Pin OLED_MOSI = DaisyPatchSM::D9;
-
-    class TwoCQ
+    void TwoCQ::Init()
     {
-    public:
-        TwoCQ(DaisyPatchSM &patch) : patch(patch) {};
-        ~TwoCQ() {}
 
-        void Init()
-        {
+        Display::Config display_config;
 
-            Display::Config display_config;
+        SpiHandle::Config &spi_conf = display_config.driver_config.transport_config.spi_config;
 
-            SpiHandle::Config &spi_conf = display_config.driver_config.transport_config.spi_config;
+        spi_conf.mode = SpiHandle::Config::Mode::MASTER;             // we're in charge
+        spi_conf.periph = SpiHandle::Config::Peripheral::SPI_2;      // Use the SPI_2 Peripheral
+        spi_conf.direction = SpiHandle::Config::Direction::ONE_LINE; // TWO_LINES_TX_ONLY;
 
-            spi_conf.mode = SpiHandle::Config::Mode::MASTER;             // we're in charge
-            spi_conf.periph = SpiHandle::Config::Peripheral::SPI_2;      // Use the SPI_2 Peripheral
-            spi_conf.direction = SpiHandle::Config::Direction::ONE_LINE; // TWO_LINES_TX_ONLY;
+        spi_conf.datasize = 8;
+        spi_conf.clock_polarity = SpiHandle::Config::ClockPolarity::LOW;
+        spi_conf.clock_phase = SpiHandle::Config::ClockPhase::ONE_EDGE;
+        // spi_conf.nss = SpiHandle::Config::NSS::HARD_OUTPUT;
+        spi_conf.baud_prescaler = SpiHandle::Config::BaudPrescaler::PS_128;
 
-            spi_conf.datasize = 8;
-            spi_conf.clock_polarity = SpiHandle::Config::ClockPolarity::LOW;
-            spi_conf.clock_phase = SpiHandle::Config::ClockPhase::ONE_EDGE;
-            // spi_conf.nss = SpiHandle::Config::NSS::HARD_OUTPUT;
-            spi_conf.baud_prescaler = SpiHandle::Config::BaudPrescaler::PS_128;
+        // Pins to use. These must be available on the selected peripheral
+        spi_conf.pin_config.sclk = OLED_SCLK; // Use pin D10 as SCLK
+        spi_conf.pin_config.miso = Pin();     // We won't need this
+        spi_conf.pin_config.mosi = OLED_MOSI; // Use D9 as MOSI
+        spi_conf.pin_config.nss = Pin();      // DaisyPatchSM::D1;   // use D1 as NSS
 
-            // Pins to use. These must be available on the selected peripheral
-            spi_conf.pin_config.sclk = OLED_SCLK; // Use pin D10 as SCLK
-            spi_conf.pin_config.miso = Pin();     // We won't need this
-            spi_conf.pin_config.mosi = OLED_MOSI; // Use D9 as MOSI
-            spi_conf.pin_config.nss = Pin();      // DaisyPatchSM::D1;   // use D1 as NSS
+        // data will flow from master
+        // The master will output on the NSS line
+        spi_conf.nss = SpiHandle::Config::NSS::SOFT;
 
-            // data will flow from master
-            // The master will output on the NSS line
-            spi_conf.nss = SpiHandle::Config::NSS::SOFT;
-
-            display_config.driver_config.transport_config.pin_config.dc = OLED_DC;
-            display_config.driver_config.transport_config.pin_config.reset = OLED_RST;
-            display.Init(display_config);
-        }
-
-        int GetRootNote();
-        int GetScale();
-        int GetOctaveShift();
-        int GetScaleMask();
-
-        using Display = OledDisplay<SSD130x4WireSpi128x64Driver>;
-        Display display;
-
-    private:
-        DaisyPatchSM &patch;
-    };
+        display_config.driver_config.transport_config.pin_config.dc = OLED_DC;
+        display_config.driver_config.transport_config.pin_config.reset = OLED_RST;
+        display.Init(display_config);
+    }
 
     int TwoCQ::GetRootNote()
     {
@@ -127,49 +83,9 @@ namespace two_cq
     {
         float adc = patch.GetAdcValue(MASK_ADC_IN);
         int scaleMask = QuantizeUtils::rescalefjw(
-                    adc, 0, 1, 0, QuantizeUtils::NUM_MASKS);
+            adc, 0, 1, 0, QuantizeUtils::NUM_MASKS);
         return scaleMask;
     }
-
-    class Channel
-    {
-
-    private:
-        DaisyPatchSM &patch;
-        Switch gatePatchedSwitch_;
-        int in_voct_accessor_;
-        int out_voct_accessor_;
-        float quant_voct_;
-        int channelNum_;
-        float out_voct_;
-        GateIn gate_in_;
-        dsy_gpio gate_out_;
-
-    public:
-        Channel(DaisyPatchSM &patch) : patch(patch) {};
-        ~Channel() {}
-
-        void Init(int channelNum,
-                  GateIn gate_in,
-                  dsy_gpio gate_out,
-                  Pin gate_patched_pin,
-                  int in_voct_accessor,
-                  int out_voct_accessor);
-
-        void quantize();
-        void trig();
-        bool gate_patched();
-        GateIn GetGateIn();
-        bool quant_voct_changed();
-        void set_quant2voct();
-        int GetChannelNum();
-        float GetVoctOut();
-
-        int rootNote;
-        int scale;
-        int octaveShift;
-        int mask;
-    };
 
     void Channel::Init(
         int channelNum,

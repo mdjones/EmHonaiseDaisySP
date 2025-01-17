@@ -18,7 +18,7 @@ To load with dfu-util (i.e. manual reset)
 make clean ; make ; make program-dfu
 ```
 
-To load with OCD with a debugger probe
+To load with OCD and a debugger probe
 
 ```bash
 make clean ; make ; make program

@@ -12,7 +12,7 @@ two_cq::TwoCQ twoCQ = two_cq::TwoCQ(hw);
 
 Switch ch_select, ch_reset;
 
-bool debug = false;
+bool debug = true;
 
 uint8_t message_idx;
 uint8_t oled_quant_indicator=0;
@@ -88,14 +88,20 @@ void UpdateOled(Channel &channel)
 	twoCQ.display.WriteString(strbuff, Font_11x18, true);
 
 	twoCQ.display.Update();
+	hw.PrintLine("CH%i %s [%c]", ch_num, note.c_str(), sym);
 }
 
 void QuantEventIndicator(int ch_num, int edit_ch_num)
 {
 	if (ch_num == edit_ch_num)
 	{
+		//8th character
+		//8*11 = 88
 		oled_quant_indicator = (oled_quant_indicator + 1) % 5;
-		UpdateOled(channels[ch_num]);
+		char sym = symbols[oled_quant_indicator];
+		twoCQ.display.SetCursor(0, 88);
+		twoCQ.display.WriteChar(sym, Font_11x18, true);
+		twoCQ.display.Update();
 	}
 }
 
@@ -257,6 +263,7 @@ int main(void)
 			else if (!channels[i].gate_patched() && channels[i].quant_voct_changed())
 			{
 				channels[i].set_quant2voct();
+				//TODO: This is slowing the loop
 				QuantEventIndicator(i, edit_ch_num);
 				channels[i].trig();
 			}
@@ -264,7 +271,7 @@ int main(void)
 
 		if (debug)
 		{
-			hw.PrintLine("~########## %d #############", cnt);
+			//hw.PrintLine("~########## %d #############", cnt);
 
 			// hw.PrintLine("Channel Num: %i", edit_ch_num);
 			// hw.PrintLine("GetVoctOut[%i]: %f", edit_ch_num, channels[edit_ch_num].GetVoctOut());

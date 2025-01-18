@@ -37,12 +37,16 @@ namespace two_cq
     constexpr int CH1_OUT_VOCT = patch_sm::CV_OUT_1; // C10
     constexpr int CH2_OUT_VOCT = patch_sm::CV_OUT_2; // C1
 
+    // We will use these predefined pins for the gate inputs and outputs
     // GATE_IN_1: B10
     // GATE_IN_2: B9
     // GATE_OUT_1: B5
     // GATE_OUT_2: B6
-    constexpr static Pin CH1_GATE_PATCHED = DaisyPatchSM::B1;
-    constexpr static Pin CH2_GATE_PATCHED = DaisyPatchSM::B2;
+
+    // We probably want to avoid these outputs for Audio IN/OUT
+    // IN_L: B3, IN_R: B4, OUT_L: B1, OUT_R: B2
+    constexpr static Pin CH1_GATE_PATCHED = DaisyPatchSM::D1;
+    constexpr static Pin CH2_GATE_PATCHED = DaisyPatchSM::D2;
 
     constexpr static Pin OLED_DC = DaisyPatchSM::A2;
     constexpr static Pin OLED_RST = DaisyPatchSM::A3;

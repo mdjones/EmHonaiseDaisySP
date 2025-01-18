@@ -12,11 +12,9 @@ two_cq::TwoCQ twoCQ = two_cq::TwoCQ(hw);
 
 Switch ch_select, ch_reset;
 
-bool debug = true;
+bool debug = false;
 
 uint8_t message_idx;
-uint8_t oled_quant_indicator=0;
-char symbols[5] = {'-', '\\', '|', '/', '-'};
 
 // To detect any knob adjustments
 int cur_rootNote, cur_scale, cur_octaveShift, cur_mask;
@@ -66,15 +64,15 @@ void UpdateOled(Channel &channel)
 	twoCQ.display.Fill(false);
 
 	int ch_num = channel.GetChannelNum();
-	char sym = symbols[oled_quant_indicator];
 	std::string note = QuantizeUtils::noteName(channel.rootNote) + std::to_string(channel.octaveShift);
 	note = QuantizeUtils::PadString(note, 3);
 	std::string scale = QuantizeUtils::scaleName(channel.scale);
 	std::string mask = QuantizeUtils::maskName(channel.mask, channel.scale);
+	std::string patched = channel.gate_patched() ? "G_IN" : "";
 
 	twoCQ.display.SetCursor(0, 0);
 	strbuff[0] = '\0';
-	sprintf(strbuff, "CH%i %s [%c]", ch_num, note.c_str(), sym);
+	sprintf(strbuff, "CH%i %s %s", ch_num, note.c_str(), patched.c_str());
 	twoCQ.display.WriteString(strbuff, Font_11x18, true);
 
 	twoCQ.display.SetCursor(0, 20);
@@ -88,26 +86,11 @@ void UpdateOled(Channel &channel)
 	twoCQ.display.WriteString(strbuff, Font_11x18, true);
 
 	twoCQ.display.Update();
-	hw.PrintLine("CH%i %s [%c]", ch_num, note.c_str(), sym);
-}
-
-void QuantEventIndicator(int ch_num, int edit_ch_num)
-{
-	if (ch_num == edit_ch_num)
-	{
-		//8th character
-		//8*11 = 88
-		oled_quant_indicator = (oled_quant_indicator + 1) % 5;
-		char sym = symbols[oled_quant_indicator];
-		twoCQ.display.SetCursor(0, 88);
-		twoCQ.display.WriteChar(sym, Font_11x18, true);
-		twoCQ.display.Update();
-	}
 }
 
 bool SetCurrentChannelEdits(Channel &channel, bool force = false)
 {
-	bool changed = false;
+	bool changed = channel.gate_patched();
 
 	int rootNote = twoCQ.GetRootNote();
 	int scale = twoCQ.GetScale();
@@ -241,6 +224,10 @@ int main(void)
 
 		if (SetCurrentChannelEdits(channels[edit_ch_num], ch_reset.Pressed()))
 		{
+			if(ch_reset.Pressed())
+			{
+				twoCQ.Init();
+			}
 			UpdateOled(channels[edit_ch_num]);
 		}
 
@@ -250,21 +237,17 @@ int main(void)
 			if (channels[i].scale == QuantizeUtils::ScaleEnum::NONE)
 			{
 				channels[i].set_quant2voct();
-				QuantEventIndicator(i, edit_ch_num);
 			}
 			else if (channels[i].gate_patched() && channels[i].GetGateIn().State())
 			{
 				// requant incase it has changed very recently
 				channels[i].quantize();
 				channels[i].set_quant2voct();
-				QuantEventIndicator(i, edit_ch_num);
 				channels[i].trig();
 			}
 			else if (!channels[i].gate_patched() && channels[i].quant_voct_changed())
 			{
 				channels[i].set_quant2voct();
-				//TODO: This is slowing the loop
-				QuantEventIndicator(i, edit_ch_num);
 				channels[i].trig();
 			}
 		}

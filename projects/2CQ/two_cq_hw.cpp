@@ -143,8 +143,9 @@ namespace two_cq
         gatePatchedSwitch_.Debounce();
         // TODO: Revert to !gatePatchedSwitch_.Pressed() when I have the thonk wired
         // up
-        // return gatePatchedSwitch_.Pressed();
-        return false;
+        //This should be not true when the gate is patched
+        return !gatePatchedSwitch_.Pressed();
+        //return false;
     }
 
     /** Quantize any voltage from 0-5 */

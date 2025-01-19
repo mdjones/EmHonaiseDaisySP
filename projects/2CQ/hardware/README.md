@@ -63,6 +63,24 @@ These are probably the knobs.
 
 <https://www.thonk.co.uk/shop/make-noise-mutable-style-knobs/>
 
+## Jacks
+
+Thonkin jacks <https://www.thonk.co.uk/wp-content/uploads/2014/02/Thonkiconn_Jack_Datasheet.pdf>
+
+1: The long leg in front connects to the brushing/sleave?
+2: Normally connects to 3. I thought this would be useful but seems useless here.
+3: Normally connects to 2. Connects to cable plug when norm is broken.
+
+2 and 3 are normally connected
+If you plug something in 3 will output the voltage
+
+I am not sure this is correct but it works.
+
+1: Connect to gate_patched pin. This only works if the cable is also plugged
+into a grounded source.
+2: Connect to ground. Don't think this is doing anything.
+3: Connect to gate in 
+
 ## Trouble shooting
 
 Problem: CV values hoover around 1. Make sure the 12V power supply is on

@@ -23,7 +23,8 @@ has been triggered.
 * Octave knob: Select the octave.
 * Mask knob: Select the scale mask.
 * V/OCT. IN: Channel V/OCT. input. Voltage outside of the 0-5 V will be ignored.
-* Gate IN: Gate ins for each channel.
+* Gate IN: Gate ins for each channel. I have tested it down to 500us, the lowest
+Contour 1 will go (Step 8 is 50 us)
 * Gate OUT: Gate out for each channel. If there is no gate input a gate will
 be emitted if the note changes. Otherwise a gate will be emitted whenever an
 input gate is recieved.

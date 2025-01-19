@@ -98,7 +98,7 @@ namespace two_cq
         channelNum_ = channelNum;
         gate_in_ = gate_in;
         gate_out_ = gate_out;
-        gatePatchedSwitch_.Init(gate_patched_pin);
+        gatePatchedSwitch_.Init(gate_patched_pin, patch.AudioCallbackRate());
         in_voct_accessor_ = in_voct_accessor;
         out_voct_accessor_ = out_voct_accessor;
 
@@ -141,11 +141,8 @@ namespace two_cq
     bool Channel::gate_patched()
     {
         gatePatchedSwitch_.Debounce();
-        // TODO: Revert to !gatePatchedSwitch_.Pressed() when I have the thonk wired
-        // up
         //This should be not true when the gate is patched
-        return !gatePatchedSwitch_.Pressed();
-        //return false;
+        return gatePatchedSwitch_.Pressed();
     }
 
     /** Quantize any voltage from 0-5 */

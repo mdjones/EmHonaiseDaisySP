@@ -28,6 +28,8 @@ enum ChannelNum
 
 Channel channels[NUM_CHANNELS] = {Channel(hw), Channel(hw)};
 
+bool cur_gate_patch[NUM_CHANNELS] = {false, false};
+
 ChannelNum GetCurrentChannel()
 {
 	return ch_select.Pressed() ? ChannelNum::CH_2 : ChannelNum::CH_1;
@@ -68,7 +70,7 @@ void UpdateOled(Channel &channel)
 	note = QuantizeUtils::PadString(note, 3);
 	std::string scale = QuantizeUtils::scaleName(channel.scale);
 	std::string mask = QuantizeUtils::maskName(channel.mask, channel.scale);
-	std::string patched = channel.gate_patched() ? "G_IN" : "";
+	std::string patched = channel.gate_patched() ? "GIN" : "";
 
 	twoCQ.display.SetCursor(0, 0);
 	strbuff[0] = '\0';
@@ -90,7 +92,7 @@ void UpdateOled(Channel &channel)
 
 bool SetCurrentChannelEdits(Channel &channel, bool force = false)
 {
-	bool changed = channel.gate_patched();
+	bool changed = false;
 
 	int rootNote = twoCQ.GetRootNote();
 	int scale = twoCQ.GetScale();
@@ -98,6 +100,10 @@ bool SetCurrentChannelEdits(Channel &channel, bool force = false)
 	int mask = twoCQ.GetScaleMask();
 
 	// Check is a knob has been turned recently and if so update the channel
+	if(cur_gate_patch[channel.GetChannelNum()] != channel.gate_patched()){
+		cur_gate_patch[channel.GetChannelNum()] = channel.gate_patched();
+		changed = true;
+	}
 	if ((cur_rootNote != rootNote) || force)
 	{
 		cur_rootNote = rootNote;
@@ -220,7 +226,7 @@ int main(void)
 			init_channel_num = edit_ch_num;
 		}
 
-		hw.SetLed(ch_select.Pressed());
+		//hw.SetLed(ch_select.Pressed());
 
 		if (SetCurrentChannelEdits(channels[edit_ch_num], ch_reset.Pressed()))
 		{
@@ -241,7 +247,6 @@ int main(void)
 			else if (channels[i].gate_patched() && channels[i].GetGateIn().State())
 			{
 				// requant incase it has changed very recently
-				channels[i].quantize();
 				channels[i].set_quant2voct();
 				channels[i].trig();
 			}

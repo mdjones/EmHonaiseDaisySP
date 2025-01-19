@@ -31,13 +31,12 @@ namespace two_cq
     constexpr static Pin CH_RESET = DaisyPatchSM::B7;
     constexpr static Pin CH_SELECT = DaisyPatchSM::B8;
 
-    constexpr int CH1_IN_VOCT = patch_sm::CV_5; // C6
-    constexpr int CH2_IN_VOCT = patch_sm::CV_6; // C7
-
-    constexpr int CH1_OUT_VOCT = patch_sm::CV_OUT_1; // C10
-    constexpr int CH2_OUT_VOCT = patch_sm::CV_OUT_2; // C1
+    constexpr int CV_IN_1 = patch_sm::CV_5; // C6
+    constexpr int CV_IN_2 = patch_sm::CV_6; // C7
 
     // We will use these predefined pins for the gate inputs and outputs
+    //CV_OUT_1; // C10
+    //CV_OUT_2; // C1
     // GATE_IN_1: B10
     // GATE_IN_2: B9
     // GATE_OUT_1: B5

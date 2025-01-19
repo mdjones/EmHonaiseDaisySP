@@ -183,16 +183,16 @@ int main(void)
 		hw.gate_in_1,
 		hw.gate_out_1,
 		CH1_GATE_PATCHED,
-		CH1_IN_VOCT,
-		CH1_OUT_VOCT);
+		CV_IN_1,
+		CV_OUT_2);
 
 	channels[CH_2].Init(
 		2,
 		hw.gate_in_2,
 		hw.gate_out_2,
 		CH2_GATE_PATCHED,
-		CH2_IN_VOCT,
-		CH2_OUT_VOCT);
+		CV_IN_1,
+		CV_OUT_2);
 
 	ch_reset.Init(CH_RESET, hw.AudioCallbackRate());
 	ch_select.Init(CH_SELECT, hw.AudioCallbackRate());

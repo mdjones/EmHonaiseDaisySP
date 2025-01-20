@@ -34,7 +34,7 @@ namespace two_cq
     constexpr int CV_IN_1 = patch_sm::CV_5; // C6
     constexpr int CV_IN_2 = patch_sm::CV_6; // C7
 
-    // We will use these predefined pins for the gate inputs and outputs
+    // We will use these predefined pins for the gate inputs and (CV) outputs
     //CV_OUT_1; // C10
     //CV_OUT_2; // C1
     // GATE_IN_1: B10

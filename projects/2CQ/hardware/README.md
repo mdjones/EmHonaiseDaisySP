@@ -6,7 +6,13 @@ with [schematic](https://daisy.nyc3.cdn.digitaloceanspaces.com/products/patch/ES
 
 ## OLED Pin Layout
 
-This is my OLED: [SSD1306 for 51 STM32 Arduino](https://www.amazon.com/dp/B01N1LZQA8?th=1)
+This is my OLED: [SSD1306 for 51 STM32 Arduino](https://www.amazon.com/dp/B01N1LZQA8?th=1) [or](http://hiletgo.com/ProductDetail/2169510.html)
+
+KiCad Ref[https://kicad.github.io/footprints/Display.html]
+
+[PCB](https://github.com/adafruit/Adafruit-128x64-Monochrome-OLED-PCB)
+
+[Footprint](https://kicadrookie.blogspot.com/2022/01/096-inch-128x64-spi-display-module_4.html) - look for the link at near the bottom of follow the instructions. I could not find the datasheet diagram the designer keeps keeps showing
 
 ```txt
 HiLetgo 0.96" inch SPI Serial 128 * 64
@@ -28,7 +34,7 @@ Final Pin set up is:
 | D1            | D9           | MOSI     |
 | RES           | D3           | RESET    |
 | DC            | D2           | dc       |
-| C5            | Not Wired    |          |
+| CS            | Not Wired    |          |
 
 Correction: Based on <https://forum.electro-smith.com/t/connecting-an-oled-to-the-patch-init/7501/2>
 
@@ -40,9 +46,11 @@ Correction: Based on <https://forum.electro-smith.com/t/connecting-an-oled-to-th
 | VCC           | A10          | +3V3     | 1                            | white      |
 | D0            | D10          | SCLK     | 7                            | grey       |
 | D1            | D9           | MOSI     | 5                            | purple     |
-| RES           | A3           | RESET    | 10                           | blue       |
+| RES           | A3           | RESET    | 10                           | blue       | TODO: I feel like A3 and A2 should be swapped
 | DC            | A2           | dc       | 9                            | green      |
-| C5            | Not Wired    |          | Not wired                    | Not wired  |
+| CS            | Not Wired    |          | Not wired*                   | Not wired  |
+
+In the Daisy Patch OLED_CS is wired to 8*2 (GPIO8(SPI1_NSS)) 
 
 
 ## 3 Way Switch

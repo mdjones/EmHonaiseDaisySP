@@ -1,6 +1,6 @@
 (kicad_symbol_lib (version 20220914) (generator kicad_symbol_editor)
   (symbol "SSD1306_0.96_128x64_7P" (in_bom yes) (on_board yes)
-    (property "Reference" "DS" (at 0 -1.27 0)
+    (property "Reference" "DS" (at 0 -3.81 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "" (at 0 0 0)
@@ -13,7 +13,7 @@
       (effects (font (size 1.27 1.27)) hide)
     )
     (symbol "SSD1306_0.96_128x64_7P_0_1"
-      (rectangle (start 1.27 -12.7) (end 19.05 -7.62)
+      (rectangle (start 1.27 -7.62) (end 19.05 -12.7)
         (stroke (width 0) (type default))
         (fill (type none))
       )

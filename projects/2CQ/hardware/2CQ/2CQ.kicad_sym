@@ -1,5 +1,5 @@
 (kicad_symbol_lib (version 20220914) (generator kicad_symbol_editor)
-  (symbol "SSD1306_0.96_128x64_7P" (in_bom yes) (on_board yes)
+  (symbol "SSD1306_96_128_64_7P" (in_bom yes) (on_board yes)
     (property "Reference" "DS" (at 0 -3.81 0)
       (effects (font (size 1.27 1.27)))
     )
@@ -12,13 +12,13 @@
     (property "Datasheet" "" (at 0 0 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (symbol "SSD1306_0.96_128x64_7P_0_1"
+    (symbol "SSD1306_96_128_64_7P_0_1"
       (rectangle (start 1.27 -7.62) (end 19.05 -12.7)
         (stroke (width 0) (type default))
         (fill (type none))
       )
     )
-    (symbol "SSD1306_0.96_128x64_7P_1_1"
+    (symbol "SSD1306_96_128_64_7P_1_1"
       (pin passive line (at 2.54 -5.08 270) (length 2.54)
         (name "GND" (effects (font (size 1.27 1.27))))
         (number "1" (effects (font (size 1.27 1.27))))

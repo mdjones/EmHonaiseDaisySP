@@ -92,3 +92,13 @@ into a grounded source.
 ## Trouble shooting
 
 Problem: CV values hoover around 1. Make sure the 12V power supply is on
+
+## TODOs
+
+TODO: Consider using project libs for sharing <https://forum.kicad.info/t/creating-a-project-using-global-libraries-and-then-exporting-to-local-libraries/47132/3>
+TODO: Consider using SD_D2 for Gate 1 in patch switch
+TODO: Consider swapping SIG_UART_TX and SIG_UART_RX
+TODO: Test channel 2
+TODO: Test all switches
+TODO: Can I/should I change the patch labels to be more informative for this
+project?

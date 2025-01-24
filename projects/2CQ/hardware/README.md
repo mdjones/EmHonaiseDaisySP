@@ -104,3 +104,7 @@ TODO: Test channel 2
 TODO: Test all switches
 TODO: Can I/should I change the patch labels to be more informative for this
 project?
+
+## KCad
+
+<https://github.com/labtroll/KiCad-DesignRules>

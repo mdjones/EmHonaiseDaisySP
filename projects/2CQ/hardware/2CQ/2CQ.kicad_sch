@@ -2562,7 +2562,7 @@
     (property "Value" "~" (at 36.83 78.74 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "128x64_0.96_Disp_Module:128x64_0.96_Disp_Module" (at 36.83 78.74 0)
+    (property "Footprint" "2CQ:128x64_0.96_Disp_Module" (at 36.83 78.74 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "" (at 36.83 78.74 0)

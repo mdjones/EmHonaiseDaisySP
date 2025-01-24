@@ -12,7 +12,9 @@ KiCad Ref[https://kicad.github.io/footprints/Display.html]
 
 [PCB](https://github.com/adafruit/Adafruit-128x64-Monochrome-OLED-PCB)
 
-[Footprint](https://kicadrookie.blogspot.com/2022/01/096-inch-128x64-spi-display-module_4.html) - look for the link at near the bottom of follow the instructions. I could not find the datasheet diagram the designer keeps keeps showing
+[Footprint](https://kicadrookie.blogspot.com/2022/01/096-inch-128x64-spi-display-module_4.html) - look for the link at near the bottom of follow the instructions. I could not find the datasheet diagram the designer keeps keeps showing. 
+
+Put the 128x64_0.96_Disp_Module.kicad_mod file in side a .pretty folder
 
 ```txt
 HiLetgo 0.96" inch SPI Serial 128 * 64

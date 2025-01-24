@@ -140,9 +140,11 @@ namespace two_cq
 
     bool Channel::gate_patched()
     {
-        gatePatchedSwitch_.Debounce();
+        //gatePatchedSwitch_.Debounce();
         //This should be not true when the gate is patched
-        return gatePatchedSwitch_.Pressed();
+        //return gatePatchedSwitch_.Pressed();
+
+        return channelNum_==1;
     }
 
     /** Quantize any voltage from 0-5 */

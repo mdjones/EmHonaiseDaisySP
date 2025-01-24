@@ -62,6 +62,7 @@ namespace QuantizeUtils {
 	int SCALE_PENTATONIC     [6] = {0, 2, 4, 7, 9, 12};
 	int SCALE_PHRYGIAN       [8] = {0, 1, 3, 5, 7, 8, 10, 12};
 	int SCALE_TURKISH        [8] = {0, 1, 3, 5, 7, 10, 11, 12};
+	int SCALE_YO_SCALE       		 [6] = {0, 2, 5, 7, 9, 12}; //https://en.wikipedia.org/wiki/Yo_scale
 
 	enum NoteEnum {
 		NOTE_C, 
@@ -97,6 +98,7 @@ namespace QuantizeUtils {
 		PENTATONIC,
 		PHRYGIAN,
 		TURKISH,
+		YO_SCALE,
 		NONE,
 		NUM_SCALES
 	};
@@ -138,7 +140,8 @@ namespace QuantizeUtils {
 			case PENTATONIC:     curScaleArr = SCALE_PENTATONIC;    notesInScale=arraySize(SCALE_PENTATONIC); break;
 			case PHRYGIAN:       curScaleArr = SCALE_PHRYGIAN;      notesInScale=arraySize(SCALE_PHRYGIAN); break;
 			case TURKISH:        curScaleArr = SCALE_TURKISH;       notesInScale=arraySize(SCALE_TURKISH); break;
-			case NONE:           return voltsIn;
+			case YO_SCALE:		 curScaleArr = SCALE_YO_SCALE;			notesInScale=arraySize(SCALE_YO_SCALE); break;
+			case NONE:           return voltsIn;					
 		}
 
 		std::vector<int> scaleVector(curScaleArr, curScaleArr + notesInScale);
@@ -226,6 +229,7 @@ namespace QuantizeUtils {
 			case PENTATONIC:     return "Penta";
 			case PHRYGIAN:       return "Phrygian";
 			case TURKISH:        return "Turkish";
+			case YO_SCALE:		 return "Yo scale";
 			case NONE:           return "None";
 			default: return "";
 		}

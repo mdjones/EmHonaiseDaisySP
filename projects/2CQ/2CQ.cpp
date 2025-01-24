@@ -179,19 +179,19 @@ int main(void)
 	}
 
 	channels[CH_1].Init(
-		1,
+		CH_1,
 		hw.gate_in_1,
 		hw.gate_out_1,
 		CH1_GATE_PATCHED,
 		CV_IN_1,
-		CV_OUT_2);
+		CV_OUT_1);
 
 	channels[CH_2].Init(
-		2,
+		CH_2,
 		hw.gate_in_2,
 		hw.gate_out_2,
 		CH2_GATE_PATCHED,
-		CV_IN_1,
+		CV_IN_2,
 		CV_OUT_2);
 
 	ch_reset.Init(CH_RESET, hw.AudioCallbackRate());

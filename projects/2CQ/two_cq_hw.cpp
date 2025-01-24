@@ -144,7 +144,7 @@ namespace two_cq
         //This should be not true when the gate is patched
         //return gatePatchedSwitch_.Pressed();
 
-        return channelNum_==1;
+        return true;
     }
 
     /** Quantize any voltage from 0-5 */

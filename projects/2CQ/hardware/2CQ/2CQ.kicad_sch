@@ -8,8 +8,8 @@
     (title "2CQ")
     (date "2025-01-19")
     (rev "v01")
-    (comment 1 "creativecommons.org/licenses/by/4.0/")
-    (comment 2 "License CC BY 4.0")
+    (comment 1 "https://opensource.org/license/mit")
+    (comment 2 "MIT License")
     (comment 3 "Author: Michael D. Jones")
   )
 

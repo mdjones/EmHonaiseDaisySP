@@ -26,6 +26,8 @@ Did a bunch of failing research, Discord, Forum, code reading. Finally decided
 to search for path_sm and `OledDisplay<SSD130x4WireSpi128x64Driver>` on github
 and found <https://github.com/electro-smith/libDaisy/blob/master/examples/OLED_SPI/OledSPI.cpp>
 
+[PINS](https://electronics.stackexchange.com/questions/581256/wiring-a-ssd1306-oled-with-spi)
+
 Final Pin set up is:
 
 | OLED Pin Name | patch_sm pin | function |
@@ -42,15 +44,17 @@ Correction: Based on <https://forum.electro-smith.com/t/connecting-an-oled-to-th
 
 > note! I am using +3V3 instead of +5V5 as above.
 
-| OLED Pin Name | patch_sm pin | function | P1-M12 patch.Init() breakout | Wire color |
-| ------------- | ------------ | -------- | ---------------------------- | ---------- |
-| GND           | A4           | GND      | 12                           | black      |
-| VCC           | A10          | +3V3     | 1                            | white      |
-| D0            | D10          | SCLK     | 7                            | grey       |
-| D1            | D9           | MOSI     | 5                            | purple     |
-| RES           | A3           | RESET    | 10                           | blue       | TODO: I feel like A3 and A2 should be swapped
-| DC            | A2           | dc       | 9                            | green      |
-| CS            | Not Wired    |          | Not wired*                   | Not wired  |
+TODO: I feel like A3 and A2 should be swapped 
+
+| OLED Pin Name | patch_sm pin | function    | P1-M12 patch.Init() breakout | Wire color |
+| ------------- | ------------ | ----------- | ---------------------------- | ---------- |
+| GND           | A4           | GND         | 12                           | black      |
+| VCC           | A10          | +3V3 (+5V)  | 1                            | white      |
+| D0            | D10          | SCLK        | 7                            | grey       |
+| D1            | D9           | MOSI  (SDA) | 5                            | purple     |
+| RES           | A3           | RESET       | 10                           | blue       |
+| DC            | A2           | dc          | 9                            | green      |
+| CS            | Not Wired    | Chip Select | Not wired*                   | Not wired  |
 
 In the Daisy Patch OLED_CS is wired to 8*2 (GPIO8(SPI1_NSS)) 
 
@@ -108,3 +112,11 @@ project?
 ## KCad
 
 <https://github.com/labtroll/KiCad-DesignRules>
+
+
+## Pin optimization
+
+Some of the pins I chose where so I could test them out on the patch.Init() 
+break out board. But they are awkwardly named. But it will make prototyping easier
+
+TODO: Why am I using SIG_SPI_NSS for Gate 1 patched? I could use SD_D2? I used it because I could check on the patch init? 

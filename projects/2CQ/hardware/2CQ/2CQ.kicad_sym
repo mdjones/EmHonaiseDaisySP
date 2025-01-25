@@ -63,7 +63,7 @@
 			)
 		)
 		(symbol "SSD1306_96_128_64_7P_1_1"
-			(pin power_out line
+			(pin power_in line
 				(at 2.54 -6.35 90)
 				(length 2.54)
 				(name "GND"

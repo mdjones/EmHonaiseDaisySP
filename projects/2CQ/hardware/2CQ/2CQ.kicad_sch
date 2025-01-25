@@ -74,7 +74,7 @@
 				)
 			)
 			(symbol "SSD1306_96_128_64_7P_1_1"
-				(pin power_out line
+				(pin power_in line
 					(at 2.54 -6.35 90)
 					(length 2.54)
 					(name "GND"
@@ -196,327 +196,6 @@
 						(effects
 							(font
 								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-		)
-		(symbol "ES_Daisy_Patch_SM_FB_Rev1-cache:ES_Daisy_Patch_SM_FB_Rev1-eagle-import_POT_9MM_SNAP-IN__"
-			(pin_names
-				(offset 1.016)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "VR"
-				(at -5.08 -2.54 90)
-				(effects
-					(font
-						(size 1.4986 1.4986)
-					)
-					(justify left bottom)
-				)
-			)
-			(property "Value" "ES_Daisy_Patch_SM_FB_Rev1-eagle-import_POT_9MM_SNAP-IN__"
-				(at -2.54 -2.54 90)
-				(effects
-					(font
-						(size 1.4986 1.4986)
-					)
-					(justify left bottom)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_locked" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "ES_Daisy_Patch_SM_FB_Rev1-eagle-import_POT_9MM_SNAP-IN___1_0"
-				(polyline
-					(pts
-						(xy -1.016 -3.81) (xy 1.27 -2.54)
-					)
-					(stroke
-						(width 0)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.016 -1.27) (xy 1.27 0)
-					)
-					(stroke
-						(width 0)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.016 1.27) (xy 1.27 2.54)
-					)
-					(stroke
-						(width 0)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.016 3.81) (xy 0 4.572)
-					)
-					(stroke
-						(width 0)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 -5.08) (xy 0 -4.572)
-					)
-					(stroke
-						(width 0)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 -4.572) (xy -1.016 -3.81)
-					)
-					(stroke
-						(width 0)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 4.572) (xy 0 5.08)
-					)
-					(stroke
-						(width 0)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 -2.54) (xy -1.016 -1.27)
-					)
-					(stroke
-						(width 0)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 0) (xy -1.016 1.27)
-					)
-					(stroke
-						(width 0)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 0) (xy 2.54 1.27)
-					)
-					(stroke
-						(width 0)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 2.54) (xy -1.016 3.81)
-					)
-					(stroke
-						(width 0)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.397 -3.429) (xy 2.032 -2.159)
-					)
-					(stroke
-						(width 0)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.032 -4.699) (xy 2.032 -2.159)
-					)
-					(stroke
-						(width 0)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.032 -2.159) (xy 2.667 -3.429)
-					)
-					(stroke
-						(width 0)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.54 -1.27) (xy 1.27 0)
-					)
-					(stroke
-						(width 0)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.54 1.27) (xy 2.54 -1.27)
-					)
-					(stroke
-						(width 0)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.667 -3.429) (xy 1.397 -3.429)
-					)
-					(stroke
-						(width 0)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin passive line
-					(at 0 -7.62 90)
-					(length 2.54)
-					(name "1"
-						(effects
-							(font
-								(size 0 0)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 0 0)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 5.08 0 180)
-					(length 2.54)
-					(name "2"
-						(effects
-							(font
-								(size 0 0)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 0 0)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 7.62 270)
-					(length 2.54)
-					(name "3"
-						(effects
-							(font
-								(size 0 0)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 0 0)
 							)
 						)
 					)
@@ -2460,6 +2139,327 @@
 				)
 			)
 		)
+		(symbol "ES_Daisy_Patch_SM_FB_Rev1-eagle-import:POT_9MM_SNAP-IN_"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "VR"
+				(at -5.08 -2.54 90)
+				(effects
+					(font
+						(size 1.4986 1.4986)
+					)
+					(justify left bottom)
+				)
+			)
+			(property "Value" "POT_9MM_SNAP-IN_"
+				(at -2.54 -2.54 90)
+				(effects
+					(font
+						(size 1.4986 1.4986)
+					)
+					(justify left bottom)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_locked" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "POT_9MM_SNAP-IN__1_0"
+				(polyline
+					(pts
+						(xy -1.016 -3.81) (xy 1.27 -2.54)
+					)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.016 -1.27) (xy 1.27 0)
+					)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.016 1.27) (xy 1.27 2.54)
+					)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.016 3.81) (xy 0 4.572)
+					)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -5.08) (xy 0 -4.572)
+					)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -4.572) (xy -1.016 -3.81)
+					)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 4.572) (xy 0 5.08)
+					)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 -2.54) (xy -1.016 -1.27)
+					)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 0) (xy -1.016 1.27)
+					)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 0) (xy 2.54 1.27)
+					)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 2.54) (xy -1.016 3.81)
+					)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.397 -3.429) (xy 2.032 -2.159)
+					)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.032 -4.699) (xy 2.032 -2.159)
+					)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.032 -2.159) (xy 2.667 -3.429)
+					)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 -1.27) (xy 1.27 0)
+					)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 1.27) (xy 2.54 -1.27)
+					)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.667 -3.429) (xy 1.397 -3.429)
+					)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at 0 -7.62 90)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 0 0)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 0 0)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 0 180)
+					(length 2.54)
+					(name "2"
+						(effects
+							(font
+								(size 0 0)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 0 0)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 7.62 270)
+					(length 2.54)
+					(name "3"
+						(effects
+							(font
+								(size 0 0)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 0 0)
+							)
+						)
+					)
+				)
+			)
+		)
 		(symbol "ES_Daisy_Patch_SM_FB_Rev1-eagle-import:TAC_SWITCH_PTH"
 			(pin_names
 				(offset 1.016)
@@ -2956,6 +2956,26 @@
 		(uuid "132e8c1d-c004-4686-92f4-2efa77d7aa9f")
 	)
 	(no_connect
+		(at 81.28 81.28)
+		(uuid "15b25965-f8bd-4d23-b9e7-abe8f6b09bdb")
+	)
+	(no_connect
+		(at 35.56 124.46)
+		(uuid "1be70c21-aec1-448b-bb2a-46b3cebc5e52")
+	)
+	(no_connect
+		(at 81.28 73.66)
+		(uuid "1d9e7871-3849-4540-9d8c-e66340551b41")
+	)
+	(no_connect
+		(at 81.28 71.12)
+		(uuid "3ae53b39-2758-4eb7-beab-3b7ae786b92a")
+	)
+	(no_connect
+		(at 34.29 184.15)
+		(uuid "3bde2710-503b-40df-b0f1-1512b7a74ea7")
+	)
+	(no_connect
 		(at 127 53.34)
 		(uuid "3f7267ba-b238-43c4-b918-661b9e1d5d80")
 	)
@@ -2968,20 +2988,64 @@
 		(uuid "441f2744-edac-486b-95c0-29baf32f95f6")
 	)
 	(no_connect
+		(at 71.12 167.64)
+		(uuid "46adde56-bec5-4d02-b040-640f2a9c5ed6")
+	)
+	(no_connect
 		(at 127 50.8)
 		(uuid "6b740baf-c05c-4b72-9629-8cde02adf5b9")
+	)
+	(no_connect
+		(at 35.56 167.64)
+		(uuid "727f75dc-fe52-439a-a670-c6ee51efd9f7")
+	)
+	(no_connect
+		(at 35.56 144.78)
+		(uuid "7476bb32-dcee-4877-ae20-9ff103ec2dc9")
+	)
+	(no_connect
+		(at 69.85 185.42)
+		(uuid "7a272bc0-6ca5-4dce-80a5-65683bd014db")
 	)
 	(no_connect
 		(at 31.75 83.82)
 		(uuid "7a757819-c6bf-4661-acfc-fe3227255bf7")
 	)
 	(no_connect
+		(at 68.58 124.46)
+		(uuid "805f2394-a7da-4e87-acbb-72d260445fea")
+	)
+	(no_connect
 		(at 130.81 99.06)
 		(uuid "821096bf-63fc-437c-a421-d38c4a0c1ab2")
 	)
 	(no_connect
+		(at 81.28 63.5)
+		(uuid "8c171c16-18e2-4236-92f6-5cd83045f8f5")
+	)
+	(no_connect
+		(at 68.58 144.78)
+		(uuid "b0716905-c3c0-456c-9557-e942d84a01c2")
+	)
+	(no_connect
 		(at 127 58.42)
 		(uuid "babed68e-9496-494a-b732-10dbe14a337e")
+	)
+	(no_connect
+		(at 81.28 76.2)
+		(uuid "d57629a0-59a5-43fe-8396-247f0151a2ee")
+	)
+	(no_connect
+		(at 81.28 66.04)
+		(uuid "e96b1199-f302-4b74-8d66-b2c81c640f28")
+	)
+	(no_connect
+		(at 219.71 88.9)
+		(uuid "eb100d27-0147-40c9-8e19-470295fef0f0")
+	)
+	(no_connect
+		(at 81.28 78.74)
+		(uuid "f25c9d96-5034-4482-8164-84f4332a13f8")
 	)
 	(wire
 		(pts
@@ -4621,7 +4685,7 @@
 		)
 	)
 	(symbol
-		(lib_id "ES_Daisy_Patch_SM_FB_Rev1-cache:ES_Daisy_Patch_SM_FB_Rev1-eagle-import_POT_9MM_SNAP-IN__")
+		(lib_id "ES_Daisy_Patch_SM_FB_Rev1-eagle-import:POT_9MM_SNAP-IN_")
 		(at 232.41 46.99 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -4857,7 +4921,7 @@
 		)
 	)
 	(symbol
-		(lib_id "ES_Daisy_Patch_SM_FB_Rev1-cache:ES_Daisy_Patch_SM_FB_Rev1-eagle-import_POT_9MM_SNAP-IN__")
+		(lib_id "ES_Daisy_Patch_SM_FB_Rev1-eagle-import:POT_9MM_SNAP-IN_")
 		(at 205.74 46.99 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -5343,7 +5407,7 @@
 		)
 	)
 	(symbol
-		(lib_id "ES_Daisy_Patch_SM_FB_Rev1-cache:ES_Daisy_Patch_SM_FB_Rev1-eagle-import_POT_9MM_SNAP-IN__")
+		(lib_id "ES_Daisy_Patch_SM_FB_Rev1-eagle-import:POT_9MM_SNAP-IN_")
 		(at 259.08 46.99 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -5415,7 +5479,7 @@
 		)
 	)
 	(symbol
-		(lib_id "ES_Daisy_Patch_SM_FB_Rev1-cache:ES_Daisy_Patch_SM_FB_Rev1-eagle-import_POT_9MM_SNAP-IN__")
+		(lib_id "ES_Daisy_Patch_SM_FB_Rev1-eagle-import:POT_9MM_SNAP-IN_")
 		(at 179.07 46.99 0)
 		(unit 1)
 		(exclude_from_sim no)

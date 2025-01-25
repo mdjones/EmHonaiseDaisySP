@@ -15,7 +15,7 @@
 			)
 		)
 		(property "Value" "SSD1306_96_128_64_7P"
-			(at -10.16 -10.16 90)
+			(at 8.382 2.794 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23,7 +23,7 @@
 			)
 		)
 		(property "Footprint" "2CQ:128x64_0.96_Disp_Module"
-			(at -10.16 -10.16 90)
+			(at -15.748 3.81 90)
 			(effects
 				(font
 					(size 1.27 1.27)

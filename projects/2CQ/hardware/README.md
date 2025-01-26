@@ -114,6 +114,10 @@ TODO: Put no connect flags
 
 <https://github.com/labtroll/KiCad-DesignRules>
 
+Excellent video series. 
+
+<https://youtu.be/vLnu21fS22s?si=ND8ia9d4luT5V4JJ>
+
 
 ## Pin optimization
 
@@ -121,3 +125,5 @@ Some of the pins I chose where so I could test them out on the patch.Init()
 break out board. But they are awkwardly named. But it will make prototyping easier
 
 TODO: Why am I using SIG_SPI_NSS for Gate 1 patched? I could use SD_D2? I used it because I could check on the patch init? 
+
+<https://github.com/sethhillbrand/kicad_templates>

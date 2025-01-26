@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "2CQ")(type "KiCad")(uri "${KIPRJMOD}/2CQ.pretty")(options "")(descr "Contains 128x64_0.96_Disp_Module"))
+)

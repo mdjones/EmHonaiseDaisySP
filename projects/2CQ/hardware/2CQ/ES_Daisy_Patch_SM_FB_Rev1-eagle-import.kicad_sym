@@ -2095,8 +2095,8 @@
 					(type none)
 				)
 			)
-			(pin bidirectional line
-				(at -2.54 -35.56 90)
+			(pin power_in line
+				(at -6.35 -35.56 90)
 				(length 5.08)
 				(name "-12V"
 					(effects
@@ -2113,7 +2113,7 @@
 					)
 				)
 			)
-			(pin bidirectional line
+			(pin power_out line
 				(at -7.62 33.02 270)
 				(length 5.08)
 				(name "+3V3"
@@ -2167,8 +2167,8 @@
 					)
 				)
 			)
-			(pin bidirectional line
-				(at 2.54 -35.56 90)
+			(pin power_in line
+				(at 0 -35.56 90)
 				(length 5.08)
 				(name "GND"
 					(effects
@@ -2185,7 +2185,7 @@
 					)
 				)
 			)
-			(pin bidirectional line
+			(pin power_in line
 				(at 0 33.02 270)
 				(length 5.08)
 				(name "+12V"
@@ -2203,7 +2203,7 @@
 					)
 				)
 			)
-			(pin bidirectional line
+			(pin power_out line
 				(at -5.08 33.02 270)
 				(length 5.08)
 				(name "+5V"
@@ -2221,8 +2221,8 @@
 					)
 				)
 			)
-			(pin bidirectional line
-				(at 2.54 -35.56 90)
+			(pin power_out line
+				(at 6.35 -35.56 90)
 				(length 5.08)
 				(name "GND"
 					(effects
@@ -2944,7 +2944,7 @@
 					(justify left bottom)
 				)
 			)
-			(pin bidirectional line
+			(pin power_out line
 				(at -10.16 2.54 0)
 				(length 5.08)
 				(name "+12VIN"
@@ -2962,7 +2962,7 @@
 					)
 				)
 			)
-			(pin bidirectional line
+			(pin power_out line
 				(at -10.16 2.54 0)
 				(length 5.08)
 				(name "+12VIN"
@@ -2980,7 +2980,7 @@
 					)
 				)
 			)
-			(pin bidirectional line
+			(pin power_out line
 				(at -10.16 -7.62 0)
 				(length 5.08)
 				(name "-12VIN"
@@ -2998,7 +2998,7 @@
 					)
 				)
 			)
-			(pin bidirectional line
+			(pin power_out line
 				(at -10.16 -7.62 0)
 				(length 5.08)
 				(name "-12VIN"
@@ -3016,7 +3016,7 @@
 					)
 				)
 			)
-			(pin bidirectional line
+			(pin power_out line
 				(at -10.16 -2.54 0)
 				(length 5.08)
 				(name "GND"
@@ -3034,7 +3034,7 @@
 					)
 				)
 			)
-			(pin bidirectional line
+			(pin power_out line
 				(at -10.16 -2.54 0)
 				(length 5.08)
 				(name "GND"
@@ -3052,7 +3052,7 @@
 					)
 				)
 			)
-			(pin bidirectional line
+			(pin power_out line
 				(at -10.16 -2.54 0)
 				(length 5.08)
 				(name "GND"
@@ -3070,7 +3070,7 @@
 					)
 				)
 			)
-			(pin bidirectional line
+			(pin power_out line
 				(at -10.16 -2.54 0)
 				(length 5.08)
 				(name "GND"
@@ -3088,7 +3088,7 @@
 					)
 				)
 			)
-			(pin bidirectional line
+			(pin power_out line
 				(at -10.16 -2.54 0)
 				(length 5.08)
 				(name "GND"
@@ -3106,7 +3106,7 @@
 					)
 				)
 			)
-			(pin bidirectional line
+			(pin power_out line
 				(at -10.16 -2.54 0)
 				(length 5.08)
 				(name "GND"

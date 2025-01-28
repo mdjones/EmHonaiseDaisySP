@@ -127,3 +127,5 @@ break out board. But they are awkwardly named. But it will make prototyping easi
 TODO: Why am I using SIG_SPI_NSS for Gate 1 patched? I could use SD_D2? I used it because I could check on the patch init? 
 
 <https://github.com/sethhillbrand/kicad_templates>
+
+Imported PCB settings from <https://github.com/sethhillbrand/kicad_templates/tree/master/JLCPCB_1-2Layer>

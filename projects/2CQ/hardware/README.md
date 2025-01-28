@@ -129,3 +129,7 @@ TODO: Why am I using SIG_SPI_NSS for Gate 1 patched? I could use SD_D2? I used i
 <https://github.com/sethhillbrand/kicad_templates>
 
 Imported PCB settings from <https://github.com/sethhillbrand/kicad_templates/tree/master/JLCPCB_1-2Layer>
+
+## Edge cuts
+
+patch.Init() is 111.0 mm x 48.5 mm

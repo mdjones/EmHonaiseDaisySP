@@ -1499,6 +1499,24 @@
 					)
 				)
 			)
+			(symbol "ES_DAISY_PATCH_SM_REV1_1_1"
+				(text "A4"
+					(at -1.524 -33.02 900)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(text "A7"
+					(at 5.08 -33.02 900)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
 		)
 		(symbol "ES_Daisy_Patch_SM_FB_Rev1-eagle-import:EURORACK_POWERHEADER"
 			(pin_names

@@ -4096,7 +4096,7 @@
 				(justify left bottom)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "ES_Daisy_Patch_SM_FB_Rev1:S_JACK"
 			(at 0 0 0)
 			(effects
 				(font
@@ -4121,14 +4121,6 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
-			)
-		)
-		(property "ki_locked" ""
-			(at 0 0 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
 			)
 		)
 		(symbol "EURO_JACK_1_0"

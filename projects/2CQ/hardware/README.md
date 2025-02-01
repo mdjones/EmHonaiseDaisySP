@@ -133,3 +133,8 @@ Imported PCB settings from <https://github.com/sethhillbrand/kicad_templates/tre
 ## Edge cuts
 
 patch.Init() is 111.0 mm x 48.5 mm
+
+
+## Models
+
+[Thonkiconn](https://grabcad.com/library/wqp-pj398sm-1)

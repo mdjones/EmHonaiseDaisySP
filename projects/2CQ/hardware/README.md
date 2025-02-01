@@ -138,3 +138,6 @@ patch.Init() is 111.0 mm x 48.5 mm
 ## Models
 
 [Thonkiconn](https://grabcad.com/library/wqp-pj398sm-1)
+
+I didn't keep track of all the models but I pulled some from 
+<https://grabcad.com/> and some from <https://www.digikey.com>.

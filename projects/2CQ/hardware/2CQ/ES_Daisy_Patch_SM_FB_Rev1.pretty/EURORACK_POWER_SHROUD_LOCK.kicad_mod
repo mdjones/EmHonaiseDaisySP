@@ -538,4 +538,15 @@
 		(solder_mask_margin 0.0762)
 		(uuid "257954a0-d5da-4242-a511-3c5b1be448b9")
 	)
+	(model "${KIPRJMOD}/3dmodels/AB2_HDR_M05-2V-S-3M.wrl"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 0.4 0.4 0.4)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
 )

@@ -540,13 +540,13 @@
 	)
 	(model "${KIPRJMOD}/3dmodels/AB2_HDR_M05-2V-S-3M.wrl"
 		(offset
-			(xyz 0 0 0)
+			(xyz 0 0 -1.5)
 		)
 		(scale
 			(xyz 0.4 0.4 0.4)
 		)
 		(rotate
-			(xyz 0 0 0)
+			(xyz -180 0 -180)
 		)
 	)
 )

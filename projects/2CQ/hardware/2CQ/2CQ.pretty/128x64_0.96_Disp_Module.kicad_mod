@@ -491,4 +491,59 @@
 		(remove_unused_layers no)
 		(uuid "0d0bb7b2-a6e5-46d2-9492-a1aa6e5a7b2f")
 	)
+	(model "${KIPRJMOD}/3dmodels/971070244.step"
+		(offset
+			(xyz 2 2 7)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 180 0)
+		)
+	)
+	(model "${KIPRJMOD}/3dmodels/801-87-050-10-001101.step"
+		(offset
+			(xyz 6 25.5 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+	(model "${KIPRJMOD}/3dmodels/971070244.step"
+		(offset
+			(xyz 2 25.5 7)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 180 0)
+		)
+	)
+	(model "${KIPRJMOD}/3dmodels/971070244.step"
+		(offset
+			(xyz 25 2 7)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 180 0)
+		)
+	)
+	(model "${KIPRJMOD}/3dmodels/971070244.step"
+		(offset
+			(xyz 25.5 25 7)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 180 0)
+		)
+	)
 )

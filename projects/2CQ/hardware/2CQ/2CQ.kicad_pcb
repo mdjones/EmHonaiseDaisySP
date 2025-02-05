@@ -166,7 +166,7 @@
 		(uuid "0b5f9ad7-1f35-45d5-b6b8-4c74046e7755")
 		(at 97.028 90.17 180)
 		(property "Reference" "SW1"
-			(at -5.08 -3.175 360)
+			(at -5.08 -3.175 0)
 			(layer "F.SilkS")
 			(uuid "c598a58a-cfbf-47f8-bf48-7028dfcfa673")
 			(effects
@@ -178,7 +178,7 @@
 			)
 		)
 		(property "Value" "TOGGLE_ON-ON"
-			(at -5.08 5.08 360)
+			(at -5.08 5.08 0)
 			(layer "F.Fab")
 			(uuid "a872391b-12d6-4f57-8364-3fbd0d4eb460")
 			(effects
@@ -190,7 +190,7 @@
 			)
 		)
 		(property "Footprint" "ES_Daisy_Patch_SM_FB_Rev1:TOGGLE_ON-ON"
-			(at 0 0 360)
+			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "a3cbfd4e-237e-4fca-bbc5-ce379582d83c")
@@ -202,7 +202,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 360)
+			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "aea1892b-cd25-4f21-877a-1ece40247894")
@@ -214,7 +214,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 360)
+			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "f8ef285f-fae7-44a0-b799-3e6b31d57784")
@@ -5552,7 +5552,7 @@
 		(uuid "a1ad2040-4edd-4c07-84ed-2caa94c2df53")
 		(at 86.36 121.793 180)
 		(property "Reference" "EP1"
-			(at 0 0 360)
+			(at 0 0 0)
 			(layer "F.SilkS")
 			(hide yes)
 			(uuid "6f06063e-8323-42da-8ac7-04216359338c")
@@ -5564,7 +5564,7 @@
 			)
 		)
 		(property "Value" "EURORACK_POWERHEADER"
-			(at 0 0 360)
+			(at 0 0 0)
 			(layer "F.SilkS")
 			(hide yes)
 			(uuid "87bf512e-79cf-4488-a0d8-28db2f3380c5")
@@ -5576,7 +5576,7 @@
 			)
 		)
 		(property "Footprint" "ES_Daisy_Patch_SM_FB_Rev1:EURORACK_POWER_SHROUD_LOCK"
-			(at 0 0 360)
+			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "7370a521-24aa-40a1-a5fc-e73015c023f3")
@@ -5588,7 +5588,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 360)
+			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "e1f2a5c4-46b1-4346-b353-5caf996e5a16")
@@ -5600,7 +5600,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 0 0 360)
+			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "a898a73c-b04d-4557-b250-b5edc7ba40c7")

@@ -148,3 +148,8 @@ These connectors might be able to be used for connecting the display
 <https://www.mouser.com/ProductDetail/Preci-dip/801-87-050-10-001101?qs=FtMuP6KVi2S5kFH%252BuHX1%252Bw%3D%3D>
 These standoffs should work
 <https://www.mouser.com/ProductDetail/Wurth-Elektronik/971070244?qs=%252BEew9%252B0nqrAahtXL2o5lAw%3D%3D>
+
+
+## EU Format
+
+3U = 128.5 mm

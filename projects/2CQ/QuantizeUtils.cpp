@@ -33,8 +33,12 @@ namespace QuantizeUtils {
 	int NUM_OCTAVES = 5;
 
 	//Scale masks
+	// A pentatonic scale is a musical scale with only five notes per octave,
+	// derived from the major or minor scale by removing the 4th and 7th notes, respectively
+	// https://en.wikipedia.org/wiki/Pentatonic_scale
 	int MASK_SIZE = 8;
 	bool FULL_MASK [8]= {true, true, true, true, true, true, true, true};
+	bool PENTATONIC_MASK [8]= {true, true, true, false, true, true, false, true};
 	bool THIRD_FIFTH_SIXTH_MASK [8]= {true, false, true, false, true, true, true, false};
 	bool THIRD_FIFTH_SEVENTH_MASK [8]= {true, false, true, false, true, false, true, false};
 	bool THIRD_FIFTH_MASK [8]= {true, false, true, false, true, false, false, false};
@@ -62,7 +66,7 @@ namespace QuantizeUtils {
 	int SCALE_PENTATONIC     [6] = {0, 2, 4, 7, 9, 12};
 	int SCALE_PHRYGIAN       [8] = {0, 1, 3, 5, 7, 8, 10, 12};
 	int SCALE_TURKISH        [8] = {0, 1, 3, 5, 7, 10, 11, 12};
-	int SCALE_YO_SCALE       		 [6] = {0, 2, 5, 7, 9, 12}; //https://en.wikipedia.org/wiki/Yo_scale
+	int SCALE_YO_SCALE       [6] = {0, 2, 5, 7, 9, 12}; //https://en.wikipedia.org/wiki/Yo_scale
 
 	enum NoteEnum {
 		NOTE_C, 
@@ -105,6 +109,7 @@ namespace QuantizeUtils {
 
 	enum MaskEnum {
 		FULL,
+		PENTA,
 		THIRD_FIFTH_SIXTH,
 		THIRD_FIFTH_SEVENTH,
 		THIRD_FIFTH,
@@ -149,6 +154,7 @@ namespace QuantizeUtils {
 
 		switch(mask){
 			case FULL:  maskVector = std::vector<bool>(FULL_MASK, FULL_MASK + MASK_SIZE); break;
+			case PENTA: maskVector = std::vector<bool>(PENTATONIC_MASK, PENTATONIC_MASK + MASK_SIZE); break;
 			case THIRD_FIFTH_SIXTH: maskVector = std::vector<bool>(THIRD_FIFTH_SIXTH_MASK, THIRD_FIFTH_SIXTH_MASK + MASK_SIZE); break;
 			case THIRD_FIFTH_SEVENTH: maskVector = std::vector<bool>(THIRD_FIFTH_SEVENTH_MASK, THIRD_FIFTH_SEVENTH_MASK + MASK_SIZE); break;
 			case THIRD_FIFTH: maskVector = std::vector<bool>(THIRD_FIFTH_MASK, THIRD_FIFTH_MASK + MASK_SIZE); break;
@@ -276,6 +282,7 @@ namespace QuantizeUtils {
 		}
 		switch(mask){
 			case FULL:  return "Full scale";
+			case PENTA: return "Pentatonic";
 			case THIRD_FIFTH_SIXTH:  return "+5th,3rd,6th";
 			case THIRD_FIFTH_SEVENTH:  return "+5th,3rd,7th";
 			case THIRD_FIFTH: return "+5th,3rd";
